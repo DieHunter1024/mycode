@@ -1,0 +1,82 @@
+const bookList = [{
+    "typeName": "综合图书",
+    "bnum": 28264
+}, {
+    "typeName": "文学",
+    "bnum": 14591
+}, {
+    "typeName": "儿童文学",
+    "bnum": 10186
+}, {
+    "typeName": "文化教育",
+    "bnum": 20477
+}, {
+    "typeName": "语言文字",
+    "bnum": 17344
+}, {
+    "typeName": "哲学",
+    "bnum": 16238
+}, {
+    "typeName": "历史地理",
+    "bnum": 15457
+}, {
+    "typeName": "政治思想",
+    "bnum": 5793
+}, {
+    "typeName": "生物科学",
+    "bnum": 4966
+}, {
+    "typeName": "绘本",
+    "bnum": 4521
+}, {
+    "typeName": "艺术",
+    "bnum": 4157
+}, {
+    "typeName": "地球天文",
+    "bnum": 2545
+}, {
+    "typeName": "军事",
+    "bnum": 2368
+}, {
+    "typeName": "自然科学",
+    "bnum": 2358
+}, {
+    "typeName": "工业技术",
+    "bnum": 1830
+}, {
+    "typeName": "社会科学",
+    "bnum": 1689
+}, {
+    "typeName": "数理化",
+    "bnum": 1394
+}, {
+    "typeName": "政治法律",
+    "bnum": 1303
+}, {
+    "typeName": "少年百科",
+    "bnum": 1201
+}, {
+    "typeName": "经济",
+    "bnum": 923
+}, {
+    "typeName": "童话故事",
+    "bnum": 840
+}, {
+    "typeName": "环境安全",
+    "bnum": 615
+}, {
+    "typeName": "医药卫生",
+    "bnum": 518
+}, {
+    "typeName": "航空航天",
+    "bnum": 457
+}, {
+    "typeName": "农业科学",
+    "bnum": 347
+}, {
+    "typeName": "家庭教育",
+    "bnum": 211
+}, {
+    "typeName": "交通运输",
+    "bnum": 188
+}]

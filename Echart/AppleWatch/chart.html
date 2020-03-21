@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .chart_box {
+            width: 300px;
+            height: 300px;
+            margin: 100px auto 0;
+            background: #000;
+        }
+    </style>
+    <script src="./echarts.js"></script>
+</head>
+
+<body>
+    <div id="chart_box" class="chart_box"></div>
+    <script type="module">
+        import MyChart from './MyChart.js'
+        MyChart.getInstance(echarts,chart_box).createChart()//初始化入口函数
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>shopCar</title>
+	<link rel="stylesheet" href="./src/style/shop.css">
+</head>
+
+<body>
+	<script type="module">
+		/*
+		购物车整体流程：
+		目录结构将model view controller剥离开
+		Modedl层：存储数据，显示数据
+		View：根据Model数据渲染页面
+		Controller：传递数据
+		Command:操作数据，获取数据
+		Event：事件总线，注册事件
+		商品列表：
+		 	初始化View层，建立Ajax获取数据，之后由controller触发事件至事件总线，然后再由注册的事件将ajax数据传至Model中完成商品列表初始化
+		 	当model获取到商品列表数据时，通过代理set()  触发新建商品列表事件，通过command操作view达到新建列表目的
+		购物车表格：
+		 	当用户对view进行操作时，触发注册的事件，通过command修改Model中的数据（购物车列表）从而再由command驱动view中的刷新表格进行渲染
+		*/
+		import ShopView from './src/js/view/ShopView.js'
+		// 实例化View层入口函数
+		new ShopView()
+	</script>
+</body>
+
+</html>

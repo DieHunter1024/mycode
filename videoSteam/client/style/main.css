@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.loginBox {
+    width: 300px;
+    height: 200px;
+    margin: 50px auto 0;
+}
+
+.userName,
+.loginBox button {
+    width: 300px;
+    height: 60px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 26px;
+}
+
+.userName {
+    border: 1px solid lightcoral;
+    text-align: center;
+}
+
+.loginBox button {
+    margin-top: 30px;
+    display: block;
+}
+
+input::placeholder {
+    font-size: 26px;
+    text-align: center;
+}
+
+.chatBox {
+    width: 200px;
+    margin: 50px auto 0;
+    position: relative;
+}
+
+.myName {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    font-size: 40px;
+    text-align: center;
+    line-height: 50px;
+    background: lightcoral;
+}
+
+.userList {
+    height: 500px;
+    width: 100%;
+    padding-top: 50px;
+    overflow-y: scroll;
+    list-style: none;
+}
+
+.userList>li {
+    background: lightblue;
+    height: 50px;
+    font-size: 20px;
+    line-height: 50px;
+    text-align: center;
+}
+
+.videoChat {
+    background: lightgreen;
+    width: 500px;
+    height: 400px;
+    margin: 50px auto 0;
+}
+
+.videoChat button {
+    width: 500px;
+    height: 60px;
+    border-radius: 10px;
+    outline: none;
+    float: left;
+    font-size: 26px;
+}
+
+.myVideo,.otherVideo{
+    width: 250px;
+    height: 250px;
+    float: left;
+    overflow: hidden;
+}

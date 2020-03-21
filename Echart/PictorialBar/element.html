@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .myChartBox {
+            margin: 100px auto;
+            width: 450px;
+            height: 240px;
+            background: #000;
+        }
+    </style>
+    <script src="./data.js"></script>
+    <script src="./echarts.js"></script>
+    <script src="./myChart.js"></script>
+</head>
+
+<body>
+    <div id="myChartBox" class="myChartBox"></div>
+    <script>
+        let _myChart, _option, timer = 1.5,
+            timeTickId, colorList, chartConfig; //初始化变量，分别是初始化后的echart对象，echart配置信息，图表刷新频率，延时递归函数id，图表渐变颜色列表了，列表联动配置
+        let {
+            category,
+            lineData
+        } = filterData(bookList) //过滤后端数据，规范成x轴数组和y轴数组格式
+        let init = () => {
+            _myChart = echarts.init(myChartBox); //初始化chart
+            colorList = {
+                first: ["#F179C4", "#26AEFB", "#CDAD92", "#ED65BA", "#989FBB", "#E86A6A", "#6718CF"],
+                second: ["#E33AA3", "#056FAB", "#FFAA62", "#E33AA3", "#28B1FF", "#FFAA62", "#F47384"]
+            }
+            chartConfig = { //配置信息为，chart中横坐标第一项索引，最后一项索引，规定列表长度
+                first: 0,
+                second: 7,
+                max: 20
+            }
+            createChart()
+        };
+        (() => {
+            init()
+        })()
+    </script>
+</body>
+
+</html>

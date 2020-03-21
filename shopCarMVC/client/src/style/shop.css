@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.shopBox {
+    overflow: hidden;
+    width: 1000px;
+    margin: 50px auto 0;
+}
+
+.liItem {
+    float: left;
+    list-style: none;
+    padding: 10px;
+    width: 150px;
+    height: 200px;
+    text-align: center;
+    border: 1px solid lightcoral;
+}
+
+.liItem img {
+    width: 100px;
+    height: 100px;
+}
+
+.leftBtn,
+.rightBtn {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border: 1px solid black;
+    font-size: 25px;
+    line-height: 30px;
+}
+
+.text {
+    width: 50px;
+    height: 26px;
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+table {
+    font-size: 30px;
+    width: 1200px;
+    border: 1px solid lightcoral;
+    border-collapse: collapse;
+    margin: 50px auto;
+}
+
+.checkbox {
+    width: 30px;
+    height: 30px;
+}
+
+td {
+    border: 1px solid lightcoral;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td button {
+    width: 150px;
+    height: 60px;
+}
+
+.numBox {
+    width: 150px;
+    height: 30px;
+    margin: auto;
+    position: relative;
+}
+
+.numBox>button {
+    width: 40px;
+    height: 42px;
+    background-color: white;
+    border: 1px solid #000000;
+}
+
+.numBox>input {
+    width: 70px;
+    height: 40px;
+    border: 1px solid #000000;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+}

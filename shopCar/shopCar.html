@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style/shop.css">
+    <script src="./js/methods.js"></script>
+    <script src="./js/shop.js"></script>
+</head>
+
+<body>
+    <ul id="shopBox" class="shopBox"></ul>
+    <script>
+        var shopCar
+        Methods.AjaxTool('get', './json/shop.json', {}, function (res) {//Methods封装的AjaxTool是用于本地请求数据的ajax方法
+            // var a = singleCar()
+            // var b = singleCar()
+            // console.log(a === b) //单例模式下，若执行两次，其两次结果为true
+            singleCar().init(JSON.parse(res), shopBox); //入口函数
+        })
+
+        function singleCar() {//单例模式，只产生一个实例
+            if (!shopCar) {
+                shopCar = new ShopCar()
+            }
+            return shopCar
+        }
+    </script>
+</body>
+
+</html>

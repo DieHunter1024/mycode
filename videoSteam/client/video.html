@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style/main.css">
+    <script src="./js/socket.io.js"></script>
+    <script src="./js/socket.js"></script>
+    <script src="./js/userList.js"></script>
+    <script src="./js/video.js"></script>
+</head>
+
+<body>
+    <div id="login" hidden class="loginBox">
+        <input id="userName" autocomplete="false" class="userName" type="text" placeholder="请输入英文用户名">
+        <button id="submit">提交</button>
+    </div>
+    <div id="chatBox" class="chatBox" hidden>
+        <h1 id="myName" class="myName"></h1>
+        <ul id="userList" class="userList"></ul>
+    </div>
+    <div id="videoChat" hidden class="videoChat">
+        <button id="back" hidden>结束</button>
+        <video id="myVideo" src="" class="myVideo"></video>
+        <video id="otherVideo" src="" class="otherVideo"></video>
+    </div>
+    <script>
+        checkToken()
+
+        function checkToken() { //判断用户是否已有用户名
+            if (localStorage.token) {
+                login.hidden = true
+                chatBox.hidden = false
+                initSocket(localStorage.token) //初始化socket连接
+            } else {
+                login.hidden = false
+                chatBox.hidden = true
+                submit.addEventListener('click', function (e) {
+                    initSocket(userName.value) //初始化socket连接
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>

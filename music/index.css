@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: rgb(28, 160, 210);
+}
+
+.vol {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    border-radius: 100px;
+}
+
+.left {
+    left: 500px;
+    top: 100px;
+    background: rgb(250, 242, 107);
+}
+
+.right {
+    left: 800px;
+    top: 100px;
+    background: rgba(250, 242, 107, 100);
+    z-index: 1;
+}
