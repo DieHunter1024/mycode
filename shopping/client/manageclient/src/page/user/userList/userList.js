@@ -2,13 +2,6 @@ import React from "react";
 import ListDrower from "../../../components/drawer/drawer";
 import ListTable from "../../../components/table/table";
 import {
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  DatePicker,
   message,
 } from "antd";
 import config from "../../../config/config";

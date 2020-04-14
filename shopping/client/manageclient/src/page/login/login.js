@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./login.less";
 import { Card, Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import config from "../../config/config";
 const { ServerApi, StorageName } = config;
 export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
     this.checkToken();
   }
   render() {
@@ -24,8 +23,8 @@ export default class Login extends React.Component {
               rules={[
                 {
                   required: true,
-                  message: "请输入用户名/邮箱"
-                }
+                  message: "请输入用户名/邮箱",
+                },
               ]}
             >
               <Input
@@ -39,8 +38,8 @@ export default class Login extends React.Component {
               rules={[
                 {
                   required: true,
-                  message: "请输入密码"
-                }
+                  message: "请输入密码",
+                },
               ]}
             >
               <Input
@@ -78,16 +77,16 @@ export default class Login extends React.Component {
     if (!token) return;
     this.$axios
       .get(ServerApi.token, {
-        params: { token }
+        params: { token },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         switch (res.result) {
           case 1:
             message.success(res.msg).then(() => {
               this.props.history.push({
-                pathname: "/admin/findshop",
-                query: res
+                pathname: "/admin/shopList",
+                query: res,
               });
             });
             break;
@@ -96,23 +95,23 @@ export default class Login extends React.Component {
             break;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
-  sendData = data => {
+  sendData = (data) => {
     this.$axios
       .get(ServerApi.user.userLogin, {
-        params: { crypto: this.$crypto.setCrypto(data) }
+        params: { crypto: this.$crypto.setCrypto(data) },
       })
-      .then(res => {
+      .then((res) => {
         switch (res.result) {
           case 1:
             this.$utils.saveStorage(StorageName.token, res.token);
             message.success(res.msg);
             this.props.history.push({
-              pathname: "/admin/findshop",
-              query: res
+              pathname: "/admin/shopList",
+              query: res,
             });
             break;
           default:
@@ -120,13 +119,9 @@ export default class Login extends React.Component {
             break;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
-  componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
-  }
+  componentWillUnmount() {}
 }

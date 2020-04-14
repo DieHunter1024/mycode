@@ -73,8 +73,8 @@ router.post(Config.ServerApi.addUser, Util.checkToken, async (req, res) => {
     Util.delPicFile(res._data.headPic);
     return;
   }
-  res._data.time = Util.joinDate();
-  res._data.password = Util.createBcrypt(res._data.password);
+  res._data.time = Util.joinDate(); //添加时间
+  res._data.password = Util.createBcrypt(res._data.password); //盐加密
   res._data.isactive = true;
   let addRes = await addData(Mod, res._data);
   if (addRes) {
@@ -100,7 +100,7 @@ router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
     return;
   }
   let total = await getTotalPage(Mod, res._data.pageSize);
-  let query = new RegExp(res._data.keyWord, "i");
+  let query = new RegExp(res._data.keyWord, "i"); //模糊查找正则条件
   res.send({
     result: 1,
     data: {
@@ -111,7 +111,7 @@ router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
       list: await findByPage(
         Mod,
         {
-          time: res._data.sort,
+          userType: res._data.sort,
         },
         res._data.page,
         res._data.pageSize,
@@ -186,7 +186,7 @@ router.get(Config.ServerApi.delUser, Util.checkToken, async (req, res) => {
   });
 });
 router.post(Config.ServerApi.updateUser, Util.checkToken, async (req, res) => {
-  if (!res._data.headPic.length) {
+  if (!res._data.headPic.length) {//这里判断是否是修改头像，若是新增，则是上传相关的头像信息，是个object类型，length属性不存在
     let findRes = await findData(Mod, {
       _id: res._data._id,
     });
@@ -195,7 +195,7 @@ router.post(Config.ServerApi.updateUser, Util.checkToken, async (req, res) => {
     }
     res._data.headPic = Util.readPicFile(res._data.headPic || "") || "";
   }
-  res._data.password = Util.createBcrypt(res._data.password);
+  res._data.password = Util.createBcrypt(res._data.password);//密码盐加密
   let updateRes = await updateData(Mod, res._data._id, res._data);
   if (updateRes) {
     res.send({

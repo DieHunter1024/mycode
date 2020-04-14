@@ -45,7 +45,6 @@ export default class UpdataPic extends React.Component {
       }
     }
   };
-
   render() {
     const { fileList } = this.state;
     const uploadButton = (

@@ -1,0 +1,111 @@
+
+{
+    "_id" : ObjectId("5e86d21ae04b9822e85e656e"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1585894072936.png",
+    "userType" : "admin",
+    "username" : "hunter",
+    "password" : "$2a$10$K/adIw9vfQo/HnhvSMrjwOfxVgMgOkxIIZOoxjmQ9mh304AJFUn7C",
+    "sex" : "man",
+    "email" : "313267717@qq.com",
+    "address" : "江西省-南昌市-青云谱区-井冈山大道",
+    "descript" : "犹豫就会败北,果断就会白给",
+    "time" : "Fri Apr 03 2020 14:05:14 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b3090879d120a047fe96a"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586180904715.png",
+    "userType" : "user",
+    "username" : "aaaaaa",
+    "password" : "$2a$10$GGUy3pZRSXUOMOgT0k8hDeFshgRGCCeNup9oWkBrI8QvAHnLJwuhW",
+    "sex" : "man",
+    "email" : "aaaaa@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:37:20 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b30ee879d120a047fe96b"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586180365218.png",
+    "userType" : "user",
+    "username" : "bbbbbb",
+    "password" : "$2a$10$.QMF/CRWDHHU7kzhNZEpp.nfmxJqla5EKo727lvm4rrbsf.ngGR.e",
+    "sex" : "man",
+    "email" : "bbbb@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:38:54 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b3113879d120a047fe96c"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586180821375.png",
+    "userType" : "user",
+    "username" : "cccccccccc",
+    "password" : "$2a$10$0Gn5RJ/JjtEOzQKvMZ/xQ.XyB9p.hXx02P1AHA4mSjGzl90MDge7C",
+    "sex" : "man",
+    "email" : "ccccc@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:39:31 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b33b7494c2b3684b6d3fd"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586181141345.png",
+    "userType" : "user",
+    "username" : "dddd",
+    "password" : "$2a$10$xQcMkFWt8zfIBXIa367QM.1U6p/W74rtjVQEYlGw6kVOnY8Lh90c6",
+    "sex" : "man",
+    "email" : "ddd@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:50:47 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b33c8494c2b3684b6d3fe"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586181242010.png",
+    "userType" : "user",
+    "username" : "eeeee",
+    "password" : "$2a$10$o4t7ZQgC55CdsiwAFyeokedF/lWEhT.rDZXzWpswGI4XKRFSUliH6",
+    "sex" : "man",
+    "email" : "eeeeeeeeeeeee@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:51:04 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+
+{
+    "_id" : ObjectId("5e8b33da494c2b3684b6d3ff"),
+    "isactive" : true,
+    "headPic" : "public/assets/img/1586181136430.png",
+    "userType" : "user",
+    "username" : "ffffffffffffff",
+    "password" : "$2a$10$JDJZI8cRg.728c/JgRjOt.GVcvEKXjDpEMr5sdqlRSRVAWEpMRpH2",
+    "sex" : "man",
+    "email" : "ffffffffff@qq.com",
+    "address" : "-",
+    "descript" : "",
+    "time" : "Mon Apr 06 2020 21:51:22 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}

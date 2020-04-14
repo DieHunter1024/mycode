@@ -4,9 +4,9 @@ export default class Config {
   static ServerUrl = "";
   static ServerPort = ":1024";
   static Path = "/";
-  static CryptoKey = "tokenkey";
+  static CryptoKey = "tokenkey";//加密信息关键字
   static FilePath = this.Agreement + this.BaseUrl + this.ServerPort + this.Path;
-  static ServerApi = {
+  static ServerApi = {//接口名
     token: "checkToken",
     user: {
       userLogin: "user/userLogin",

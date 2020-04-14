@@ -11,15 +11,15 @@ app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS"); //跨域允许的请求方式
   next(); //是否继续向下执行
 });
-let bodyParser = require("body-parser");
+let bodyParser = require("body-parser"); //post传输数据类型
 app.use(
   bodyParser.urlencoded({
     extended: false,
   })
 );
 app.use(bodyParser.json());
-app.use("/public", express.static(path.join(__dirname, "./public")));
-new routes(app);
+app.use("/public", express.static(path.join(__dirname, "./public")));//静态目录
+new routes(app);//初始化路由
 
 app.listen(1024, () => {
   console.log("Server Start~");

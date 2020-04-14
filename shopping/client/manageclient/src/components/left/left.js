@@ -7,8 +7,9 @@ import MenuData from "../../config/menuList";
 const { SubMenu } = Menu;
 export default class Left extends React.Component {
   createMenu(data) {
-    return data.map(item => {
+    return data.map((item) => {
       if (item.list) {
+        //递归生成子项
         return (
           <SubMenu key={item.name} title={item.name}>
             {this.createMenu(item.list)}

@@ -1,8 +1,6 @@
 import React from "react";
 import {
   HashRouter as Router,
-  // Link,
-  // NavLink,
   Route,
   Switch,
   Redirect
@@ -21,7 +19,7 @@ export default class RoutrModel extends React.Component {
           </Route>
           <Route path="/login" component={Login}></Route>
           <Route exact path="/admin">
-            <Redirect to="/admin/findshop"></Redirect>
+            <Redirect to="/admin/shopList"></Redirect>
           </Route>
           <Route
             path="/admin"

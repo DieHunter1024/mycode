@@ -35,14 +35,14 @@ export default class ListDrower extends React.Component {
     if (record) {
       this.setState({
         formType: "updata",
-        visible: false,
+        visible: true,
         record,
       });
       this.updateChild.updatePic(FilePath + record.headPic);
     } else {
       this.setState({
         formType: "add",
-        visible: false,
+        visible: true,
         record: {
           sex: "man",
           userType: "user",
@@ -50,9 +50,6 @@ export default class ListDrower extends React.Component {
         },
       });
     }
-    this.setState({
-      visible: true,
-    });
   };
   onClose = () => {
     this.formRef.current.resetFields();
