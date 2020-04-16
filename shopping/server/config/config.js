@@ -79,16 +79,90 @@ module.exports = {
         },
       },
     },
+    Shop: {
+      modelName: "shop",
+      data: {
+        shopPic: {
+          //商品图片
+          type: String,
+          required: true,
+        },
+        shopType: {
+          //商品类型
+          type: String,
+          required: true,
+        },
+        picType: {
+          //图片类型
+          type: String,
+          required: true,
+        },
+        shopName: {
+          //商品名
+          type: String,
+          required: true,
+        },
+        shopNum: {
+          //库存
+          type: Number,
+          required: true,
+        },
+        shopPrice: {
+          //单价
+          type: Number,
+          required: true,
+        },
+        taste: {
+          //口味
+          type: String,
+          required: false,
+          default: "酸，甜，苦，辣",
+        },
+        address: {
+          //产地
+          type: String,
+          required: false,
+          default: "南昌市",
+        },
+        expiryDate: {
+          //保质期
+          type: String,
+          required: false,
+          default: "180天",
+        },
+        morePic: {
+          //详情图片
+          type: Array,
+          required: false,
+          default: [],
+        },
+        time: {
+          //添加时间
+          type: String,
+          required: true,
+        },
+        isactive: {
+          //是否激活商品
+          type: Boolean,
+          default: true,
+        },
+      },
+    },
   },
   ServerApi: {
     //接口名称
-    checkToken: "/checkToken",//验证token
-    userLogin: "/userLogin",//用户登录
-    userReg: "/userReg",//注册（移动端）
-    addUser: "/addUser",//添加用户
-    userList: "/userList",//获取用户列表
-    freezeUser: "/freezeUser",//冻结用户
-    delUser: "/delUser",//删除用户
-    updateUser: "/updateUser",//更新用户
+    checkToken: "/checkToken", //验证token
+    userLogin: "/userLogin", //用户登录
+    userReg: "/userReg", //注册（移动端）
+    addUser: "/addUser", //添加用户
+    userList: "/userList", //获取用户列表
+    freezeUser: "/freezeUser", //冻结用户
+    delUser: "/delUser", //删除用户
+    updateUser: "/updateUser", //更新用户
+    addShop: "/addShop", //添加商品
+    shopList: "/shopList", //获取商品列表
+    freezeShop: "/freezeShop", //冻结商品
+    delShop: "/delShop", //删除商品
+    updateShop: "/updateShop", //更新商品
   },
 };

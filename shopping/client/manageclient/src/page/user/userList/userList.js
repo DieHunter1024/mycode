@@ -1,14 +1,12 @@
 import React from "react";
 import ListDrower from "../../../components/drawer/drawer";
 import ListTable from "../../../components/table/table";
-import {
-  message,
-} from "antd";
+import Events from "../../../event/busEvent";
+import { message } from "antd";
 import config from "../../../config/config";
-const { ServerApi, StorageName } = config;
+const { ServerApi, StorageName, FormDefaultVal } = config;
 export default class UserList extends React.Component {
   state = {
-    userType: "adduser",
     pageConfig: {
       token: this.$utils.getStorage(StorageName.token),
       keyWord: "",
@@ -29,15 +27,15 @@ export default class UserList extends React.Component {
           onTableRef={(child) => {
             this.tableChild = child;
           }}
-          showDrawer={this.showDrawer}
-          deleteUser={this.deleteUser}
-          freezeUser={this.freezeUser}
-          changeInfo={this.changeInfo}
+          addInfo={this.addUser}
+          deleteInfo={this.deleteUser}
+          freezeInfo={this.freezeUser}
+          changeInfo={this.changeUser}
           changePage={this.changePage}
         ></ListTable>
         <ListDrower
-          getUserList={this.getUserList}
-          userType={this.state.userType}
+          formType="user"
+          getList={this.getUserList}
           onDrowerRef={(child) => {
             this.drawerChild = child;
           }}
@@ -45,15 +43,17 @@ export default class UserList extends React.Component {
       </div>
     );
   }
-  showDrawer = () => {
-    this.drawerChild.showDrawer();
+  addUser = () => {
+    Events.emit("addUser", FormDefaultVal.user);
+    this.drawerChild.showDrawer("add");
   };
   changePage = (pageConfig) => {
     this.setState({ pageConfig });
     this.getUserList();
   };
-  changeInfo = (record) => {
-    this.drawerChild.showDrawer(record);
+  changeUser = (record) => {
+    Events.emit("updataUser", record);
+    this.drawerChild.showDrawer("updata");
   };
   deleteUser = (record) => {
     let data = {

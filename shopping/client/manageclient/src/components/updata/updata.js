@@ -50,7 +50,7 @@ export default class UpdataPic extends React.Component {
     const uploadButton = (
       <div>
         <PlusOutlined />
-        <div className="ant-upload-text">上传头像</div>
+        <div className="ant-upload-text">上传图片</div>
       </div>
     );
     return (

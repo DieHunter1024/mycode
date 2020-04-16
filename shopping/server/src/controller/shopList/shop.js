@@ -10,41 +10,8 @@ const {
   findByPage,
   getTotalPage,
 } = require("../../command/command");
-router.get(Config.ServerApi.userLogin, async (req, res) => {
-  let _data = Util.getCrypto(Util.parseUrl(req, res).crypto);
-  let findRes = await findData(Mod, {
-    $or: [
-      {
-        email: _data.username,
-      },
-      {
-        username: _data.username,
-      },
-    ],
-  });
-  if (findRes && findRes.length > 0) {
-    Util.checkBcrypt(_data.password, findRes[0].password)
-      ? res.send({
-          result: 1,
-          token: Util.createToken(
-            findRes[0].userType,
-            findRes[0].username,
-            _data.remember
-          ),
-          msg: "登录成功",
-        })
-      : res.send({
-          result: 0,
-          msg: "密码错误",
-        });
-    return;
-  }
-  res.send({
-    result: 0,
-    msg: "用户不存在",
-  });
-});
-router.post(Config.ServerApi.addUser, Util.checkToken, async (req, res) => {
+
+router.post(Config.ServerApi.addShop, Util.checkToken, async (req, res) => {
   if (res._data.headPic) {
     res._data.headPic = Util.readPicFile(res._data.headPic || "") || "";
   }
@@ -186,11 +153,11 @@ router.get(Config.ServerApi.delUser, Util.checkToken, async (req, res) => {
   });
 });
 router.post(Config.ServerApi.updateUser, Util.checkToken, async (req, res) => {
-  let findRes = await findData(Mod, {
-    _id: res._data._id,
-  });
   if (!res._data.headPic || !res._data.headPic.length) {
     //这里判断是否是修改头像，若是新增，则是上传相关的头像信息，是个object类型，length属性不存在
+    let findRes = await findData(Mod, {
+      _id: res._data._id,
+    });
     if (findRes[0].headPic != "public/assets/img/default.gif") {
       Util.delPicFile(findRes[0].headPic);
     }
@@ -200,10 +167,7 @@ router.post(Config.ServerApi.updateUser, Util.checkToken, async (req, res) => {
       res._data.headPic = "public/assets/img/default.gif";
     }
   }
-  if (res._data.password !== findRes[0].password) {
-    res._data.password = Util.createBcrypt(res._data.password); //密码盐加密
-  }
-
+  res._data.password = Util.createBcrypt(res._data.password); //密码盐加密
   let updateRes = await updateData(Mod, res._data._id, res._data);
   if (updateRes) {
     res.send({
