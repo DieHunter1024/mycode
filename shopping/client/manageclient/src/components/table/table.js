@@ -59,6 +59,7 @@ export default class ListTable extends React.Component {
     this.setState({
       pageConfig,
     });
+    this.props.changePage(pageConfig);
   }
   clickHandler(record, type) {
     switch (type) {

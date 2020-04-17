@@ -80,7 +80,7 @@ module.exports = {
       },
     },
     Shop: {
-      modelName: "shop",
+      modelName: "shops",
       data: {
         shopPic: {
           //商品图片

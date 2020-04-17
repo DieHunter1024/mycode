@@ -12,36 +12,21 @@ const {
 } = require("../../command/command");
 
 router.post(Config.ServerApi.addShop, Util.checkToken, async (req, res) => {
-  if (res._data.headPic) {
-    res._data.headPic = Util.readPicFile(res._data.headPic || "") || "";
+  if (res._data.shopPic) {
+    res._data.shopPic = Util.readPicFile(res._data.shopPic || "") || "";
   }
   let findRes = await findData(Mod, {
-    $or: [
-      {
-        mailaddress: res._data.mailaddress,
-        mailurl: res._data.mailurl,
-      },
-      {
-        username: res._data.username,
-      },
-      {
-        mailaddress: res._data.username,
-      },
-      {
-        username: res._data.mailaddress + res._data.mailurl,
-      },
-    ],
+    shopName: res._data.shopName,
   });
   if (findRes && findRes.length > 0) {
     res.send({
       result: 0,
-      msg: "添加失败,用户已存在",
+      msg: "添加失败,商品已存在",
     });
-    Util.delPicFile(res._data.headPic);
+    Util.delPicFile(res._data.shopPic);
     return;
   }
   res._data.time = Util.joinDate(); //添加时间
-  res._data.password = Util.createBcrypt(res._data.password); //盐加密
   res._data.isactive = true;
   let addRes = await addData(Mod, res._data);
   if (addRes) {
@@ -51,13 +36,13 @@ router.post(Config.ServerApi.addShop, Util.checkToken, async (req, res) => {
     });
     return;
   }
-  Util.delPicFile(res._data.headPic);
+  Util.delPicFile(res._data.shopPic);
   res.send({
     result: 0,
     msg: "添加失败",
   });
 });
-router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
+router.get(Config.ServerApi.shopList, Util.checkToken, async (req, res) => {
   if (res._data.userTokenType != "admin") {
     //非管理员
     res.send({
@@ -67,7 +52,6 @@ router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
     return;
   }
   let total = await getTotalPage(Mod, res._data.pageSize);
-  let query = new RegExp(res._data.keyWord, "i"); //模糊查找正则条件
   res.send({
     result: 1,
     data: {
@@ -78,22 +62,15 @@ router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
       list: await findByPage(
         Mod,
         {
-          userType: res._data.sort,
+          shopType: res._data.sort,
         },
         res._data.page,
         res._data.pageSize,
-        res._data.keyWord.length
-          ? {
-              $or: [
-                {
-                  mailaddress: query,
-                },
-                {
-                  username: query,
-                },
-              ],
-            }
-          : {}
+        {
+          shopType: new RegExp(res._data.shopType, "i"),
+          picType: new RegExp(res._data.picType, "i"),
+          shopName: new RegExp(res._data.keyWord, "i"),
+        }
       ),
     },
     msg: "查找成功",

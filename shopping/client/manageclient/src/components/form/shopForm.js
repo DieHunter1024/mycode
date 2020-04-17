@@ -68,36 +68,36 @@ export default class userForm extends React.Component {
     );
   }
   sendData(val) {
-    // if (this.state.record._id) {
-    //   val._id = this.state.record._id;
-    // }
+    if (this.state.record._id) {
+      val._id = this.state.record._id;
+    }
     val.token = this.$utils.getStorage(StorageName.token);
     console.log(val);
-    // let data = this.$crypto.setCrypto(val);
-    // let _url =
-    //   this.state.formType == "add"
-    //     ? ServerApi.user.addUser
-    //     : ServerApi.user.updateUser;
-    // this.$axios
-    //   .post(_url, { crypto: data })
-    //   .then((res) => {
-    //     switch (res.result) {
-    //       case 1:
-    //         message.success(res.msg);
-    //         this.props.onClose();
-    //         this.props.getList();
-    //         break;
-    //       case 0:
-    //         message.warning(res.msg);
-    //         break;
-    //       default:
-    //         // message.warning(res.msg);
-    //         break;
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     message.error("操作失败");
-    //   });
+    let data = this.$crypto.setCrypto(val);
+    let _url =
+      this.state.formType == "add"
+        ? ServerApi.shop.addShop
+        : ServerApi.shop.updateShop;
+    this.$axios
+      .post(_url, { crypto: data })
+      .then((res) => {
+        switch (res.result) {
+          case 1:
+            message.success(res.msg);
+            this.props.onClose();
+            this.props.getList();
+            break;
+          case 0:
+            message.warning(res.msg);
+            break;
+          default:
+            // message.warning(res.msg);
+            break;
+        }
+      })
+      .catch((err) => {
+        message.error("操作失败");
+      });
   }
   render() {
     return (

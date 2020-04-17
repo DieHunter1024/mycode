@@ -7,30 +7,30 @@ const { FilePath } = config;
 export default class ShopTable {
   constructor(_this) {
     return [
-      { align: "center", title: "商品名", dataIndex: "shopName", width: 200 },
+      { align: "center", title: "商品名", dataIndex: "shopName", width: 100 },
       {
         align: "center",
         title: "商品类型",
         dataIndex: "shopType",
-        width: 100,
-        render: (text, data) => {
-          return <div>{shopType[data.shopType]}</div>;
+        width: 50,
+        render: (text) => {
+          return <div>{shopType[text].name}</div>;
         },
       },
       {
         align: "center",
         title: "图片类型",
         dataIndex: "picType",
-        width: 100,
-        render: (text, data) => {
-          return <div>{picType[data.picType]}</div>;
+        width: 50,
+        render: (text) => {
+          return <div>{picType[text].name}</div>;
         },
       },
       {
         align: "center",
         title: "商品图片",
         dataIndex: "shopPic",
-        width: 150,
+        width: 100,
         render: (imgPath) => {
           return (
             <img
@@ -45,7 +45,7 @@ export default class ShopTable {
         align: "center",
         title: "库存",
         dataIndex: "shopNum",
-        width: 100,
+        width: 50,
         render: (num) => {
           return <div>{num + "个"}</div>;
         },
@@ -54,7 +54,7 @@ export default class ShopTable {
         align: "center",
         title: "单价",
         dataIndex: "shopPrice",
-        width: 100,
+        width: 50,
         render: (price) => {
           return <div>{price + "元"}</div>;
         },
@@ -86,7 +86,7 @@ export default class ShopTable {
       {
         align: "center",
         title: "操作",
-        width: 200,
+        width: 100,
         fixed: "right",
         render: (record) => {
           return (
