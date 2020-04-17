@@ -15,7 +15,7 @@ export default class ListDrower extends React.Component {
   showDrawer = (formType) => {
     this.setState({
       formType,
-      visible: true
+      visible: true,
     });
   };
   onClose = () => {

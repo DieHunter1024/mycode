@@ -4,6 +4,7 @@ import ListTable from "../../../components/table/table";
 import Events from "../../../event/busEvent";
 import { message } from "antd";
 import config from "../../../config/config";
+import Bussiness from "../../../bussiness/bussiness";
 const { ServerApi, StorageName, FormDefaultVal } = config;
 export default class UserList extends React.Component {
   state = {
@@ -17,7 +18,7 @@ export default class UserList extends React.Component {
     },
   };
   componentDidMount() {
-    this.getUserList();
+    this.getList();
   }
   render() {
     return (
@@ -35,7 +36,7 @@ export default class UserList extends React.Component {
         ></ListTable>
         <ListDrower
           formType="user"
-          getList={this.getUserList}
+          getList={this.getList}
           onDrowerRef={(child) => {
             this.drawerChild = child;
           }}
@@ -49,56 +50,19 @@ export default class UserList extends React.Component {
   };
   changePage = (pageConfig) => {
     this.setState({ pageConfig });
-    this.getUserList();
+    this.getList();
   };
   changeUser = (record) => {
     Events.emit("updataUser", record);
     this.drawerChild.showDrawer("updata");
   };
   deleteUser = (record) => {
-    let data = {
-      token: this.$utils.getStorage(StorageName.token),
-      _id: record._id,
-      headPic: record.headPic,
-    };
-    this.$axios
-      .get(ServerApi.user.delUser, {
-        params: { crypto: this.$crypto.setCrypto(data) },
-      })
-      .then((res) => {
-        message.success(res.msg);
-        this.getUserList();
-      })
-      .catch((err) => {});
+    Bussiness.delInfo.bind(this, ServerApi.user.delUser, record)();
   };
   freezeUser = (record) => {
-    let data = {
-      token: this.$utils.getStorage(StorageName.token),
-      _id: record._id,
-      isactive: !record.isactive,
-    };
-    this.$axios
-      .get(ServerApi.user.freezeUser, {
-        params: { crypto: this.$crypto.setCrypto(data) },
-      })
-      .then((res) => {
-        message.success(res.msg);
-        this.getUserList();
-      });
+    Bussiness.freezeInfo.bind(this, ServerApi.user.freezeUser, record)();
   };
-  getUserList = () => {
-    let data = { ...this.state.pageConfig };
-    this.$axios
-      .get(ServerApi.user.userList, {
-        params: { crypto: this.$crypto.setCrypto(data) },
-      })
-      .then((res) => {
-        let { list, totalPage, allNum } = res.data;
-        let { pageConfig } = this.state;
-        pageConfig.allNum = allNum;
-        pageConfig.totalPage = totalPage;
-        this.tableChild.setState({ pageConfig, list });
-      })
-      .catch((err) => {});
+  getList = () => {
+    Bussiness.getInfo.bind(this, ServerApi.user.userList)();
   };
 }

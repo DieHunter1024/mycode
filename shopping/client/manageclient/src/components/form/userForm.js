@@ -15,6 +15,7 @@ import Mail from "../../config/mail";
 import City from "../../config/city";
 import UpdataPic from "../updata/updata";
 import config from "../../config/config";
+import Bussiness from "../../bussiness/bussiness";
 const { ServerApi, StorageName, FilePath } = config;
 const { Option } = Select;
 export default class userForm extends React.Component {
@@ -65,26 +66,7 @@ export default class userForm extends React.Component {
       this.state.formType == "add"
         ? ServerApi.user.addUser
         : ServerApi.user.updateUser;
-    this.$axios
-      .post(_url, { crypto: data })
-      .then((res) => {
-        switch (res.result) {
-          case 1:
-            message.success(res.msg);
-            this.props.onClose();
-            this.props.getList();
-            break;
-          case 0:
-            message.warning(res.msg);
-            break;
-          default:
-            // message.warning(res.msg);
-            break;
-        }
-      })
-      .catch((err) => {
-        message.error("操作失败");
-      });
+    Bussiness.sendInfo.bind(this, _url, data)();
   }
   render() {
     return (

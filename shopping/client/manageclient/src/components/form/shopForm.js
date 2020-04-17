@@ -13,6 +13,7 @@ import ShopType from "../../config/shopType";
 import Events from "../../event/busEvent";
 import UpdataPic from "../updata/updata";
 import config from "../../config/config";
+import Bussiness from "../../bussiness/bussiness";
 const { shopType, picType } = ShopType;
 const { ServerApi, StorageName, FilePath } = config;
 const { Option } = Select;
@@ -34,7 +35,7 @@ export default class userForm extends React.Component {
         record: e,
       },
       () => {
-        this.updateChild.updatePic(FilePath + this.state.record.headPic);
+        this.updateChild.updatePic(FilePath + this.state.record.shopPic);
       }
     );
   };
@@ -72,32 +73,12 @@ export default class userForm extends React.Component {
       val._id = this.state.record._id;
     }
     val.token = this.$utils.getStorage(StorageName.token);
-    console.log(val);
     let data = this.$crypto.setCrypto(val);
     let _url =
       this.state.formType == "add"
         ? ServerApi.shop.addShop
         : ServerApi.shop.updateShop;
-    this.$axios
-      .post(_url, { crypto: data })
-      .then((res) => {
-        switch (res.result) {
-          case 1:
-            message.success(res.msg);
-            this.props.onClose();
-            this.props.getList();
-            break;
-          case 0:
-            message.warning(res.msg);
-            break;
-          default:
-            // message.warning(res.msg);
-            break;
-        }
-      })
-      .catch((err) => {
-        message.error("操作失败");
-      });
+    Bussiness.sendInfo.bind(this, _url, data)();
   }
   render() {
     return (

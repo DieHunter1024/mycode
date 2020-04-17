@@ -3,6 +3,7 @@ import ListTable from "../../../components/table/table";
 import ListDrower from "../../../components/drawer/drawer";
 import { message } from "antd";
 import config from "../../../config/config";
+import Bussiness from "../../../bussiness/bussiness";
 import Events from "../../../event/busEvent";
 const { ServerApi, StorageName, FormDefaultVal } = config;
 export default class shopList extends React.Component {
@@ -19,8 +20,7 @@ export default class shopList extends React.Component {
     },
   };
   componentDidMount() {
-    this.getShopList();
-    // this.drawerChild.showDrawer("addShop");
+    this.getList();
   }
 
   render() {
@@ -39,7 +39,7 @@ export default class shopList extends React.Component {
         ></ListTable>
         <ListDrower
           formType="shop"
-          getList={this.getShopList}
+          getList={this.getList}
           onDrowerRef={(child) => {
             this.drawerChild = child;
           }}
@@ -49,29 +49,23 @@ export default class shopList extends React.Component {
   }
   addShop = () => {
     Events.emit("addShop", FormDefaultVal.shop);
-    this.drawerChild.showDrawer("add");
+    this.drawerChild.showDrawer("addShop");
   };
   changePage = (pageConfig) => {
     this.setState({ pageConfig });
-    this.getShopList();
+    this.getList();
   };
   changeShop = (record) => {
     Events.emit("updataShop", record);
-    this.drawerChild.showDrawer("updata");
+    this.drawerChild.showDrawer("updataShop");
   };
-  getShopList = () => {
-    let data = { ...this.state.pageConfig };
-    this.$axios
-      .get(ServerApi.shop.shopList, {
-        params: { crypto: this.$crypto.setCrypto(data) },
-      })
-      .then((res) => {
-        let { list, totalPage, allNum } = res.data;
-        let { pageConfig } = this.state;
-        pageConfig.allNum = allNum;
-        pageConfig.totalPage = totalPage;
-        this.tableChild.setState({ pageConfig, list });
-      })
-      .catch((err) => {});
+  getList = () => {
+    Bussiness.getInfo.bind(this, ServerApi.shop.shopList)();
+  };
+  deleteShop = (record) => {
+    Bussiness.delInfo.bind(this, ServerApi.shop.delShop, record)();
+  };
+  freezeShop = (record) => {
+    Bussiness.freezeInfo.bind(this, ServerApi.shop.freezeShop, record)();
   };
 }
