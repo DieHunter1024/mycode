@@ -8,7 +8,6 @@ import {
   Select,
   Radio,
   Cascader,
-  message,
 } from "antd";
 import Events from "../../event/busEvent";
 import Mail from "../../config/mail";
@@ -63,7 +62,7 @@ export default class userForm extends React.Component {
     val.token = this.$utils.getStorage(StorageName.token);
     let data = this.$crypto.setCrypto(val);
     let _url =
-      this.state.formType == "add"
+      this.state.formType === "add"
         ? ServerApi.user.addUser
         : ServerApi.user.updateUser;
     Bussiness.sendInfo.bind(this, _url, data)();
@@ -102,16 +101,16 @@ export default class userForm extends React.Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               name="username"
               label="用户名"
               rules={[{ required: true, message: "请输入用户名" }]}
             >
-              <Input placeholder="请输入用户名" allowClear />
+              <Input placeholder="请输入用户名" maxLength="10" allowClear />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               name="password"
               label="密码"
@@ -120,6 +119,14 @@ export default class userForm extends React.Component {
               <Input.Password
                 type="password"
                 placeholder="请输入密码"
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="phoneNum" label="手机号">
+              <Input
+                placeholder="请输入手机号"
                 allowClear
               />
             </Form.Item>
@@ -182,7 +189,7 @@ export default class userForm extends React.Component {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item name="descript" label="个性签名">
-              <Input.TextArea rows={4} placeholder="个性签名" />
+              <Input.TextArea maxLength="200" rows={4} placeholder="个性签名" />
             </Form.Item>
           </Col>
         </Row>

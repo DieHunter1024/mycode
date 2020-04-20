@@ -26,7 +26,7 @@ export default class ListTable extends React.Component {
   createSel(data, type) {
     return (
       <Select
-        placeholder={type == "shopType" ? "选择商品类型" : "选择商品图片"}
+        placeholder={type === "shopType" ? "选择商品类型" : "选择商品图片"}
         allowClear
         onChange={this.selectSearch.bind(this, type)}
         style={{ width: 150 }}
@@ -42,7 +42,7 @@ export default class ListTable extends React.Component {
     );
   }
   componentDidMount() {
-    if (this.state.tableType == "user") {
+    if (this.state.tableType === "user") {
       this.setState({
         columns: new userTab(this),
       });
@@ -56,6 +56,7 @@ export default class ListTable extends React.Component {
   selectSearch(type, value) {
     let { pageConfig } = this.state;
     pageConfig[type] = value;
+    pageConfig.page = 1;
     this.setState({
       pageConfig,
     });
@@ -81,7 +82,7 @@ export default class ListTable extends React.Component {
   }
   render() {
     return (
-      <Card title={this.state.tableType == "user" ? "用户列表" : "商品列表"}>
+      <Card title={this.state.tableType === "user" ? "用户列表" : "商品列表"}>
         <Row gutter={16}>
           <Col span={6}>
             <Button
@@ -89,16 +90,16 @@ export default class ListTable extends React.Component {
               type="primary"
             >
               <PlusOutlined />
-              {this.state.tableType == "user" ? "新增用户" : "新增商品"}
+              {this.state.tableType === "user" ? "新增用户" : "新增商品"}
             </Button>
           </Col>
           <Col span={5}>
-            {this.state.tableType == "user"
+            {this.state.tableType === "user"
               ? null
               : this.createSel(shopType, "shopType")}
           </Col>
           <Col span={5}>
-            {this.state.tableType == "user"
+            {this.state.tableType === "user"
               ? null
               : this.createSel(picType, "picType")}
           </Col>
@@ -106,7 +107,7 @@ export default class ListTable extends React.Component {
             <Search
               style={{ float: "right" }}
               placeholder={
-                this.state.tableType == "user"
+                this.state.tableType === "user"
                   ? "输入用户名/邮箱"
                   : "输入商品名称"
               }
@@ -116,6 +117,7 @@ export default class ListTable extends React.Component {
               onSearch={(val) => {
                 let { pageConfig } = this.state;
                 pageConfig.keyWord = val;
+                pageConfig.page = 1;
                 this.setState({
                   pageConfig,
                 });

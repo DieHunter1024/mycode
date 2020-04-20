@@ -7,7 +7,6 @@ import {
   Input,
   Select,
   InputNumber,
-  message,
 } from "antd";
 import ShopType from "../../config/shopType";
 import Events from "../../event/busEvent";
@@ -75,7 +74,7 @@ export default class userForm extends React.Component {
     val.token = this.$utils.getStorage(StorageName.token);
     let data = this.$crypto.setCrypto(val);
     let _url =
-      this.state.formType == "add"
+      this.state.formType === "add"
         ? ServerApi.shop.addShop
         : ServerApi.shop.updateShop;
     Bussiness.sendInfo.bind(this, _url, data)();
@@ -131,7 +130,7 @@ export default class userForm extends React.Component {
               <Input placeholder="请输入商品名称" allowClear />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item
               name="shopNum"
               label="库存"
@@ -140,13 +139,22 @@ export default class userForm extends React.Component {
               <InputNumber min={1} max={999} allowClear />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item
               name="shopPrice"
               label="单价"
               rules={[{ required: true, message: "请输入单价" }]}
             >
               <InputNumber min={0.1} max={100} step={0.1} allowClear />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              name="shopScale"
+              label="净含量/克(g)"
+              rules={[{ required: true, message: "请输入净含量/克(g)" }]}
+            >
+              <InputNumber min={1} max={500} allowClear />
             </Form.Item>
           </Col>
         </Row>

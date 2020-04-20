@@ -1,14 +1,12 @@
 const {
-  addData,
   delData,
   updateData,
-  findData,
   findByPage,
   getTotalPage,
 } = require("../command/command");
 const Util = require("../../utils/utils");
 module.exports = class Bussiness {
-  static async freezeInfo(req, res, _mod) {
+  static async freezeInfo(_req, res, _mod) {
     let freezeRes = await updateData(_mod, res._data._id, {
       isactive: res._data.isactive,
     });
@@ -24,8 +22,8 @@ module.exports = class Bussiness {
       msg: res._data.isactive ? "激活失败" : "冻结失败",
     });
   }
-  static async findInfo(req, res, _mod, _sort, _keyWord) {
-    let total = await getTotalPage(_mod, res._data.pageSize);
+  static async findInfo(_req, res, _mod, _sort, _keyWord) {
+    let total = await getTotalPage(_mod, res._data.pageSize,_keyWord);
     res.send({
       result: 1,
       data: {
@@ -44,7 +42,7 @@ module.exports = class Bussiness {
       msg: "查找成功",
     });
   }
-  static async delInfo(req, res, _mod, _type) {
+  static async delInfo(_req, res, _mod, _type) {
     if (
       res._data[_type] &&
       res._data[_type].length > 0 &&
@@ -65,7 +63,7 @@ module.exports = class Bussiness {
       msg: "删除失败",
     });
   }
-  static async addInfo(req, res, _mod, _info) {}
+  static async addInfo(_req, _res, _mod, _info) {}
   static isAdmin(res) {
     if (res._data.userTokenType != "admin") {
       //非管理员

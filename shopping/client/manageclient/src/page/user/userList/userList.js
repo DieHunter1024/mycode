@@ -2,7 +2,6 @@ import React from "react";
 import ListDrower from "../../../components/drawer/drawer";
 import ListTable from "../../../components/table/table";
 import Events from "../../../event/busEvent";
-import { message } from "antd";
 import config from "../../../config/config";
 import Bussiness from "../../../bussiness/bussiness";
 const { ServerApi, StorageName, FormDefaultVal } = config;

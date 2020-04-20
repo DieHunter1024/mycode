@@ -7,7 +7,7 @@ const { FilePath } = config;
 export default class ShopTable {
   constructor(_this) {
     return [
-      { align: "center", title: "商品名", dataIndex: "shopName", width: 100 },
+      { align: "center", title: "商品名", dataIndex: "shopName", width: 80 },
       {
         align: "center",
         title: "商品类型",
@@ -61,6 +61,15 @@ export default class ShopTable {
       },
       {
         align: "center",
+        title: "净含量/克(g)",
+        dataIndex: "shopScale",
+        width: 50,
+        render: (price) => {
+          return <div>{price + "克"}</div>;
+        },
+      },
+      {
+        align: "center",
         title: "口味",
         dataIndex: "taste",
         width: 50,
@@ -69,24 +78,24 @@ export default class ShopTable {
         align: "center",
         title: "产地",
         dataIndex: "address",
-        width: 100,
+        width: 80,
       },
       {
         align: "center",
         title: "保质期",
         dataIndex: "expiryDate",
-        width: 100,
+        width: 50,
       },
       {
         align: "center",
-        title: "注册时间",
+        title: "上架时间",
         dataIndex: "time",
         width: 100,
       },
       {
         align: "center",
         title: "操作",
-        width: 100,
+        width: 110,
         fixed: "right",
         render: (record) => {
           return (
@@ -102,21 +111,21 @@ export default class ShopTable {
                 onConfirm={_this.clickHandler.bind(_this, record, "delete")}
                 okText="是"
                 cancelText="否"
-                disabled={record.userType == "admin" ? true : false}
+                disabled={record.userType === "admin" ? true : false}
               >
                 <Button
                   type="danger"
-                  disabled={record.userType == "admin" ? true : false}
+                  disabled={record.userType === "admin" ? true : false}
                 >
                   删除
                 </Button>
               </Popconfirm>
               <Button
-                disabled={record.userType == "admin" ? true : false}
+                disabled={record.userType === "admin" ? true : false}
                 type={record.isactive ? "danger" : "primary"}
                 onClick={_this.clickHandler.bind(_this, record, "allow")}
               >
-                {record.isactive ? "冻结" : "激活"}
+                {record.isactive ? "下架" : "上架"}
               </Button>
             </div>
           );

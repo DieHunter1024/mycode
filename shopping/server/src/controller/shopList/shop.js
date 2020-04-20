@@ -5,11 +5,8 @@ const Config = require("../../../config/config");
 const Bussiness = require("../../bussiness/bussiness");
 const {
   addData,
-  delData,
   updateData,
   findData,
-  findByPage,
-  getTotalPage,
 } = require("../../command/command");
 
 router.post(Config.ServerApi.addShop, Util.checkToken, async (req, res) => {
@@ -55,7 +52,7 @@ router.get(Config.ServerApi.shopList, Util.checkToken, async (req, res) => {
     res,
     Mod,
     {
-      shopType: res._data.sort,
+      picType: res._data.sort,
     },
     {
       shopType: new RegExp(res._data.shopType, "i"),

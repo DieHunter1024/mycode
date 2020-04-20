@@ -1,6 +1,4 @@
-const url = require("url");
 const fs = require("fs");
-const path = require("path");
 const jwt = require("jsonwebtoken");
 const cryptoJS = require("crypto-js");
 const config = require("../config/config");
@@ -9,7 +7,7 @@ const bcrypt = require("bcryptjs");
 let key = cryptoJS.enc.Utf8.parse(CryptoKey);
 module.exports = class Utils {
   constructor() {}
-  static parseUrl(req, res) {
+  static parseUrl(req) {
     //获取前端传递的参数
     return req.method == "POST" ? req.body : this.urlSplit(req.url);
   }
@@ -44,7 +42,7 @@ module.exports = class Utils {
    * @param {fn} next          中间件响应方法
    */
   static checkToken = (req, res, next) => {
-    let _data = this.parseUrl(req, res); //解析前端参数
+    let _data = this.parseUrl(req); //解析前端参数
     if (_data.crypto) {
       _data = this.getCrypto(_data.crypto); //对前端参数解密
     }

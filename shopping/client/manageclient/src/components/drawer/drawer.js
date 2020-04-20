@@ -62,7 +62,7 @@ export default class ListDrower extends React.Component {
           </div>
         }
       >
-        {this.state.formEle == "user" ? (
+        {this.state.formEle === "user" ? (
           <UserForm
             getList={this.props.getList}
             onClose={this.onClose}

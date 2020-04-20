@@ -21,12 +21,16 @@ Axios.interceptors.response.use(
     // 对响应数据做点什么
     if (response.data.result === -999) {
       //token验证失败
-      return message.error(response.data.msg);
+      return message.error(response.data.msg).then((res) => {
+        if (window.location.href.indexOf("login") === -1) {
+          window.location.href = "/";
+        }
+      });
     }
     return response.data;
   },
   function (error) {
-    console.log(error)
+    console.log(error);
     // 对响应错误做点什么
     message.error("操作失败");
     return Promise.reject(error);

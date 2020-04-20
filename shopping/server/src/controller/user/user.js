@@ -5,11 +5,8 @@ const Config = require("../../../config/config");
 const Bussiness = require("../../bussiness/bussiness");
 const {
   addData,
-  delData,
   updateData,
   findData,
-  findByPage,
-  getTotalPage,
 } = require("../../command/command");
 router.get(Config.ServerApi.userLogin, async (req, res) => {
   let _data = Util.getCrypto(Util.parseUrl(req, res).crypto);

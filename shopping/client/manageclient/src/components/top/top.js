@@ -2,7 +2,6 @@ import React from "react";
 import "./top.less";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import config from "../../config/config";
 let { StorageName } = config;
 export default class Top extends React.Component {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import "./login.less";
 import { Card, Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -77,7 +77,6 @@ export default class Login extends React.Component {
         params: { token },
       })
       .then((res) => {
-        console.log(res);
         switch (res.result) {
           case 1:
             message.success(res.msg).then(() => {

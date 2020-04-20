@@ -34,12 +34,12 @@ export default class UpdataPic extends React.Component {
   }
   handleChange = ({ fileList, file }) => {
     this.setState({ fileList });
-    if (file["response"] && file.status == "done") {
+    if (file["response"] && file.status === "done") {
       let res = file["response"];
       this.props.picTarget(res);
       message.success(res.msg);
     }
-    if (file["status"] == "removed") {
+    if (file["status"] === "removed") {
       if (this.props.picDelete) {
         this.props.picDelete();
       }

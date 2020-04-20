@@ -2,9 +2,9 @@ import React from "react";
 import "./home.less";
 import Left from "../../components/left/left";
 import Top from "../../components/top/top";
-import Foot from "../../components/foot/foot";
+// import Foot from "../../components/foot/foot";
 import { Layout } from "antd";
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 export default class Home extends React.Component {
   render() {
@@ -20,9 +20,9 @@ export default class Home extends React.Component {
             </Sider>
             <Content>{this.props.children}</Content>
           </Layout>
-          <Footer>
-            <Foot></Foot>
-          </Footer>
+          {/* <Footer> */}
+            {/* <Foot></Foot> */}
+          {/* </Footer> */}
         </Layout>
       </div>
     );

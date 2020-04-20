@@ -1,7 +1,6 @@
 import React from "react";
 import ListTable from "../../../components/table/table";
 import ListDrower from "../../../components/drawer/drawer";
-import { message } from "antd";
 import config from "../../../config/config";
 import Bussiness from "../../../bussiness/bussiness";
 import Events from "../../../event/busEvent";
@@ -14,7 +13,7 @@ export default class shopList extends React.Component {
       picType: "",
       keyWord: "",
       page: 1,
-      pageSize: 3,
+      pageSize: 5,
       totalPage: 1,
       sort: 1,
     },

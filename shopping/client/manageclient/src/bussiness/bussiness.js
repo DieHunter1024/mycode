@@ -1,6 +1,6 @@
 import config from "../config/config";
 import { message } from "antd";
-const { ServerApi, StorageName, FormDefaultVal } = config;
+const { StorageName } = config;
 export default class Bussiness {
   static freezeInfo(url, record) {
     let data = {
@@ -32,7 +32,7 @@ export default class Bussiness {
         message.success(res.msg);
         this.getList();
       })
-      .catch((err) => {});
+      .catch(() => {});
   }
   static getInfo(url) {
     let data = { ...this.state.pageConfig };
@@ -47,7 +47,7 @@ export default class Bussiness {
         pageConfig.totalPage = totalPage;
         this.tableChild.setState({ pageConfig, list });
       })
-      .catch((err) => {});
+      .catch(() => {});
   }
   static sendInfo(_url, data) {
     this.$axios
@@ -67,7 +67,7 @@ export default class Bussiness {
             break;
         }
       })
-      .catch((err) => {
+      .catch(() => {
         message.error("操作失败");
       });
   }

@@ -24,6 +24,12 @@ module.exports = {
           type: String,
           required: true,
         },
+        phoneNum: {
+          //手机号
+          type: String,
+          required: false,
+          default: "",
+        },
         username: {
           //用户名
           type: String,
@@ -109,6 +115,11 @@ module.exports = {
         },
         shopPrice: {
           //单价
+          type: Number,
+          required: true,
+        },
+        shopScale: {
+          //净含量
           type: Number,
           required: true,
         },

@@ -69,8 +69,8 @@ module.exports = class Command {
       .skip((page - 1) * pageSize)
       .limit(pageSize);
   }
-  static async getTotalPage(mod, pageSize) {
-    let allNum = await mod.find().estimatedDocumentCount();
+  static async getTotalPage(mod, pageSize, _keyWord) {
+    let allNum = await mod.find().countDocuments(_keyWord);
     return { totalPage: parseInt(allNum / pageSize) + 1, allNum };
   }
 };
