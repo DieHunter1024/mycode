@@ -1,4 +1,4 @@
-export default class tableBarModel {
+export default class TableBarModel {
   static MenuList = [{
       name: "主页",
       path: "/Home",

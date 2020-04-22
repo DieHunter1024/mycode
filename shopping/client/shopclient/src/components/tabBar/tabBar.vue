@@ -41,7 +41,7 @@ export default {
   .li {
     .h(130);
     box-sizing: border-box;
-    padding-top: unit(10 / 37.5, rem);
+    padding-top: unit(10 / @pxtorem, rem);
     width: 25%;
     text-align: center;
     .fontColorOff();

@@ -1,5 +1,8 @@
+@pxtorem: 37.5;
+@mainColor: #a9936c;
+
 .mcolor() {
-  background: #a9936c;
+  background: @mainColor;
 }
 
 .bcolor() {
@@ -9,18 +12,22 @@
 .fontColorOff() {
   color: #9F9F9F;
 }
+
 .fontColorOn() {
-  color: #a9936c;
+  color: @mainColor;
 }
-.titleFont(){
+
+.titleFont() {
   color: #fdfbef;
 }
+
+
 .w(@px) {
-  width: unit(@px / 37.5, rem);
+  width: unit(@px / @pxtorem, rem);
 }
 
 .h(@px) {
-  height: unit(@px / 37.5, rem);
+  height: unit(@px / @pxtorem, rem);
 }
 
 
@@ -29,7 +36,7 @@
 }
 
 .l_h(@px) {
-  line-height: unit(@px / 37.5, rem);
+  line-height: unit(@px / @pxtorem, rem);
 }
 
 .mg(@px) {
@@ -53,5 +60,15 @@
 }
 
 .f_s(@px) {
-  font-size: unit(@px / 37.5, rem);
+  font-size: unit(@px / @pxtorem, rem);
 }
+
+.padtop(@px) {
+  padding-top: unit(@px / @pxtorem, rem);
+}
+
+.padbottom(@px) {
+  padding-bottom: unit(@px / @pxtorem, rem);
+}
+
+@import "./common.less";

@@ -43,22 +43,23 @@ router.post(Config.ServerApi.addShop, Util.checkToken, async (req, res) => {
     msg: "添加失败",
   });
 });
-router.get(Config.ServerApi.shopList, Util.checkToken, async (req, res) => {
-  if (!Bussiness.isAdmin(res)) {
-    return;
+router.get(Config.ServerApi.shopList, async (req, res) => {
+  res._data = Util.getCrypto(Util.parseUrl(req, res).crypto);
+  let _info = {
+    shopType: new RegExp(res._data.shopType, "i"),
+    picType: new RegExp(res._data.picType, "i"),
+    shopName: new RegExp(res._data.keyWord, "i"),
+  }
+  if (res._data.isactive) {
+    _info.isactive = res._data.isactive
   }
   Bussiness.findInfo(
     req,
     res,
-    Mod,
-    {
+    Mod, {
       picType: res._data.sort,
     },
-    {
-      shopType: new RegExp(res._data.shopType, "i"),
-      picType: new RegExp(res._data.picType, "i"),
-      shopName: new RegExp(res._data.keyWord, "i"),
-    }
+    _info
   );
 });
 router.get(Config.ServerApi.freezeShop, Util.checkToken, async (req, res) => {
@@ -74,6 +75,9 @@ router.get(Config.ServerApi.delShop, Util.checkToken, async (req, res) => {
   Bussiness.delInfo(req, res, Mod, "shopPic");
 });
 router.post(Config.ServerApi.updateShop, Util.checkToken, async (req, res) => {
+  if (!Bussiness.isAdmin(res)) {
+    return;
+  }
   if (!res._data.shopPic || !res._data.shopPic.length) {
     //这里判断是否是修改头像，若是新增，则是上传相关的头像信息，是个object类型，length属性不存在
     let findRes = await findData(Mod, {

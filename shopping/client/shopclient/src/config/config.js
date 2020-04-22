@@ -5,7 +5,8 @@ export default class Config {
   static ServerPort = ":1024";
   static Path = "/";
   static CryptoKey = "tokenkey"; //加密信息关键字
-  static FilePath = this.Agreement + this.BaseUrl + this.ServerPort + this.Path;
+  static RequestPath = Config.Agreement + Config.BaseUrl + Config.ServerPort + Config.Path;
+  static RequestTimeOut = 10 * 1000;
   static ServerApi = {
     //接口名
     token: "checkToken",
@@ -26,4 +27,17 @@ export default class Config {
   static StorageName = {
     token: "token"
   };
+  static EventName = {
+    SelectKind: 'selectKind'
+  }
+  static DefaultPageConfig = {
+    shopType: "",
+    picType: "",
+    keyWord: "",
+    page: 1,
+    isactive: true,
+    pageSize: '',
+    totalPage: 1,
+    sort: '1',
+  }
 }
