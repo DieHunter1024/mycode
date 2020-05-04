@@ -10,11 +10,12 @@ export default class ItemBussiness extends Vue {
   constructor(_vueComponent) {
     super()
     ItemModel.getInstance().vueComponent = _vueComponent
-    this.initPageConfig()
+    this.initPageConfig(_vueComponent.shopType)
     this.getShopItem()
   }
-  initPageConfig() {
+  initPageConfig(_shopType) {
     ItemModel.getInstance().pageConfig = Clone.shallowClone(DefaultPageConfig)
+    ItemModel.getInstance().pageConfig.shopType = _shopType
   }
   getShopItem() {
     this.$axios

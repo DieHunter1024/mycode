@@ -12,7 +12,6 @@
 <script>
 import Config from "../../config/config";
 import ShopType from "../../config/shopType";
-import Events from "../../event/event";
 const { EventName } = Config;
 export default {
   data() {
@@ -25,7 +24,7 @@ export default {
     sel(item) {
       if (this.onesel == item) return;
       this.onesel = item;
-      Events.getInstance().emitEvent(EventName.SelectKind, item);
+      this.$events.emitEvent(EventName.SelectKind, item);
     }
   }
 };

@@ -1,19 +1,20 @@
 <template>
-  <div class="rightShop">
-    <h2 id="head">
-      <img v-if="themeList.shopPic" :src="imgPath+themeList.shopPic" alt />
-    </h2>
-    <ul>
-      <li v-for="(item,index) in list" :key="index">
-        <img :src="imgPath+item.shopPic" />
-        <span>{{item.shopName}} {{item.shopScale}}克</span>
-      </li>
-    </ul>
-  </div>
+  <transition name="fade">
+    <div class="rightShop" v-if="transitionSwitch">
+      <h2 id="head">
+        <img :src="imgPath+themeList.shopPic" v-if="themeList.shopPic" alt />
+      </h2>
+      <ul>
+        <li v-for="(item,index) in list" :key="index" @click="clickHandler(item)">
+          <img :src="imgPath+item.shopPic" />
+          <span>{{item.shopName}} {{item.shopScale}}克</span>
+        </li>
+      </ul>
+    </div>
+  </transition>
 </template>
 <script>
 import Config from "../../config/config";
-import Events from "../../event/event";
 import RightShopBussiness from "./bussiness";
 const { EventName } = Config;
 export default {
@@ -21,18 +22,26 @@ export default {
     return {
       themeList: {},
       list: [],
-      imgPath: Config.RequestPath
+      imgPath: Config.RequestPath,
+      rightShopBussiness: null,
+      transitionSwitch: true,
+      beforeIndex: 0
     };
   },
   created() {
-    Events.getInstance().onEvent(EventName.SelectKind, data => {
-      RightShopBussiness.getInstance().initPageConfig(data);
+    this.rightShopBussiness = new RightShopBussiness(this);
+    this.rightShopBussiness.initPageConfig(this.beforeIndex);
+    this.$events.onEvent(EventName.SelectKind, data => {
+      this.transitionSwitch = false;
+      this.rightShopBussiness.initPageConfig(data);
     });
-    this.init();
+  },
+  destroyed() {
+    this.$events.offEvent(EventName.SelectKind);
   },
   methods: {
-    init() {
-      RightShopBussiness.getInstance(this).initPageConfig(0);
+    clickHandler(data) {
+      this.$router.push({ name: "ShopInfo", query: { ...data } });
     }
   }
 };
@@ -56,8 +65,8 @@ export default {
       vertical-align: top;
       text-align: center;
       img {
-        width: 100%;
-        margin: 0;
+        width: 70%;
+        margin: 0 auto;
       }
       span {
         .f_s(28);

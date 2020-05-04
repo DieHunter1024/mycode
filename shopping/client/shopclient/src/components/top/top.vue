@@ -8,12 +8,14 @@
 <script>
 export default {
   name: "top",
-  props: ["title", "isBack"],
   data() {
     return {};
   },
-  goBack() {
-    this.$router.go(-1);
+  props: ["title", "isBack"],
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
@@ -23,6 +25,7 @@ export default {
 #top {
   .dp(flex);
   z-index: 100;
+  box-shadow: 0 3px 10px #999;
   justify-content: center;
   position: fixed;
   top: 0;
@@ -34,7 +37,7 @@ export default {
   .back {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 10px;
     .titleFont();
   }
   .title {

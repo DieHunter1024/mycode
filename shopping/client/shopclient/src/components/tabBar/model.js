@@ -12,7 +12,7 @@ export default class TableBarModel {
     {
       name: "购物车",
       path: "/ShopCar",
-      icon: "icon-daohanggouwuche li iconfont"
+      icon: "icon-daohang-gouwuche li iconfont"
     },
     {
       name: "我的",

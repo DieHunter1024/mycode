@@ -2,7 +2,7 @@
   <div class="swiper">
     <mt-swipe :auto="3000">
       <mt-swipe-item v-for="(item,index) in list" :key="index">
-        <img class="imgs" :src="imgPath+item.shopPic" />
+        <img class="imgs" :src="imgPath+item.shopPic" @click="clickHandler(item)" />
       </mt-swipe-item>
     </mt-swipe>
   </div>
@@ -26,6 +26,12 @@ export default {
   methods: {
     init() {
       new BannerBussiness(this);
+    },
+    clickHandler(_shop) {
+      this.$router.push({
+        name: "ShopTheme",
+        query: { _type: _shop.shopType, _shopName: _shop.shopName }
+      });
     }
   }
 };

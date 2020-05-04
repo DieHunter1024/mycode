@@ -7,6 +7,7 @@
       tag="li"
       :class="item.icon"
       active-class="change"
+      replace
     >
       <br />
       {{item.name}}
@@ -30,6 +31,8 @@ export default {
 @import "../../style/init.less";
 #tab {
   display: flex;
+  
+  box-shadow: -1px 0 8px #999;
   z-index: 100;
   justify-content: space-around;
   position: fixed;
@@ -54,7 +57,7 @@ export default {
   }
   .change {
     // background: white;
-    .fontColorOn()
+    .fontColorOn();
   }
 }
 </style>

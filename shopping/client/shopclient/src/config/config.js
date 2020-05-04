@@ -5,18 +5,20 @@ export default class Config {
   static ServerPort = ":1024";
   static Path = "/";
   static CryptoKey = "tokenkey"; //加密信息关键字
-  static RequestPath = Config.Agreement + Config.BaseUrl + Config.ServerPort + Config.Path;
+  static RequestPath =
+    Config.Agreement + Config.BaseUrl + Config.ServerPort + Config.Path;
   static RequestTimeOut = 10 * 1000;
+  static ShopMaxCount = 9;
   static ServerApi = {
     //接口名
     token: "checkToken",
     user: {
       userLogin: "user/userLogin",
-      updateUser: "user/updateUser",
+      updateUser: "user/updateUser"
     },
     shop: {
-      shopList: "shop/shopList",
-    },
+      shopList: "shop/shopList"
+    }
   };
   static UploadName = {
     headPic: "upload/headPic"
@@ -25,19 +27,25 @@ export default class Config {
     headKey: "headPic"
   };
   static StorageName = {
-    token: "token"
+    Token: "token",
+    ShopCar: 'shopCar'
   };
   static EventName = {
-    SelectKind: 'selectKind'
-  }
+    SelectKind: "selectKind",
+    ChangeCount: "changeCount",
+    ShowPicker: 'showPicker',
+    CountShop: 'countShop',
+    SelectAllChild:'selectAllChild',
+    SelectParent:'selectParent'
+  };
   static DefaultPageConfig = {
     shopType: "",
     picType: "",
     keyWord: "",
     page: 1,
     isactive: true,
-    pageSize: '',
+    pageSize: "",
     totalPage: 1,
-    sort: '1',
-  }
+    sort: "1"
+  };
 }

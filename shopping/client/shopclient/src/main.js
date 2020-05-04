@@ -6,7 +6,9 @@ import 'mint-ui/lib/style.css'
 import MintUI from 'mint-ui'
 import './utils/axios'
 import './utils/cryptoTool'
-
+import './utils/storage'
+import "./event/event"
+import "./store/store"
 Vue.use(MintUI);
 Vue.config.productionTip = false
 

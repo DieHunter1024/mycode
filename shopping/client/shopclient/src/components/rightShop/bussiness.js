@@ -1,57 +1,51 @@
-import Vue from 'vue'
-import config from "../../config/config"
-import RightShopModel from "./model";
-import Clone from "../../utils/clone"
+import Vue from "vue";
+import config from "../../config/config";
+import Clone from "../../utils/clone";
 const {
   DefaultPageConfig,
   ServerApi
-} = config
+} = config;
 export default class RightShopBussiness extends Vue {
   constructor(_vueComponent) {
-    super()
-    RightShopModel.getInstance().vueComponent = _vueComponent
-    this._defaultPageConfig = Clone.shallowClone(DefaultPageConfig)
+    super();
+    this.vueComponent = _vueComponent;
+    this._defaultPageConfig = Clone.shallowClone(DefaultPageConfig);
   }
-  static getInstance() { //单例写法
-    if (!RightShopBussiness._instance) {
-      Object.defineProperty(RightShopBussiness, "_instance", {
-        value: new RightShopBussiness(...arguments)
-      })
-    }
-    return RightShopBussiness._instance;
+  getTheme() {
+    this._defaultPageConfig.picType = 2;
+    this.getRightShop();
   }
-  getTheme(_shopType) {
-    this._defaultPageConfig.picType = 2
-    RightShopModel.getInstance().pageConfig = this._defaultPageConfig
+  getByshopType() {
+    this._defaultPageConfig.picType = 0;
+    this.getRightShop();
   }
-  getByshopType(_shopType) {
-    this._defaultPageConfig.picType = 0
-    RightShopModel.getInstance().pageConfig = this._defaultPageConfig
-  }
-  initPageConfig(_shopType) {
-    this._defaultPageConfig.shopType = _shopType
-    this.getTheme(_shopType)
-    this.getByshopType(_shopType)
+  initPageConfig(_type) {
+    this._defaultPageConfig.shopType = _type;
+    this.getTheme();
+    this.getByshopType();
   }
   getRightShop() {
-    let _type = RightShopModel.getInstance().pageConfig.picType;
+    let _type = this._defaultPageConfig.picType;
+    let _t = this;
     this.$axios
       .get(ServerApi.shop.shopList, {
         params: {
-          crypto: this.$crypto.setCrypto(RightShopModel.getInstance().pageConfig)
-        },
-      }).then(res => {
+          crypto: this.$crypto.setCrypto(this._defaultPageConfig)
+        }
+      })
+      .then(res => {
         switch (res.result) {
           case 1:
             if (_type == 2) {
-              RightShopModel.getInstance().themeList = res.data.list[0]
+              _t.vueComponent.themeList = res.data.list[0];
             } else if (_type == 0) {
-              RightShopModel.getInstance().rightShopList = res.data.list
+              _t.vueComponent.list = res.data.list;
+              _t.vueComponent.transitionSwitch = true;
             }
             break;
           default:
             break;
         }
-      })
+      });
   }
 }

@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h2>精选主题</h2>
     <div>
       <span v-for="(item,index) in list" :key="index">
-        <img :src="imgPath+item.shopPic" alt :class="'imgs'+index" />
+        <img :src="imgPath+item.shopPic" alt :class="'imgs'+index" @click="clickHandler(item)" />
       </span>
     </div>
   </div>
@@ -20,11 +19,14 @@ export default {
     };
   },
   created() {
-    this.init();
+    new ThemeBussiness(this);
   },
   methods: {
-    init() {
-      new ThemeBussiness(this);
+    clickHandler(_shop) {
+      this.$router.push({
+        name: "ShopTheme",
+        query: { _type: _shop.shopType, _shopName: _shop.shopName }
+      });
     }
   }
 };

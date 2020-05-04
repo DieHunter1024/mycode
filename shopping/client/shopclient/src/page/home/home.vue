@@ -3,8 +3,10 @@
     <Top title="零食商贩"></Top>
     <div class="content">
       <Banner></Banner>
+      <H2 title="精选主题"></H2>
       <Theme></Theme>
-      <ShopItem></ShopItem>
+      <H2 title="最近新品"></H2>
+      <ShopItem :shopType="shopType"></ShopItem>
     </div>
     <TabBar></TabBar>
   </div>
@@ -16,10 +18,17 @@ import Top from "../../components/top/top";
 import Banner from "../../components/banner/banner";
 import Theme from "../../components/theme/theme";
 import ShopItem from "../../components/shopItem/shopItem";
+import H2 from "../../components/h2/h2";
 export default {
   name: "Home",
+  data() {
+    return {
+      shopType: ""
+    };
+  },
   components: {
     Top,
+    H2,
     Banner,
     Theme,
     ShopItem,
@@ -30,8 +39,4 @@ export default {
 
 <style lang="less" scoped>
 @import "../../style/init.less";
-.content {
-  .padtop(120);
-  .padbottom(130);
-}
 </style>
