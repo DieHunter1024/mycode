@@ -8,10 +8,11 @@ export default class Config {
   static RequestPath =
     Config.Agreement + Config.BaseUrl + Config.ServerPort + Config.Path;
   static RequestTimeOut = 10 * 1000;
+  static GetCodeTime = 60 * 1000;
   static ShopMaxCount = 9;
   static ServerApi = {
     //接口名
-    token: "checkToken",
+    token: "user/checkToken",
     user: {
       userLogin: "user/userLogin",
       updateUser: "user/updateUser"
@@ -36,7 +37,8 @@ export default class Config {
     ShowPicker: 'showPicker',
     CountShop: 'countShop',
     SelectAllChild:'selectAllChild',
-    SelectParent:'selectParent'
+    SelectParent:'selectParent',
+    IsLogin:'isLogin'
   };
   static DefaultPageConfig = {
     shopType: "",

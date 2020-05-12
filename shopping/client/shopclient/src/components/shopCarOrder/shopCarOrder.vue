@@ -6,6 +6,10 @@
     </span>
     <span>全选({{selCount}})</span>
     <span @click="delSelShop">删除({{selCount}})</span>
+    <span>
+      <span>￥{{sum}}</span>
+      <span class="icon-qianjin iconfont"></span>
+    </span>
   </div>
 </template>
 
@@ -19,7 +23,8 @@ export default {
     return {
       shopCar: null,
       isSelAll: false,
-      selCount: 0
+      selCount: 0,
+      sum: 0
     };
   },
   created() {
@@ -32,14 +37,15 @@ export default {
   methods: {
     selectHandler() {
       this.isSelAll = !this.isSelAll;
-      this.shopCar.selAllChild(this.isSelAll)
+      this.shopCar.selAllChild(this.isSelAll);
     },
-    selAllHandler({ _count, _selCount }) {
+    selAllHandler({ _count, _selCount, _sum }) {
       this.isSelAll = _count;
       this.selCount = _selCount;
+      this.sum = _sum;
     },
-    delSelShop(){
-      this.shopCar.delSelShop()
+    delSelShop() {
+      this.shopCar.delSelShop();
     }
   }
 };
@@ -60,10 +66,22 @@ export default {
   > span:nth-child(2) {
     padding-left: unit(35 / @pxtorem, rem);
   }
-  > span:nth-child(3){
+  > span:nth-child(3) {
     padding-left: unit(200 / @pxtorem, rem);
   }
-  span {
+
+  > span:nth-child(4) {
+    float: right;
+    margin-right: unit(50 / @pxtorem, rem);
+    > span:nth-child(1) {
+      padding-left: unit(20 / @pxtorem, rem);
+      border-left: 1px dashed #fff;
+    }
+    > span:nth-child(2) {
+      padding-left: unit(50 / @pxtorem, rem);
+    }
+  }
+  > span {
     display: inline-block;
   }
   .mint-checkbox-input + .mint-checkbox-core {

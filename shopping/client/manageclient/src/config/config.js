@@ -8,7 +8,7 @@ export default class Config {
   static FilePath = this.Agreement + this.BaseUrl + this.ServerPort + this.Path;
   static ServerApi = {
     //接口名
-    token: "checkToken",
+    token: "user/checkToken",
     user: {
       userLogin: "user/userLogin",
       userList: "user/userList",

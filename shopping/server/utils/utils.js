@@ -33,7 +33,7 @@ module.exports = class Utils {
       user: user,
     };
     return jwt.sign(payload, type == "admin" ? AdminKey : UserKey, {
-      expiresIn: rempsd ? "3d" : "6h",
+      expiresIn: rempsd ? "10d" : "6h",
     });
   };
   /*

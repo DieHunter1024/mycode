@@ -54,16 +54,17 @@ export default class Action extends Vue {
     this.$events.emitEvent(EventName.SelectAllChild);
   }
   filterSelect() {
-    let _count = 1;
-    let _selCount = 0;
+    let shopConfig = {
+      _count: 1,
+      _selCount: 0,
+      _sum: 0
+    }
     this.state.forEach(item => {
-      _selCount += item.isSelect ? 1 : 0;
-      _count *= item.isSelect;
+      shopConfig._selCount += item.isSelect ? 1 : 0;
+      shopConfig._count *= item.isSelect;
+      shopConfig._sum += item.isSelect ? item.sum : 0
     });
-    this.$events.emitEvent(EventName.SelectParent, {
-      _count,
-      _selCount
-    });
+    this.$events.emitEvent(EventName.SelectParent, shopConfig);
   }
   delSelShop() {
     let _list = []

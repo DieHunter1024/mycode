@@ -49,15 +49,7 @@ export default {
 @fontcolor: #bababa;
 .info {
   .mg(20px auto);
-  .mint-navbar .mint-tab-item{
-    color: @fontcolor;
-    border-bottom: 1px solid @fontcolor;
-  }
-  .mint-navbar .mint-tab-item.is-selected {
-    border-bottom: 2px solid @mainColor;
-    color: @mainColor;
-    margin-bottom:0;
-  }
+  .navBar();
   h3 {
     text-align: center;
     color: @mainColor;

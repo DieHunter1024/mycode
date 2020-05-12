@@ -1,0 +1,101 @@
+<template>
+  <div class="login">
+    <mt-button class="btn" @click="changeLoginType">{{loginType == "psd"?"切换为验证码登录":'切换为账号登录'}}</mt-button>
+    <div>
+      <mt-field
+        :label="LoginFieldConfig[loginType].namelabel"
+        :placeholder="LoginFieldConfig[loginType].nameplaceholder"
+        v-model="userInfo.username"
+        :type="loginType == 'psd'?'':'email'"
+      ></mt-field>
+      <mt-field
+        :label="LoginFieldConfig[loginType].codelabel"
+        :placeholder="LoginFieldConfig[loginType].codeplaceholder"
+        v-model="userInfo.password"
+        :type="loginType == 'psd'?'password':'number'"
+      >
+        <mt-button
+          class="btn"
+          :disabled="canGetCode"
+          v-if="loginType=='code'"
+          @click="getCode"
+        >{{codeTime}}</mt-button>
+      </mt-field>
+      <mt-button class="btn">还没账号？点击注册</mt-button>
+      <mt-button class="btn">找回密码</mt-button>
+      <mt-button class="btn" type="primary" @click="submit">登录</mt-button>
+    </div>
+  </div>
+</template>
+
+<script>
+import FieldConfig from "../../config/fieldConfig";
+import Config from "../../config/config";
+import { Field, Button } from "mint-ui";
+import LoginBussiness from "./bussiness";
+const { GetCodeTime } = Config;
+const { LoginFieldConfig } = FieldConfig;
+export default {
+  components: {},
+  data() {
+    return {
+      loginBussiness: null,
+      LoginFieldConfig,
+      loginType: "psd",
+      codeTime: "获取验证码",
+      timeTick: null,
+      canGetCode: false,
+      userInfo: {
+        username: "",
+        password: "",
+        remember: true
+      }
+    };
+  },
+  created() {
+    this.loginBussiness = new LoginBussiness(this);
+  },
+  methods: {
+    changeLoginType() {
+      this.userInfo.password = "";
+      if (this.loginType == "psd") {
+        this.loginType = "code";
+        return;
+      }
+      this.loginType = "psd";
+    },
+    getCode() {
+      if (this.canGetCode) {
+        return;
+      }
+      this.canGetCode = true;
+      let _codeTime = GetCodeTime / 1000;
+      this.timeTick = setInterval(() => {
+        if (_codeTime-- <= 1) {
+          clearInterval(this.timeTick);
+          this.timeTick = null;
+          this.canGetCode = false;
+          this.codeTime = "获取验证码";
+        } else {
+          this.codeTime = _codeTime + "S";
+        }
+      }, 1000);
+    },
+    submit() {
+      this.loginBussiness.submitData();
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+@import "../../style/init.less";
+
+.login {
+  .btn {
+    .f_s(34);
+    width: 100%;
+    .h(100);
+  }
+}
+</style>

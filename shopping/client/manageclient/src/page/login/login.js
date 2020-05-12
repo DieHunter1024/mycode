@@ -22,14 +22,14 @@ export default class Login extends React.Component {
               rules={[
                 {
                   required: true,
-                  message: "请输入用户名/邮箱",
+                  message: "请输入用户名/邮箱/手机号",
                 },
               ]}
             >
               <Input
                 className="infoInput"
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="用户名/邮箱"
+                placeholder="用户名/邮箱/手机号"
               />
             </Form.Item>
             <Form.Item
@@ -49,7 +49,7 @@ export default class Login extends React.Component {
               />
             </Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>3天内免密</Checkbox>
+              <Checkbox>10天内免密</Checkbox>
             </Form.Item>
             <a className="login-form-forgot" href="#aaa">
               忘记密码

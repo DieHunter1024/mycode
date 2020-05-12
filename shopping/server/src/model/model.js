@@ -4,7 +4,8 @@ const config = require('../../config/config')
 module.exports = class Mongoose {
     constructor() {
         mongoose.connect(`mongodb://${config.DataBaseUrl+config.DataBasePort+config.Path+config.DataBaseName}`, {
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         });
         this.db = mongoose.connection;
         this.db.on("error", function (error) {

@@ -25,7 +25,6 @@ export default {
 #top {
   .dp(flex);
   z-index: 100;
-  box-shadow: 0 3px 10px #999;
   justify-content: center;
   position: fixed;
   top: 0;

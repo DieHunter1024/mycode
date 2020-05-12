@@ -8,33 +8,52 @@ const {
   updateData,
   findData,
 } = require("../../command/command");
+router.get(Config.ServerApi.checkToken, Util.checkToken, async (_req, res) => {
+  let findRes = await findData(Mod, {
+    username: res._data.id.user
+  });
+  if (findRes.length && findRes) {
+    res.send({
+      result: 1,
+      msg: "验证成功",
+      data: findRes[0]
+    });
+    return;
+  }
+  res.send({
+    result: 0,
+    msg: "未查到用户信息"
+  });
+});
 router.get(Config.ServerApi.userLogin, async (req, res) => {
   let _data = Util.getCrypto(Util.parseUrl(req, res).crypto);
   let findRes = await findData(Mod, {
-    $or: [
-      {
+    $or: [{
         email: _data.username,
       },
       {
         username: _data.username,
       },
+      {
+        phoneNum: _data.username
+      }
     ],
   });
   if (findRes && findRes.length > 0) {
-    Util.checkBcrypt(_data.password, findRes[0].password)
-      ? res.send({
-          result: 1,
-          token: Util.createToken(
-            findRes[0].userType,
-            findRes[0].username,
-            _data.remember
-          ),
-          msg: "登录成功",
-        })
-      : res.send({
-          result: 0,
-          msg: "密码错误",
-        });
+    Util.checkBcrypt(_data.password, findRes[0].password) ?
+      res.send({
+        result: 1,
+        token: Util.createToken(
+          findRes[0].userType,
+          findRes[0].username,
+          _data.remember
+        ),
+        msg: "登录成功",
+      }) :
+      res.send({
+        result: 0,
+        msg: "密码错误",
+      });
     return;
   }
   res.send({
@@ -47,8 +66,7 @@ router.post(Config.ServerApi.addUser, Util.checkToken, async (req, res) => {
     res._data.headPic = Util.readPicFile(res._data.headPic || "") || "";
   }
   let findRes = await findData(Mod, {
-    $or: [
-      {
+    $or: [{
         mailaddress: res._data.mailaddress,
         mailurl: res._data.mailurl,
       },
@@ -95,22 +113,18 @@ router.get(Config.ServerApi.userList, Util.checkToken, async (req, res) => {
   Bussiness.findInfo(
     req,
     res,
-    Mod,
-    {
+    Mod, {
       userType: res._data.sort,
     },
-    res._data.keyWord.length
-      ? {
-          $or: [
-            {
-              mailaddress: new RegExp(res._data.keyWord, "i"),
-            },
-            {
-              username: new RegExp(res._data.keyWord, "i"),
-            },
-          ],
-        }
-      : {}
+    res._data.keyWord.length ? {
+      $or: [{
+          mailaddress: new RegExp(res._data.keyWord, "i"),
+        },
+        {
+          username: new RegExp(res._data.keyWord, "i"),
+        },
+      ],
+    } : {}
   );
 });
 router.get(Config.ServerApi.freezeUser, Util.checkToken, async (req, res) => {
