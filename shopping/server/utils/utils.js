@@ -2,7 +2,13 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const cryptoJS = require("crypto-js");
 const config = require("../config/config");
-let { UserKey, AdminKey, CryptoKey } = config;
+const SendMail = require('./sendmail')
+let {
+  UserKey,
+  AdminKey,
+  CryptoKey,
+  EmailConfig
+} = config;
 const bcrypt = require("bcryptjs");
 let key = cryptoJS.enc.Utf8.parse(CryptoKey);
 module.exports = class Utils {
@@ -98,7 +104,10 @@ module.exports = class Utils {
   }
 
   static readPicFile(_file) {
-    let { path, mimetype } = _file;
+    let {
+      path,
+      mimetype
+    } = _file;
     let file = fs.readFileSync(path);
     let fileName =
       new Date().getTime() +
@@ -128,5 +137,34 @@ module.exports = class Utils {
   }
   static joinDate() {
     return new Date();
+  }
+  static codeLength() {
+    let _count = ''
+    for (let i = 0; i < EmailConfig.codeLength; i++) {
+      _count += Math.floor(Math.random() * 10); //生成4个随机数
+    }
+    return _count
+  }
+  static randomCode() {
+    return {
+      code: this.codeLength(),
+      sendTime: new Date().getTime() + EmailConfig.sendTime,
+      targetTime: new Date().getTime() + EmailConfig.targetTime
+    }
+  }
+  static async createEmailCode(codeList, email, findRes) {
+    if (!codeList[email]) {
+      codeList[email] = this.randomCode()
+      codeList[email].info = findRes
+      return await this.sendEmailCode(codeList[email].code, email)
+    } else if (new Date().getTime() > codeList[email].sendTime) {
+      //已过1分钟,防止多次请求
+      codeList[email] = this.randomCode()
+      codeList[email].info = findRes
+      return await this.sendEmailCode(codeList[email].code, email)
+    }
+  }
+  static async sendEmailCode(code, email) {
+    return await SendMail.sendEmail(email, EmailConfig.title, `您的验证码为:${code},${EmailConfig.time}分钟内有效`)
   }
 };

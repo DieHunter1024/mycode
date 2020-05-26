@@ -21,6 +21,7 @@ export default class UserInfoBussiness extends Vue {
         switch (res.result) {
           case -999:
             this.vueComponent.isLogin = false
+            this.$storage.clearStorage(StorageName.Token);
             break;
           case 1:
             this.vueComponent.userInfo = res.data
@@ -28,9 +29,9 @@ export default class UserInfoBussiness extends Vue {
             break;
           default:
             this.vueComponent.isLogin = false
+            this.$storage.clearStorage(StorageName.Token);
             break;
         }
-        console.log(res)
       }).catch(err => {
 
       })

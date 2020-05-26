@@ -2,7 +2,7 @@
   <div class="shopPicker">
     <mt-popup v-model="popupVisible" position="bottom">
       <mt-picker class="pickerItem" :slots="count" :showToolbar="true" @change="onValuesChange">
-        <div>商品数量</div>
+        <div>{{pickerTitle}}</div>
       </mt-picker>
     </mt-popup>
   </div>
@@ -13,6 +13,7 @@ import Config from "../../config/config";
 const { EventName } = Config;
 export default {
   name: "shopPicker",
+  props: ["ShopMaxCount","pickerTitle"],
   data() {
     return {
       popupVisible: false,
@@ -34,7 +35,8 @@ export default {
       this.popupVisible = true;
     },
     createShopCount() {
-      for (let i = 0; i < Config.ShopMaxCount; i++) {
+      this.count[0].values = this.ShopMaxCount;
+      for (let i = 0; i < this.ShopMaxCount; i++) {
         this.count[0].values.push(i + 1);
       }
     }

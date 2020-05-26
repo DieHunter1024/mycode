@@ -4,6 +4,7 @@ import ShopCar from "../page/shopCar/shopCar";
 import Info from "../page/info/info";
 import ShopTheme from "../page/shopTheme/shopTheme";
 import ShopInfo from "../page/shopInfo/shopInfo"
+import Register from "../page/register/register"
 export default class RouteConfig {
   static routes = [{
       path: "/",
@@ -55,6 +56,14 @@ export default class RouteConfig {
       meta: {
         index: 2
       }
-    }
+    },
+    {
+      path: "/Register",
+      name: "Register",
+      component: Register,
+      meta: {
+        index: 1
+      }
+    },
   ];
 }

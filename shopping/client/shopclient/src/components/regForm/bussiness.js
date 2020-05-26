@@ -14,7 +14,6 @@ export default class LoginBussiness extends Vue {
     this.vueComponent = _vueComponent
   }
   sendCode() {
-
     return new Promise((resolve, reject) => {
       if (!this.vueComponent.userInfo.username.length) {
         Toast('请填写正确的邮箱');
@@ -45,25 +44,10 @@ export default class LoginBussiness extends Vue {
 
   }
   submitData() {
-    if (!this.vueComponent.userInfo.username.length) {
-      Toast('请填写用户名或邮箱');
+    if (!this.vueComponent.userInfo.username.length || !this.vueComponent.userInfo.password.length) {
+      Toast('请填写完整的登录信息');
       return
     }
-    switch (this.vueComponent.loginType) {
-      case 'code':
-        if (this.vueComponent.userInfo.mailcode.length != 4) {
-          Toast('请填写正确的验证码');
-          return
-        }
-        break;
-      case 'psd':
-        if (!this.vueComponent.userInfo.password.length) {
-          Toast('请填写密码');
-          return
-        }
-        break;
-    }
-
     this.$axios
       .get(ServerApi.user.userLogin, {
         params: {
@@ -74,7 +58,6 @@ export default class LoginBussiness extends Vue {
         },
       }).then(res => {
         this.vueComponent.userInfo.password = "";
-        this.vueComponent.userInfo.mailcode = "";
         switch (res.result) {
           case 1:
             Toast(res.msg);

@@ -9,19 +9,24 @@
         :type="loginType == 'psd'?'':'email'"
       ></mt-field>
       <mt-field
+        v-if="loginType=='psd'"
         :label="LoginFieldConfig[loginType].codelabel"
         :placeholder="LoginFieldConfig[loginType].codeplaceholder"
-        v-model="userInfo.password"
+        v-model="userInfo['password']"
+        :type="loginType == 'psd'?'password':'number'"
+      ></mt-field>
+      <mt-field
+        v-else
+        :label="LoginFieldConfig[loginType].codelabel"
+        :placeholder="LoginFieldConfig[loginType].codeplaceholder"
+        v-model="userInfo['mailcode']"
         :type="loginType == 'psd'?'password':'number'"
       >
-        <mt-button
-          class="btn"
-          :disabled="canGetCode"
-          v-if="loginType=='code'"
-          @click="getCode"
-        >{{codeTime}}</mt-button>
+        <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{codeTime}}</mt-button>
       </mt-field>
-      <mt-button class="btn">还没账号？点击注册</mt-button>
+      <router-link to="/Register">
+        <mt-button class="btn">还没账号？点击注册</mt-button>
+      </router-link>
       <mt-button class="btn">找回密码</mt-button>
       <mt-button class="btn" type="primary" @click="submit">登录</mt-button>
     </div>
@@ -48,6 +53,7 @@ export default {
       userInfo: {
         username: "",
         password: "",
+        mailcode: "",
         remember: true
       }
     };
@@ -57,29 +63,35 @@ export default {
   },
   methods: {
     changeLoginType() {
-      this.userInfo.password = "";
       if (this.loginType == "psd") {
+        this.userInfo.password = "";
         this.loginType = "code";
         return;
       }
+      this.userInfo.mailcode = "";
       this.loginType = "psd";
     },
     getCode() {
       if (this.canGetCode) {
         return;
       }
-      this.canGetCode = true;
-      let _codeTime = GetCodeTime / 1000;
-      this.timeTick = setInterval(() => {
-        if (_codeTime-- <= 1) {
-          clearInterval(this.timeTick);
-          this.timeTick = null;
-          this.canGetCode = false;
-          this.codeTime = "获取验证码";
-        } else {
-          this.codeTime = _codeTime + "S";
-        }
-      }, 1000);
+      this.loginBussiness
+        .sendCode()
+        .then(res => {
+          this.canGetCode = true;
+          let _codeTime = GetCodeTime / 1000;
+          this.timeTick = setInterval(() => {
+            if (_codeTime-- <= 1) {
+              clearInterval(this.timeTick);
+              this.timeTick = null;
+              this.canGetCode = false;
+              this.codeTime = "获取验证码";
+            } else {
+              this.codeTime = _codeTime + "S";
+            }
+          }, 1000);
+        })
+        .catch(err => {});
     },
     submit() {
       this.loginBussiness.submitData();

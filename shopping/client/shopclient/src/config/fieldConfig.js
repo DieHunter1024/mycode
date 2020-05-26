@@ -13,4 +13,6 @@ export default class FieldConfig {
       codeplaceholder: '请输入验证码'
     }
   };
+
+ 
 }

@@ -1,46 +1,47 @@
 <template>
-  <ul class="userInfo">
-    <li>
-      <img :src="imgPath+userInfo.headPic" alt />
-    </li>
-  </ul>
+  <div class="info">
+    <UserInfoTop class="InfoTop" :userInfo="userInfo"></UserInfoTop>
+    <UserInfoOrder></UserInfoOrder>
+    <mt-button class="btn" type="danger" @click="exitUser">退出登录</mt-button>
+  </div>
 </template>
 
 <script>
+import UserInfoTop from "../userInfoTop/userInfoTop";
+import UserInfoOrder from "../userInfoOrder/userInfoOrder";
+import { Button } from "mint-ui";
 import config from "../../config/config";
-const { RequestPath } = config;
+const { StorageName, EventName } = config;
 export default {
   name: "userinfo",
   props: ["userInfo"],
+  components: {
+    UserInfoTop,
+    UserInfoOrder
+  },
   data() {
-    return {
-      imgPath: RequestPath
-    };
+    return {};
   },
-
-  created() {
-    console.log(this.userInfo);
-  },
-  methods: {}
+  created() {},
+  methods: {
+    exitUser() {
+      this.$storage.saveStorage(StorageName.Token, " ");
+      this.$events.emitEvent(EventName.IsLogin);
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
 @import "../../style/init.less";
-.userInfo {
-  > li:nth-child(1) {
-    .h(230);
-    width: 100%;
-    .mcolor();
-    .l_h(230);
-    margin-top: -1px;
-    color: #fff;
-    > img {
-      .w(145);
-      .h(145);
-      border-radius: 100%;
-      padding-left: unit(40 / @pxtorem, rem);
-    }
+.info {
+  .InfoTop {
+    margin-bottom: 10px;
   }
+  .btn {
+    width: 100%;
+    .h(100);
+  }
+  background: #ededed;
 }
 </style>

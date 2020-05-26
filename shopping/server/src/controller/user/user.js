@@ -8,6 +8,7 @@ const {
   updateData,
   findData,
 } = require("../../command/command");
+userCodeList = {}
 router.get(Config.ServerApi.checkToken, Util.checkToken, async (_req, res) => {
   let findRes = await findData(Mod, {
     username: res._data.id.user
@@ -25,41 +26,97 @@ router.get(Config.ServerApi.checkToken, Util.checkToken, async (_req, res) => {
     msg: "未查到用户信息"
   });
 });
-router.get(Config.ServerApi.userLogin, async (req, res) => {
-  let _data = Util.getCrypto(Util.parseUrl(req, res).crypto);
+router.get(Config.ServerApi.getMailCode, async (_req, res) => {
+  let _data = Util.getCrypto(Util.parseUrl(_req, res).crypto);
   let findRes = await findData(Mod, {
-    $or: [{
-        email: _data.username,
-      },
-      {
-        username: _data.username,
-      },
-      {
-        phoneNum: _data.username
-      }
-    ],
+    mailaddress: _data.username.split('@')[0],
+    mailurl: '@' + _data.username.split('@')[1],
   });
-  if (findRes && findRes.length > 0) {
-    Util.checkBcrypt(_data.password, findRes[0].password) ?
-      res.send({
-        result: 1,
-        token: Util.createToken(
-          findRes[0].userType,
-          findRes[0].username,
-          _data.remember
-        ),
-        msg: "登录成功",
-      }) :
-      res.send({
-        result: 0,
-        msg: "密码错误",
-      });
+  if (!findRes.length || !findRes) {
+    res.send({
+      result: 0,
+      msg: "用户未注册"
+    });
     return;
   }
-  res.send({
+  await Util.createEmailCode(userCodeList, _data.username, findRes[0]) ? res.send({
+    result: 1,
+    msg: "发送成功",
+  }) : res.send({
     result: 0,
-    msg: "用户不存在",
+    msg: "发送失败"
   });
+});
+router.get(Config.ServerApi.userLogin, async (req, res) => {
+  let _data = Util.getCrypto(Util.parseUrl(req, res).crypto);
+  switch (_data.loginType) {
+    case 'code':
+      if (!userCodeList[_data.username]) {
+        res.send({
+          result: 0,
+          msg: "验证码错误",
+        });
+      } else if (new Date().getTime() < userCodeList[_data.username].targetTime && _data.mailcode == userCodeList[_data.username].code) {
+        res.send({
+          result: 1,
+          token: Util.createToken(
+            userCodeList[_data.username].info.userType,
+            userCodeList[_data.username].info.username,
+            _data.remember
+          ),
+          msg: "登录成功"
+        })
+        userCodeList[_data.username] = null
+      } else if (new Date().getTime() > userCodeList[_data.username].targetTime) {
+        res.send({
+          result: 0,
+          msg: "验证码超时",
+        });
+      } else {
+        res.send({
+          result: 0,
+          msg: "验证码错误",
+        });
+      }
+      break;
+    case 'psd':
+    default:
+      let findRes = await findData(Mod, {
+        $or: [{
+            mailaddress: _data.username.split('@')[0],
+            mailurl: '@' + _data.username.split('@')[1],
+          },
+          {
+            username: _data.username,
+          },
+          {
+            phoneNum: _data.username
+          }
+        ],
+      });
+      if (findRes && findRes.length > 0) {
+        Util.checkBcrypt(_data.password, findRes[0].password) ?
+          res.send({
+            result: 1,
+            token: Util.createToken(
+              findRes[0].userType,
+              findRes[0].username,
+              _data.remember
+            ),
+            msg: "登录成功",
+          }) :
+          res.send({
+            result: 0,
+            msg: "密码错误",
+          });
+        return;
+      }
+      res.send({
+        result: 0,
+        msg: "用户不存在",
+      });
+      break;
+  }
 });
 router.post(Config.ServerApi.addUser, Util.checkToken, async (req, res) => {
   if (res._data.headPic) {

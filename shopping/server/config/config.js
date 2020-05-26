@@ -9,6 +9,23 @@ module.exports = {
   UserKey: "user", //用户token加密标识
   AdminKey: "admin", //管理员token加密标识
   CryptoKey: "tokenkey", //Crypto加密关键字，用于生成16进制秘钥
+  EmailTransporter: {
+    // service: "163", // 运营商  qq邮箱 网易//
+    host: "smtp.163.com",
+    port: 465, //端口
+    // secure: false,
+    auth: {
+      user: "13257912516@163.com", //发送方的邮箱
+      pass: "WAQMAIFURPWQEFKB" // pop3 授权码
+    }
+  },
+  EmailConfig: {
+    time: 5,
+    codeLength: 4,
+    sendTime: 1 * 60 * 1000,
+    targetTime: 5 * 60 * 1000,
+    title: '零食商贩',
+  },
   Collections: {
     Users: {
       modelName: "users",
@@ -163,6 +180,7 @@ module.exports = {
   ServerApi: {
     //接口名称
     checkToken: "/checkToken", //验证token
+    getMailCode: "/getMailCode", //获取验证码
     userLogin: "/userLogin", //用户登录
     userReg: "/userReg", //注册（移动端）
     addUser: "/addUser", //添加用户

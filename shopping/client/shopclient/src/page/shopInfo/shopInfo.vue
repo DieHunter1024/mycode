@@ -12,7 +12,7 @@
         <li>￥{{shopPrice}}</li>
       </ul>
       <InfoNav></InfoNav>
-      <ShopPicker></ShopPicker>
+      <ShopPicker :ShopMaxCount="ShopMaxCount" pickerTitle="商品数量"></ShopPicker>
     </div>
   </div>
 </template>
@@ -24,11 +24,12 @@ import InfoNav from "../../components/infoNav/infoNav";
 import ShopPicker from "../../components/shopPicker/shopPicker";
 import Config from "../../config/config";
 import { Toast } from "mint-ui";
-const { EventName } = Config;
+const { EventName, ShopMaxCount } = Config;
 export default {
   name: "ShopInfo",
   data() {
     return {
+      ShopMaxCount,
       imgPath: Config.RequestPath,
       ...this.$route.query,
       shopCar: null,
