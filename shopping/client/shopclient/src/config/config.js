@@ -16,7 +16,8 @@ export default class Config {
     user: {
       userLogin: "user/userLogin",
       getMailCode: "user/getMailCode",
-      updateUser: "user/updateUser"
+      updateUser: "user/updateUser",
+      userReg: 'user/userReg'
     },
     shop: {
       shopList: "shop/shopList"
@@ -30,7 +31,8 @@ export default class Config {
   };
   static StorageName = {
     Token: "token",
-    ShopCar: 'shopCar'
+    ShopCar: 'shopCar',
+    UserInfo: 'userInfo'
   };
   static EventName = {
     SelectKind: "selectKind",

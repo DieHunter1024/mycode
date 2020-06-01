@@ -33,19 +33,19 @@ module.exports = {
         headPic: {
           //头像
           type: String,
-          required: false,
           default: "public/assets/img/default.gif",
         },
         userType: {
           //用户类型（管理员/用户）
           type: String,
           required: true,
+          default: "user",
         },
         phoneNum: {
           //手机号
           type: String,
-          required: false,
-          default: "",
+          required: true,
+          default: "暂无",
         },
         username: {
           //用户名
@@ -61,6 +61,7 @@ module.exports = {
           //性别
           type: String,
           required: true,
+          default: "man",
         },
         mailaddress: {
           //邮箱地址
@@ -75,20 +76,19 @@ module.exports = {
         alladdress: {
           //省市县
           type: Array,
-          required: false,
-          default: [],
+          required: true,
+          default: ['江西省', '南昌市', '青云谱区'],
         },
         address: {
           //具体地址
           type: String,
-          required: false,
           default: "",
         },
         descript: {
           //个人说明
           type: String,
-          required: false,
-          default: "",
+          required: true,
+          default: "这个人啥也没写",
         },
         time: {
           //注册时间

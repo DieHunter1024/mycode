@@ -1,13 +1,36 @@
 <template>
   <div class="login">
     <div>
-      <mt-field placeholder="请输入用户名" v-model="userInfo.username"></mt-field>
-      <mt-field placeholder="请输入密码" v-model="userInfo.password" type="password"></mt-field>
-      <mt-field placeholder="请重复输入密码" v-model="userInfo.repassword" type="password"></mt-field>
-      <mt-field placeholder="请输入邮箱" v-model="userInfo.mailaddress">
+      <mt-field
+        placeholder="请输入用户名"
+        :state="userInfo.username.length?'success':'error'"
+        v-model="userInfo.username"
+      ></mt-field>
+      <mt-field
+        placeholder="请输入密码"
+        :state="userInfo.password.length?'success':'error'"
+        v-model="userInfo.password"
+        type="password"
+      ></mt-field>
+      <mt-field
+        placeholder="请重复输入密码"
+        :state="userInfo.repassword.length&&userInfo.password==userInfo.repassword?'success':'error'"
+        v-model="userInfo.repassword"
+        type="password"
+      ></mt-field>
+      <mt-field
+        placeholder="请输入邮箱"
+        v-model="userInfo.mailaddress"
+        :state="userInfo.mailaddress.length?'success':'error'"
+      >
         <mt-button class="btn" @click="selectMail">{{userInfo.mailurl}}</mt-button>
       </mt-field>
-      <mt-field placeholder="请输入验证码" v-model="userInfo.phoneNum" type="number">
+      <mt-field
+        placeholder="请输入验证码"
+        :state="userInfo.mailcode.length==4?'success':'error'"
+        v-model="userInfo.mailcode"
+        type="number"
+      >
         <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{codeTime}}</mt-button>
       </mt-field>
       <mt-button class="btn" type="primary" @click="submit">注册</mt-button>
@@ -35,7 +58,14 @@ export default {
       codeTime: "获取验证码",
       address,
       canGetCode: false,
-      userInfo: { mailurl: address[0] }
+      userInfo: {
+        username: "",
+        password: "",
+        repassword: "",
+        mailurl: address[0],
+        mailaddress: "",
+        mailcode: ""
+      }
     };
   },
   created() {

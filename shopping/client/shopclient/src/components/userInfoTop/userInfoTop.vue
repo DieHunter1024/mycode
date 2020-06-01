@@ -1,10 +1,12 @@
 <template>
   <ul class="userInfo">
-    <li>
-      <img :src="imgPath+userInfo.headPic" alt />
-      <span>{{userInfo.username}}</span>
-      <div class="iconfont icon-fanhui" @click="changeUserInfo"></div>
-    </li>
+    <router-link to="/UpdateInfo">
+      <li>
+        <img :src="imgPath+userInfo.headPic" alt />
+        <span>{{userInfo.username}}</span>
+        <div class="iconfont icon-fanhui"></div>
+      </li>
+    </router-link>
     <li>
       <mt-cell :title="userInfo.phoneNum"></mt-cell>
       <mt-cell :title="userInfo.mailaddress+userInfo.mailurl"></mt-cell>
@@ -15,8 +17,8 @@
 </template>
 
 <script>
-import config from "../../config/config";
-const { RequestPath } = config;
+import Config from "../../config/config";
+const { RequestPath, StorageName } = Config;
 import { Cell } from "mint-ui";
 export default {
   name: "userinfotop",
@@ -28,12 +30,7 @@ export default {
   },
 
   created() {
-    console.log(this.userInfo);
-  },
-  methods: {
-    changeUserInfo() {
-      // console.log("aaa");
-    }
+    this.$storage.saveStorage(StorageName.UserInfo, this.userInfo);
   }
 };
 </script>
@@ -42,7 +39,7 @@ export default {
 <style lang="less" scoped>
 @import "../../style/init.less";
 .userInfo {
-  > li:nth-child(1) {
+  li:nth-child(1) {
     .h(230);
     width: 100%;
     .mcolor();

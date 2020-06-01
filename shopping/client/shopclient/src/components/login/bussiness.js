@@ -24,7 +24,7 @@ export default class LoginBussiness extends Vue {
         .get(ServerApi.user.getMailCode, {
           params: {
             crypto: this.$crypto.setCrypto({
-              loginType: this.vueComponent.loginType,
+              codeType: "login",
               username: this.vueComponent.userInfo.username
             })
           },
@@ -65,13 +65,11 @@ export default class LoginBussiness extends Vue {
     }
 
     this.$axios
-      .get(ServerApi.user.userLogin, {
-        params: {
-          crypto: this.$crypto.setCrypto({
-            loginType: this.vueComponent.loginType,
-            ...this.vueComponent.userInfo
-          })
-        },
+      .post(ServerApi.user.userLogin, {
+        crypto: this.$crypto.setCrypto({
+          loginType: this.vueComponent.loginType,
+          ...this.vueComponent.userInfo
+        })
       }).then(res => {
         this.vueComponent.userInfo.password = "";
         this.vueComponent.userInfo.mailcode = "";

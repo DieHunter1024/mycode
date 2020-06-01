@@ -5,6 +5,7 @@ import Info from "../page/info/info";
 import ShopTheme from "../page/shopTheme/shopTheme";
 import ShopInfo from "../page/shopInfo/shopInfo"
 import Register from "../page/register/register"
+import UpdateInfo from "../page/updateInfo/updateInfo"
 export default class RouteConfig {
   static routes = [{
       path: "/",
@@ -61,6 +62,14 @@ export default class RouteConfig {
       path: "/Register",
       name: "Register",
       component: Register,
+      meta: {
+        index: 1
+      }
+    },
+    {
+      path: "/UpdateInfo",
+      name: "UpdateInfo",
+      component: UpdateInfo,
       meta: {
         index: 1
       }

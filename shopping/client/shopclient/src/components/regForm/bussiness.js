@@ -15,7 +15,7 @@ export default class LoginBussiness extends Vue {
   }
   sendCode() {
     return new Promise((resolve, reject) => {
-      if (!this.vueComponent.userInfo.username.length) {
+      if (!this.vueComponent.userInfo.mailaddress.length) {
         Toast('请填写正确的邮箱');
         return
       }
@@ -23,8 +23,8 @@ export default class LoginBussiness extends Vue {
         .get(ServerApi.user.getMailCode, {
           params: {
             crypto: this.$crypto.setCrypto({
-              loginType: this.vueComponent.loginType,
-              username: this.vueComponent.userInfo.username
+              codeType: "reg",
+              username: this.vueComponent.userInfo.mailaddress + this.vueComponent.userInfo.mailurl
             })
           },
         }).then(res => {
@@ -44,32 +44,29 @@ export default class LoginBussiness extends Vue {
 
   }
   submitData() {
-    if (!this.vueComponent.userInfo.username.length || !this.vueComponent.userInfo.password.length) {
-      Toast('请填写完整的登录信息');
-      return
+    for (const key in this.vueComponent.userInfo) {
+      if (this.vueComponent.userInfo.hasOwnProperty(key) && !this.vueComponent.userInfo[key].length) {
+        Toast('请填写完整的信息');
+        return
+      }
     }
     this.$axios
-      .get(ServerApi.user.userLogin, {
-        params: {
-          crypto: this.$crypto.setCrypto({
-            loginType: this.vueComponent.loginType,
-            ...this.vueComponent.userInfo
-          })
-        },
+      .post(ServerApi.user.userReg, {
+        crypto: this.$crypto.setCrypto({
+          ...this.vueComponent.userInfo
+        })
       }).then(res => {
         this.vueComponent.userInfo.password = "";
+        this.vueComponent.userInfo.repassword = "";
+        this.vueComponent.userInfo.mailcode = "";
         switch (res.result) {
           case 1:
             Toast(res.msg);
-            this.vueComponent.userInfo.username = "";
-            this.$storage.saveStorage(StorageName.Token, res.token)
-            this.$events.emitEvent(EventName.IsLogin)
+            history.go(-1)
             break;
           default:
             break;
         }
-      }).catch(err => {
-
       })
   }
 }

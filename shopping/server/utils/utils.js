@@ -167,4 +167,34 @@ module.exports = class Utils {
   static async sendEmailCode(code, email) {
     return await SendMail.sendEmail(email, EmailConfig.title, `您的验证码为:${code},${EmailConfig.time}分钟内有效`)
   }
+  static checkEmailCode(codeList, key, _data) {
+    if (!codeList[key]) {
+      return {
+        result: 0,
+        msg: "验证码错误",
+      };
+    } else if (new Date().getTime() < codeList[key].targetTime && _data.mailcode == codeList[key].code) {
+      let _obj = {
+        result: 1,
+        token: Utils.createToken(
+          codeList[key].info.userType || '',
+          codeList[key].info.username || '',
+          _data.remember || ''
+        ),
+        msg: "操作成功"
+      }
+      codeList[key] = null
+      return _obj
+    } else if (new Date().getTime() > codeList[key].targetTime) {
+      return {
+        result: 0,
+        msg: "验证码超时",
+      };
+    } else {
+      return {
+        result: 0,
+        msg: "验证码错误",
+      };
+    }
+  }
 };
