@@ -97,8 +97,8 @@ export default class Login extends React.Component {
   }
   sendData = (data) => {
     this.$axios
-      .get(ServerApi.user.userLogin, {
-        params: { crypto: this.$crypto.setCrypto(data) },
+      .post(ServerApi.user.userLogin, {
+        crypto: this.$crypto.setCrypto(data),
       })
       .then((res) => {
         switch (res.result) {

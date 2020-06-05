@@ -11,6 +11,6 @@ export default class UpdateBussiness extends Vue {
     this.vueComponent = _vueComponent
   }
   submitData() {
-
+    console.log('aaa')
   }
 }

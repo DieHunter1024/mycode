@@ -46,19 +46,5 @@ export default {
 
 <style lang="less" scoped>
 @import "../../style/init.less";
-.shopPicker {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  .h(500);
-  .mint-popup {
-    width: 100%;
-    div {
-      .padtop(15);
-      text-align: center;
-    }
-  }
-}
+
 </style>
