@@ -2,9 +2,10 @@ import React from "react";
 import { Table, Button, Card, Pagination, Input, Select, Col, Row } from "antd";
 import userTab from "./userTab";
 import shopTab from "./shopTab";
+import orderTab from "./orderTab";
+import expandTab from "./expandTab";
 import { PlusOutlined } from "@ant-design/icons";
 import ShopType from "../../config/shopType";
-
 const { shopType, picType } = ShopType;
 const { Option } = Select;
 const { Search } = Input;
@@ -46,9 +47,13 @@ export default class ListTable extends React.Component {
       this.setState({
         columns: new userTab(this),
       });
-    } else {
+    } else if (this.state.tableType === "shop") {
       this.setState({
         columns: new shopTab(this),
+      });
+    } else if (this.state.tableType === "order") {
+      this.setState({
+        columns: new orderTab(this),
       });
     }
     this.props.onTableRef(this);
@@ -80,9 +85,28 @@ export default class ListTable extends React.Component {
         break;
     }
   }
+  showOrderItem = (record) => {
+    return (
+      <Table
+        rowKey={(record) => record._id}
+        scroll={{ x: 1000 }}
+        columns={new expandTab(this)}
+        dataSource={record.shopList}
+        pagination={false}
+      ></Table>
+    );
+  };
   render() {
     return (
-      <Card title={this.state.tableType === "user" ? "用户列表" : "商品列表"}>
+      <Card
+        title={
+          this.state.tableType === "user"
+            ? "用户列表"
+            : this.state.tableType === "shop"
+            ? "商品列表"
+            : "订单列表"
+        }
+      >
         <Row gutter={16}>
           <Col span={6}>
             <Button
@@ -90,18 +114,22 @@ export default class ListTable extends React.Component {
               type="primary"
             >
               <PlusOutlined />
-              {this.state.tableType === "user" ? "新增用户" : "新增商品"}
+              {this.state.tableType === "user"
+                ? "新增用户"
+                : this.state.tableType === "shop"
+                ? "新增商品"
+                : "新增订单"}
             </Button>
           </Col>
           <Col span={5}>
-            {this.state.tableType === "user"
-              ? null
-              : this.createSel(shopType, "shopType")}
+            {this.state.tableType === "shop"
+              ? this.createSel(shopType, "shopType")
+              : null}
           </Col>
           <Col span={5}>
-            {this.state.tableType === "user"
-              ? null
-              : this.createSel(picType, "picType")}
+            {this.state.tableType === "shop"
+              ? this.createSel(picType, "picType")
+              : null}
           </Col>
           <Col span={8}>
             <Search
@@ -109,7 +137,9 @@ export default class ListTable extends React.Component {
               placeholder={
                 this.state.tableType === "user"
                   ? "输入用户名/邮箱"
-                  : "输入商品名称"
+                  : this.state.tableType === "shop"
+                  ? "输入商品名称"
+                  : "输入订单号"
               }
               enterButton="查找"
               size="large"
@@ -127,10 +157,18 @@ export default class ListTable extends React.Component {
           </Col>
         </Row>
         <Table
-          scroll={{ x: 2000 }}
+          scroll={{ x: 1000 }}
           rowKey={(record) => record._id}
           columns={this.state.columns}
           dataSource={this.state.list}
+          expandable={
+            this.state.tableType === "order"
+              ? {
+                  indentSize: 0,
+                  expandedRowRender: this.showOrderItem,
+                }
+              : null
+          }
           pagination={false}
         ></Table>
         <Pagination

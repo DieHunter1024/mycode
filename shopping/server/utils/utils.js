@@ -2,13 +2,8 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const cryptoJS = require("crypto-js");
 const config = require("../config/config");
-const SendMail = require('./sendmail')
-let {
-  UserKey,
-  AdminKey,
-  CryptoKey,
-  EmailConfig
-} = config;
+const SendMail = require("./sendmail");
+let { UserKey, AdminKey, CryptoKey, EmailConfig } = config;
 const bcrypt = require("bcryptjs");
 let key = cryptoJS.enc.Utf8.parse(CryptoKey);
 module.exports = class Utils {
@@ -104,10 +99,7 @@ module.exports = class Utils {
   }
 
   static readPicFile(_file) {
-    let {
-      path,
-      mimetype
-    } = _file;
+    let { path, mimetype } = _file;
     let file = fs.readFileSync(path);
     let fileName =
       new Date().getTime() +
@@ -139,33 +131,37 @@ module.exports = class Utils {
     return new Date();
   }
   static codeLength() {
-    let _count = ''
+    let _count = "";
     for (let i = 0; i < EmailConfig.codeLength; i++) {
       _count += Math.floor(Math.random() * 10); //生成4个随机数
     }
-    return _count
+    return _count;
   }
   static randomCode() {
     return {
       code: this.codeLength(),
       sendTime: new Date().getTime() + EmailConfig.sendTime,
-      targetTime: new Date().getTime() + EmailConfig.targetTime
-    }
+      targetTime: new Date().getTime() + EmailConfig.targetTime,
+    };
   }
   static async createEmailCode(codeList, email, findRes) {
     if (!codeList[email]) {
-      codeList[email] = this.randomCode()
-      codeList[email].info = findRes
-      return await this.sendEmailCode(codeList[email].code, email)
+      codeList[email] = this.randomCode();
+      codeList[email].info = findRes;
+      return await this.sendEmailCode(codeList[email].code, email);
     } else if (new Date().getTime() > codeList[email].sendTime) {
       //已过1分钟,防止多次请求
-      codeList[email] = this.randomCode()
-      codeList[email].info = findRes
-      return await this.sendEmailCode(codeList[email].code, email)
+      codeList[email] = this.randomCode();
+      codeList[email].info = findRes;
+      return await this.sendEmailCode(codeList[email].code, email);
     }
   }
   static async sendEmailCode(code, email) {
-    return await SendMail.sendEmail(email, EmailConfig.title, `您的验证码为:${code},${EmailConfig.time}分钟内有效`)
+    return await SendMail.sendEmail(
+      email,
+      EmailConfig.title,
+      `您的验证码为:${code},${EmailConfig.time}分钟内有效`
+    );
   }
   static checkEmailCode(codeList, key, _data) {
     if (!codeList[key]) {
@@ -173,18 +169,21 @@ module.exports = class Utils {
         result: 0,
         msg: "验证码错误",
       };
-    } else if (new Date().getTime() < codeList[key].targetTime && _data.mailcode == codeList[key].code) {
+    } else if (
+      new Date().getTime() < codeList[key].targetTime &&
+      _data.mailcode == codeList[key].code
+    ) {
       let _obj = {
         result: 1,
         token: Utils.createToken(
-          codeList[key].info.userType || '',
-          codeList[key].info.username || '',
-          _data.remember || ''
+          codeList[key].info.userType || "",
+          codeList[key].info.username || "",
+          _data.remember || ""
         ),
-        msg: "操作成功"
-      }
-      codeList[key] = null
-      return _obj
+        msg: "操作成功",
+      };
+      codeList[key] = null;
+      return _obj;
     } else if (new Date().getTime() > codeList[key].targetTime) {
       return {
         result: 0,
@@ -196,5 +195,18 @@ module.exports = class Utils {
         msg: "验证码错误",
       };
     }
+  }
+  static createOrderNo() {
+    let _date = new Date();
+    return (
+      "D" +
+      _date.getFullYear() +
+      (_date.getMonth() + 1) +
+      _date.getDate() +
+      _date.getHours() +
+      _date.getMinutes() +
+      _date.getSeconds() +
+      parseInt(Math.random() * 10000)
+    );
   }
 };

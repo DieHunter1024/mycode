@@ -1,33 +1,25 @@
 import React from "react";
-import {
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  InputNumber,
-} from "antd";
+import { Form, Button, Col, Row, Input, Select, InputNumber } from "antd";
 import ShopType from "../../config/shopType";
 import Events from "../../event/busEvent";
 import UpdataPic from "../updata/updata";
 import config from "../../config/config";
 import Bussiness from "../../bussiness/bussiness";
 const { shopType, picType } = ShopType;
-const { ServerApi, StorageName, FilePath } = config;
+const { ServerApi, StorageName, FilePath, EventName } = config;
 const { Option } = Select;
 export default class userForm extends React.Component {
   formRef = React.createRef();
   state = {};
   componentDidMount() {
     this.props.onFormRef(this);
-    Events.on("addShop", this.addShop);
-    Events.on("updataShop", this.updataShop);
+    Events.on(EventName.ADD_SHOP, this.addShop);
+    Events.on(EventName.UPDATE_SHOP, this.updateShop);
   }
   componentDidUpdate() {
     this.formRef.current.setFieldsValue(this.state.record);
   }
-  updataShop = (e) => {
+  updateShop = (e) => {
     this.setState(
       {
         formType: "updata",

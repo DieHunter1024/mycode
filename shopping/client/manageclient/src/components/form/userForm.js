@@ -1,34 +1,25 @@
 import React from "react";
-import {
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  Radio,
-  Cascader,
-} from "antd";
+import { Form, Button, Col, Row, Input, Select, Radio, Cascader } from "antd";
 import Events from "../../event/busEvent";
 import Mail from "../../config/mail";
 import City from "../../config/city";
 import UpdataPic from "../updata/updata";
 import config from "../../config/config";
 import Bussiness from "../../bussiness/bussiness";
-const { ServerApi, StorageName, FilePath } = config;
+const { ServerApi, StorageName, FilePath, EventName } = config;
 const { Option } = Select;
 export default class userForm extends React.Component {
   formRef = React.createRef();
   state = {};
   componentDidMount() {
     this.props.onFormRef(this);
-    Events.on("addUser", this.addUser);
-    Events.on("updataUser", this.updataUser);
+    Events.on(EventName.ADD_USER, this.addUser);
+    Events.on(EventName.UPDATE_USER, this.updateUser);
   }
   componentDidUpdate() {
     this.formRef.current.setFieldsValue(this.state.record);
   }
-  updataUser = (e) => {
+  updateUser = (e) => {
     this.setState(
       {
         formType: "updata",
@@ -125,10 +116,7 @@ export default class userForm extends React.Component {
           </Col>
           <Col span={8}>
             <Form.Item name="phoneNum" label="手机号">
-              <Input
-                placeholder="请输入手机号"
-                allowClear
-              />
+              <Input placeholder="请输入手机号" allowClear />
             </Form.Item>
           </Col>
         </Row>

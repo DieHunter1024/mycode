@@ -4,7 +4,7 @@ import ListTable from "../../../components/table/table";
 import Events from "../../../event/busEvent";
 import config from "../../../config/config";
 import Bussiness from "../../../bussiness/bussiness";
-const { ServerApi, StorageName, FormDefaultVal } = config;
+const { ServerApi, StorageName, FormDefaultVal,EventName } = config;
 export default class UserList extends React.Component {
   state = {
     pageConfig: {
@@ -44,7 +44,7 @@ export default class UserList extends React.Component {
     );
   }
   addUser = () => {
-    Events.emit("addUser", FormDefaultVal.user);
+    Events.emit(EventName.ADD_USER, FormDefaultVal.user);
     this.drawerChild.showDrawer("add");
   };
   changePage = (pageConfig) => {
@@ -52,7 +52,7 @@ export default class UserList extends React.Component {
     this.getList();
   };
   changeUser = (record) => {
-    Events.emit("updataUser", record);
+    Events.emit(EventName.UPDATE_USER, record);
     this.drawerChild.showDrawer("updata");
   };
   deleteUser = (record) => {

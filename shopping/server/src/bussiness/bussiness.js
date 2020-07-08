@@ -4,7 +4,7 @@ const {
   findByPage,
   getTotalPage,
   findData,
-  addData
+  addData,
 } = require("../command/command");
 const Util = require("../../utils/utils");
 module.exports = class Bussiness {
@@ -70,7 +70,8 @@ module.exports = class Bussiness {
       res._data.headPic = Util.readPicFile(res._data.headPic || "") || "";
     }
     let findRes = await findData(mod, {
-      $or: [{
+      $or: [
+        {
           mailaddress: res._data.mailaddress,
           mailurl: res._data.mailurl,
         },
@@ -90,7 +91,7 @@ module.exports = class Bussiness {
         result: 0,
         msg: "添加失败,用户已存在",
       });
-      Util.delPicFile(res._data.headPic || '');
+      Util.delPicFile(res._data.headPic || "");
       return;
     }
     res._data.time = Util.joinDate(); //添加时间
@@ -109,7 +110,6 @@ module.exports = class Bussiness {
       result: 0,
       msg: "添加失败",
     });
-
   }
   static isAdmin(res) {
     if (res._data.userTokenType != "admin") {
@@ -121,5 +121,28 @@ module.exports = class Bussiness {
       return false;
     }
     return true;
+  }
+  static async hasUser(_req, res, UserMod) {
+    let userFindRes = await findData(UserMod, {
+      $or: [
+        {
+          mailaddress: res._data.username.split("@")[0],
+          mailurl: "@" + res._data.username.split("@")[1],
+        },
+        {
+          username: res._data.username,
+        },
+        {
+          phoneNum: res._data.username,
+        },
+      ],
+    });
+    if (!userFindRes || !userFindRes.length) {
+      res.send({
+        result: 0,
+        msg: "用户不存在",
+      });
+      return true;
+    }
   }
 };

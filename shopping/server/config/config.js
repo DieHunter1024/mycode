@@ -16,15 +16,15 @@ module.exports = {
     // secure: false,
     auth: {
       user: "13257912516@163.com", //发送方的邮箱
-      pass: "WAQMAIFURPWQEFKB" // pop3 授权码
-    }
+      pass: "WAQMAIFURPWQEFKB", // pop3 授权码
+    },
   },
   EmailConfig: {
     time: 5,
     codeLength: 4,
     sendTime: 1 * 60 * 1000,
     targetTime: 5 * 60 * 1000,
-    title: '零食商贩',
+    title: "零食商贩",
   },
   Collections: {
     Users: {
@@ -77,7 +77,7 @@ module.exports = {
           //省市县
           type: Array,
           required: true,
-          default: ['江西省', '南昌市', '青云谱区'],
+          default: ["江西省", "南昌市", "青云谱区"],
         },
         address: {
           //具体地址
@@ -176,6 +176,36 @@ module.exports = {
         },
       },
     },
+    Order: {
+      modelName: "orders",
+      data: {
+        orderId: {
+          // 订单号
+          type: String,
+          required: true,
+        },
+        username: {
+          //用户名
+          type: String,
+          required: true,
+        },
+        orderState: {
+          //订单状态
+          type: String,
+          required: true,
+        },
+        shopList: {
+          //商品列表
+          type: Array,
+          required: true,
+        },
+        orderTime: {
+          //订单创建时间
+          type: String,
+          required: true,
+        },
+      },
+    },
   },
   ServerApi: {
     //接口名称
@@ -193,5 +223,9 @@ module.exports = {
     freezeShop: "/freezeShop", //冻结商品
     delShop: "/delShop", //删除商品
     updateShop: "/updateShop", //更新商品
+    addOrder: "/addOrder", //新增订单
+    orderList: "/orderList", //获取订单列表
+    delOrder: "/delOrder",
+    updateOrder: "/updateOrder",
   },
 };

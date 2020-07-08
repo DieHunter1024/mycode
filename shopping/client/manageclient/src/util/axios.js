@@ -23,6 +23,7 @@ Axios.interceptors.response.use(
       //token验证失败
       return message.error(response.data.msg).then((res) => {
         if (window.location.href.indexOf("login") === -1) {
+          localStorage.removeItem(Config.StorageName.token);
           window.location.href = "/";
         }
       });

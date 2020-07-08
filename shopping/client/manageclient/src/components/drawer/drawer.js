@@ -1,6 +1,7 @@
 import React from "react";
 import UserForm from "../form/userForm";
 import ShopForm from "../form/shopForm";
+import OrderForm from "../form/orderForm";
 import { Drawer, Button } from "antd";
 
 export default class ListDrower extends React.Component {
@@ -37,6 +38,8 @@ export default class ListDrower extends React.Component {
         return "新增商品";
       case "updataShop":
         return "修改商品";
+      case "addOrder":
+        return "新增订单";
       default:
         break;
     }
@@ -70,7 +73,7 @@ export default class ListDrower extends React.Component {
               this.formChild = child;
             }}
           ></UserForm>
-        ) : (
+        ) : this.state.formEle === "shop" ? (
           <ShopForm
             getList={this.props.getList}
             onClose={this.onClose}
@@ -78,6 +81,14 @@ export default class ListDrower extends React.Component {
               this.formChild = child;
             }}
           ></ShopForm>
+        ) : (
+          <OrderForm
+            getList={this.props.getList}
+            onClose={this.onClose}
+            onFormRef={(child) => {
+              this.formChild = child;
+            }}
+          ></OrderForm>
         )}
       </Drawer>
     );

@@ -24,6 +24,13 @@ export default class Config {
       delShop: "shop/delShop",
       updateShop: "shop/updateShop",
     },
+    order: {
+      orderList: "order/orderList",
+      addOrder: "order/addOrder",
+      freezeOrder: "order/freezeOrder",
+      delOrder: "order/delOrder",
+      updateOrder: "order/updateOrder",
+    },
   };
   static UploadName = {
     headPic: "upload/headPic",
@@ -54,5 +61,12 @@ export default class Config {
       address: "江西南昌",
       expiryDate: "180天",
     },
+  };
+  static EventName = {
+    ADD_USER: "addUser",
+    UPDATE_USER: "updateUser",
+    ADD_SHOP: "addShop",
+    UPDATE_SHOP: "updateShop",
+    ADD_ORDER: "addOrder",
   };
 }
