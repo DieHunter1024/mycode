@@ -9,7 +9,7 @@
 <script>
 import UserInfoTop from "../userInfoTop/userInfoTop";
 import UserInfoOrder from "../userInfoOrder/userInfoOrder";
-import { Button } from "mint-ui";
+import { Button, MessageBox } from "mint-ui";
 import config from "../../config/config";
 const { StorageName, EventName } = config;
 export default {
@@ -17,7 +17,7 @@ export default {
   props: ["userInfo"],
   components: {
     UserInfoTop,
-    UserInfoOrder
+    UserInfoOrder,
   },
   data() {
     return {};
@@ -25,10 +25,14 @@ export default {
   created() {},
   methods: {
     exitUser() {
-      this.$storage.saveStorage(StorageName.Token, " ");
-      this.$events.emitEvent(EventName.IsLogin);
-    }
-  }
+      MessageBox.confirm("确定退出当前账户?")
+        .then((action) => {
+          this.$storage.saveStorage(StorageName.Token, " ");
+          this.$events.emitEvent(EventName.IsLogin);
+        })
+        .catch((active) => {});
+    },
+  },
 };
 </script>
 

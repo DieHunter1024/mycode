@@ -27,7 +27,6 @@ export default class Config {
     order: {
       orderList: "order/orderList",
       addOrder: "order/addOrder",
-      freezeOrder: "order/freezeOrder",
       delOrder: "order/delOrder",
       updateOrder: "order/updateOrder",
     },

@@ -64,12 +64,11 @@ export default class userForm extends React.Component {
       val._id = this.state.record._id;
     }
     val.token = this.$utils.getStorage(StorageName.token);
-    let data = this.$crypto.setCrypto(val);
     let _url =
       this.state.formType === "add"
         ? ServerApi.shop.addShop
         : ServerApi.shop.updateShop;
-    Bussiness.sendInfo.bind(this, _url, data)();
+    Bussiness.sendInfo.bind(this, _url, val)();
   }
   render() {
     return (

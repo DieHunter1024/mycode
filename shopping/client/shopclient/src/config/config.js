@@ -17,10 +17,15 @@ export default class Config {
       userLogin: "user/userLogin",
       getMailCode: "user/getMailCode",
       updateUser: "user/updateUser",
-      userReg: 'user/userReg'
+      userReg: "user/userReg"
     },
     shop: {
       shopList: "shop/shopList"
+    },
+    order: {
+      orderList: "order/orderList",
+      addOrder: "order/addOrder",
+      delOrder: "order/delOrder"
     }
   };
   static UploadName = {
@@ -31,17 +36,18 @@ export default class Config {
   };
   static StorageName = {
     Token: "token",
-    ShopCar: 'shopCar',
-    UserInfo: 'userInfo'
+    ShopCar: "shopCar",
+    UserInfo: "userInfo"
   };
   static EventName = {
     SelectKind: "selectKind",
     ChangeCount: "changeCount",
-    ShowPicker: 'showPicker',
-    CountShop: 'countShop',
-    SelectAllChild: 'selectAllChild',
-    SelectParent: 'selectParent',
-    IsLogin: 'isLogin'
+    ShowPicker: "showPicker",
+    CountShop: "countShop",
+    SelectAllChild: "selectAllChild",
+    SelectParent: "selectParent",
+    IsLogin: "isLogin",
+    UploadPic: "uploadPic"
   };
   static DefaultPageConfig = {
     shopType: "",
@@ -51,6 +57,7 @@ export default class Config {
     isactive: true,
     pageSize: "",
     totalPage: 1,
+    orderId: "",
     sort: "1"
   };
 }

@@ -6,7 +6,7 @@ import orderTab from "./orderTab";
 import expandTab from "./expandTab";
 import { PlusOutlined } from "@ant-design/icons";
 import ShopType from "../../config/shopType";
-const { shopType, picType } = ShopType;
+const { shopType, picType, orderState } = ShopType;
 const { Option } = Select;
 const { Search } = Input;
 export default class ListTable extends React.Component {
@@ -27,7 +27,13 @@ export default class ListTable extends React.Component {
   createSel(data, type) {
     return (
       <Select
-        placeholder={type === "shopType" ? "选择商品类型" : "选择商品图片"}
+        placeholder={
+          type === "shopType"
+            ? "选择商品类型"
+            : type === "picType"
+            ? "选择商品图片"
+            : "选择订单状态"
+        }
         allowClear
         onChange={this.selectSearch.bind(this, type)}
         style={{ width: 150 }}
@@ -81,6 +87,9 @@ export default class ListTable extends React.Component {
       case "allow": //冻结
         this.props.freezeInfo(record);
         break;
+      case "state": //订单状态
+        this.props.orderState(...arguments);
+        break;
       default:
         break;
     }
@@ -121,14 +130,15 @@ export default class ListTable extends React.Component {
                 : "新增订单"}
             </Button>
           </Col>
-          <Col span={5}>
+          <Col span={10}>
             {this.state.tableType === "shop"
               ? this.createSel(shopType, "shopType")
               : null}
-          </Col>
-          <Col span={5}>
             {this.state.tableType === "shop"
               ? this.createSel(picType, "picType")
+              : null}
+            {this.state.tableType === "order"
+              ? this.createSel(orderState, "orderState")
               : null}
           </Col>
           <Col span={8}>
@@ -139,7 +149,7 @@ export default class ListTable extends React.Component {
                   ? "输入用户名/邮箱"
                   : this.state.tableType === "shop"
                   ? "输入商品名称"
-                  : "输入订单号"
+                  : "输入用户名"
               }
               enterButton="查找"
               size="large"

@@ -15,7 +15,8 @@ export default class UpdateBussiness extends Vue {
   }
   submitData() {
     for (const key in this.vueComponent.userInfo) {
-      if (!this.vueComponent.userInfo[key].length && this.vueComponent.userInfo[key] != true && this.vueComponent.userInfo[key] != 0) {
+      let value = this.vueComponent.userInfo[key]
+      if (!value.length && value != true && value != 0 && typeof value == 'string') {
         Toast('请填写完整的信息');
         return
       }

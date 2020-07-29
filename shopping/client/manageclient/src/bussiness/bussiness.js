@@ -51,13 +51,34 @@ export default class Bussiness {
   }
   static sendInfo(_url, data) {
     this.$axios
-      .post(_url, { crypto: data })
+      .post(_url, { crypto: this.$crypto.setCrypto(data) })
       .then((res) => {
         switch (res.result) {
           case 1:
             message.success(res.msg);
             this.props.onClose();
             this.props.getList();
+            break;
+          case 0:
+            message.warning(res.msg);
+            break;
+          default:
+            // message.warning(res.msg);
+            break;
+        }
+      })
+      .catch(() => {
+        message.error("操作失败");
+      });
+  }
+  static orderState(_url, data) {
+    this.$axios
+      .post(_url, { crypto: this.$crypto.setCrypto(data) })
+      .then((res) => {
+        switch (res.result) {
+          case 1:
+            message.success(res.msg);
+            this.getList();
             break;
           case 0:
             message.warning(res.msg);

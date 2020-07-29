@@ -44,21 +44,12 @@ export default class userForm extends React.Component {
     );
   }
   sendData(val) {
-    // if (this.state.record._id) {
-    //   val._id = this.state.record._id;
-    // }
     if (!val.shopList || !val.shopList.length) {
       message.warning("请选择至少一件商品");
       return;
     }
-    console.log(val);
     val.token = this.$utils.getStorage(StorageName.token);
-    let data = this.$crypto.setCrypto(val);
-    let _url = ServerApi.order.addOrder;
-    //   this.state.formType === "add"
-    //     ? ServerApi.shop.addShop
-    //     : ServerApi.shop.updateShop;
-    Bussiness.sendInfo.bind(this, _url, data)();
+    Bussiness.sendInfo.bind(this, ServerApi.order.addOrder, val)();
   }
   render() {
     return (

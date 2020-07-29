@@ -32,6 +32,7 @@ export default class orderList extends React.Component {
           addInfo={this.addOrder}
           deleteInfo={this.deleteOrder}
           changePage={this.changePage}
+          orderState={this.orderState}
         ></ListTable>
         <ListDrower
           formType="order"
@@ -50,6 +51,11 @@ export default class orderList extends React.Component {
   changePage = (pageConfig) => {
     this.setState({ pageConfig });
     this.getList();
+  };
+  orderState = (data, type, state) => {
+    data.token = this.$utils.getStorage(StorageName.token);
+    data.orderState = state;
+    Bussiness.orderState.bind(this, ServerApi.order.updateOrder, data)();
   };
   getList = () => {
     Bussiness.getInfo.bind(this, ServerApi.order.orderList)();

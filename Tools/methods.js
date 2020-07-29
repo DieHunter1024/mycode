@@ -67,6 +67,10 @@ let Methods = (function () {
             } else if (window.XMLHttpRequest) { //其他浏览器
                 xhr = new XMLHttpRequest();
             }
+            xhr.timeout = 3000
+            xhr.ontimeout = function (event) {
+                fn('请求超时！');
+            }
             if (method == 'get') {
                 url = this.urlJoin(url, data)
                 data = null

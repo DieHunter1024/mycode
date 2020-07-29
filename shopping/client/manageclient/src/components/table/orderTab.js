@@ -4,10 +4,14 @@ import ShopType from "../../config/shopType";
 const { orderState } = ShopType;
 const { Option } = Select;
 export default class OrderTable {
-  createSel(data, text) {
+  static createSel(text, data) {
     return (
-      <Select defaultValue={text} style={{ width: 100 }}>
-        {data.map((item) => {
+      <Select
+        defaultValue={text}
+        onChange={this.clickHandler.bind(this, data, "state")}
+        style={{ width: 100 }}
+      >
+        {orderState.map((item) => {
           return (
             <Option key={item.name} value={item.val}>
               {item.name}
@@ -25,12 +29,17 @@ export default class OrderTable {
         title: "订单状态",
         dataIndex: "orderState",
         width: 50,
-        render: (text) => {
-          return <div>{this.createSel(orderState, text)}</div>;
+        render(text, data) {
+          return <div>{OrderTable.createSel.call(_this, text, data)}</div>;
         },
       },
       { align: "center", title: "用户", dataIndex: "username", width: 50 },
-      { align: "center", title: "创建时间", dataIndex: "orderTime", width: 100 },
+      {
+        align: "center",
+        title: "创建时间",
+        dataIndex: "orderTime",
+        width: 100,
+      },
       {
         align: "center",
         title: "操作",

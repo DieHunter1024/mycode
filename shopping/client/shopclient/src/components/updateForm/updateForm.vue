@@ -1,6 +1,7 @@
 <template>
   <div class="update">
-    <img :src="imgPath+userInfo.headPic" alt />
+    <!-- <img :src="imgPath+userInfo.headPic" alt /> -->
+    <UploadPic class="uploadPic" :picFile="userInfo.headPic"></UploadPic>
     <mt-field
       placeholder="请输入用户名"
       :state="userInfo.username.length?'success':'error'"
@@ -43,7 +44,8 @@ import UpdateBussiness from "./bussiness";
 import Config from "../../config/config";
 import { Field, Button, Picker, Popup, Radio } from "mint-ui";
 import address from "../../config/city";
-const { StorageName, RequestPath } = Config;
+import UploadPic from "../uploadPic/uploadPic";
+const { StorageName, RequestPath, EventName } = Config;
 export default {
   name: "updateForm",
   data() {
@@ -96,10 +98,17 @@ export default {
       userInfo: this.$storage.getStorage(StorageName.UserInfo)
     };
   },
-  components: {},
+  components: {
+    UploadPic
+  },
   created() {
-    console.log(this.userInfo);
+    this.$events.onEvent(EventName.UploadPic, headPic => {
+      this.userInfo.headPic = headPic;
+    });
     this.updateBussiness = new UpdateBussiness(this);
+  },
+  destroyed() {
+    this.$events.offEvent(EventName.UploadPic);
   },
   methods: {
     selectAddress() {
@@ -111,10 +120,10 @@ export default {
         this.userInfo.alladdress = [values[0].name];
         picker.setSlotValues(1, values[0].children);
         if (values[1]) {
-          this.userInfo.alladdress.push("-" + values[1].name);
+          this.userInfo.alladdress.push(values[1].name);
           picker.setSlotValues(2, values[1].children);
           if (values[2]) {
-            this.userInfo.alladdress.push("-" + values[2].name);
+            this.userInfo.alladdress.push(values[2].name);
           }
         }
       }
@@ -129,7 +138,8 @@ export default {
 <style lang="less" scoped>
 @import "../../style/init.less";
 .update {
-  > img {
+  .uploadPic {
+    overflow: hidden;
     .w(200);
     .h(200);
     .mg(20px auto);

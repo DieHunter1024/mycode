@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .change {
+            width: 600px;
+            position: absolute;
+            margin: 130px auto 0;
+            left: 0;
+            right: 0;
+        }
+
+        .change li {
+            font-size: 50px;
+        }
+
+        .change li:nth-child(1) {
+            float: left;
+            cursor: pointer;
+        }
+
+        .change li:nth-child(2) {
+            float: right;
+            cursor: pointer;
+        }
+
+        .imgBox {
+            margin: 50px auto;
+            width: 500px;
+            height: 300px;
+            position: relative;
+        }
+
+        .imgBox li {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .imgTab {
+            width: 800px;
+            height: 50px;
+            margin: 0 auto;
+        }
+
+        .imgTab li {
+            width: 100px;
+            height: 60px;
+            margin-left: 50px;
+            display: inline-block;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+        
+        .select {
+            box-sizing: border-box;
+            border: 5px solid lightcoral;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="change">
+        <li><</li>
+        <li>></li>
+    </ul>
+    <ul class="imgBox" id='imgBox'></ul>
+    <ul class="imgTab" id='imgTab'></ul>
+    <script type="module">
+        import Model from './js/model.js';
+        Model.getInstance().imgList=['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg']
+    </script>
+</body>
+
+</html>

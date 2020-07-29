@@ -142,7 +142,8 @@ module.exports = class Bussiness {
         result: 0,
         msg: "用户不存在",
       });
-      return true;
+      return false;
     }
+    return userFindRes;
   }
 };
