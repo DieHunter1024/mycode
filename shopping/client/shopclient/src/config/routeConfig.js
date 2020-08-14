@@ -2,12 +2,15 @@ import Home from "../page/home/home";
 import Kind from "../page/kind/kind";
 import ShopCar from "../page/shopCar/shopCar";
 import Info from "../page/info/info";
+import Order from "../page/order/order";
 import ShopTheme from "../page/shopTheme/shopTheme";
-import ShopInfo from "../page/shopInfo/shopInfo"
-import Register from "../page/register/register"
-import UpdateInfo from "../page/updateInfo/updateInfo"
+import ShopInfo from "../page/shopInfo/shopInfo";
+import Register from "../page/register/register";
+import UpdateInfo from "../page/updateInfo/updateInfo";
+
 export default class RouteConfig {
-  static routes = [{
+  static routes = [
+    {
       path: "/",
       redirect: "/Home"
     },
@@ -50,7 +53,8 @@ export default class RouteConfig {
       meta: {
         index: 1
       }
-    }, {
+    },
+    {
       path: "/ShopInfo",
       name: "ShopInfo",
       component: ShopInfo,
@@ -74,5 +78,13 @@ export default class RouteConfig {
         index: 1
       }
     },
+    {
+      path: "/Order",
+      name: "Order",
+      component: Order,
+      meta: {
+        index: 1
+      }
+    }
   ];
 }

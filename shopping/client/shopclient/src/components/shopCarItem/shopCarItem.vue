@@ -14,7 +14,7 @@
           </div>
           <div>
             <mt-button class="minus" type="default" @click="minusShopHandler(item)">-</mt-button>
-            <span>{{item.count}}</span>
+            <span>{{item.shopCount}}</span>
             <mt-button class="add" type="default" @click="addShopHandler(item)">+</mt-button>
             <mt-button class="del" type="default" @click="delShopHandler(index)">×</mt-button>
           </div>
@@ -37,14 +37,14 @@ const { EventName } = Config;
 export default {
   name: "shopCarItem",
   components: {
-    ShopCarOrder
+    ShopCarOrder,
   },
   data() {
     return {
       shopCar: null,
       shopList: [],
       imgPath: Config.RequestPath,
-      selectAll: false
+      selectAll: false,
     };
   },
   created() {
@@ -75,21 +75,21 @@ export default {
       this.shopCar.filterSelect();
     },
     addShopHandler(_data) {
-      _data.count = 1;
+      _data.shopCount = 1;
       this.shopCar.countShopItem({
-        ..._data
+        ..._data,
       });
     },
     minusShopHandler(_data) {
-      _data.count = -1;
+      _data.shopCount = -1;
       this.shopCar.countShopItem({
-        ..._data
+        ..._data,
       });
     },
     delShopHandler(_id) {
       this.shopCar.delShopItem(_id);
-    }
-  }
+    },
+  },
 };
 </script>
 

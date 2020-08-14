@@ -91,6 +91,9 @@ export default class ShopTable {
         title: "上架时间",
         dataIndex: "time",
         width: 100,
+        render: (time) => {
+          return new Date(time).toLocaleDateString();
+        },
       },
       {
         align: "center",

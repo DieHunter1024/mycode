@@ -25,7 +25,8 @@ export default class Config {
     order: {
       orderList: "order/orderList",
       addOrder: "order/addOrder",
-      delOrder: "order/delOrder"
+      delOrder: "order/delOrder",
+      updateOrder: "order/updateOrder"
     }
   };
   static UploadName = {
@@ -58,6 +59,7 @@ export default class Config {
     pageSize: "",
     totalPage: 1,
     orderId: "",
-    sort: "1"
+    sort: "1",
+    orderState: ""
   };
 }

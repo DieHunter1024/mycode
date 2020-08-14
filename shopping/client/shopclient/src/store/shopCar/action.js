@@ -24,13 +24,13 @@ export default class Action extends Vue {
       return item._id === _data._id;
     });
     if (list.length == 0) {
-      _data.sum = _data.count * _data.shopPrice;
+      _data.sum = _data.shopCount * _data.shopPrice;
       _data.isSelect = false
       _shopCar.push(_data);
-    } else if ((_data.shopNum > list[0].count + _data.count) && (list[0].count + _data.count <= 9) && list[0].count + _data.count > 0) {
-      list[0].count += _data.count;
-      list[0].sum = list[0].count * list[0].shopPrice;
-    } else if (list[0].count + _data.count <= 0) {
+    } else if ((_data.shopNum > list[0].shopCount + _data.shopCount) && (list[0].shopCount + _data.shopCount <= 9) && list[0].shopCount + _data.shopCount > 0) {
+      list[0].shopCount += _data.shopCount;
+      list[0].sum = list[0].shopCount * list[0].shopPrice;
+    } else if (list[0].shopCount + _data.shopCount <= 0) {
       this.$events.emitEvent(EventName.CountShop, 'min');
       return;
     } else {

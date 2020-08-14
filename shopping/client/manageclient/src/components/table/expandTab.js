@@ -51,8 +51,8 @@ export default class expandTab {
       },{
         align: "center",
         title: "购买数量",
-        key: "shopNum",
-        dataIndex: "shopNum",
+        key: "shopCount",
+        dataIndex: "shopCount",
         width: 30,
       },
     ];

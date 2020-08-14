@@ -189,8 +189,23 @@ module.exports = {
           type: String,
           required: true,
         },
+        phoneNum: {
+          //手机号
+          type: String,
+          required: true,
+        },
+        address: {
+          //具体地址
+          type: String,
+          required: true,
+        },
         orderState: {
           //订单状态
+          type: String,
+          required: true,
+        },
+        orderPrice: {
+          // 订单总价
           type: String,
           required: true,
         },
@@ -225,7 +240,7 @@ module.exports = {
     updateShop: "/updateShop", //更新商品
     addOrder: "/addOrder", //新增订单
     orderList: "/orderList", //获取订单列表
-    delOrder: "/delOrder",
-    updateOrder: "/updateOrder",
+    delOrder: "/delOrder", //删除订单
+    updateOrder: "/updateOrder", //更新订单状态
   },
 };

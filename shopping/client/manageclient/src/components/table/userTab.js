@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Popconfirm,
-} from "antd";
+import { Button, Popconfirm } from "antd";
 import config from "../../config/config";
 
 const { FilePath } = config;
@@ -84,6 +81,9 @@ export default class UserTable {
         title: "注册时间",
         dataIndex: "time",
         width: 200,
+        render: (time) => {
+          return new Date(time).toLocaleString();
+        },
       },
       {
         align: "center",

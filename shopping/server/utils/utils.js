@@ -5,6 +5,7 @@ const config = require("../config/config");
 const SendMail = require("./sendmail");
 let { UserKey, AdminKey, CryptoKey, EmailConfig } = config;
 const bcrypt = require("bcryptjs");
+const { json } = require("express");
 let key = cryptoJS.enc.Utf8.parse(CryptoKey);
 module.exports = class Utils {
   constructor() {}
@@ -208,5 +209,9 @@ module.exports = class Utils {
       _date.getSeconds() +
       parseInt(Math.random() * 10000)
     );
+  }
+  static deepCopy(org) {
+    //简单的对象复制
+    return JSON.parse(JSON.stringify(org));
   }
 };

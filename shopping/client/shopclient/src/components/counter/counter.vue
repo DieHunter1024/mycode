@@ -2,7 +2,7 @@
   <ul class="counter">
     <li @click="showPicker">
       数量
-      <span>{{count}}</span>
+      <span>{{shopCount}}</span>
     </li>
     <li @click="addShopCar">
       加入购物车
@@ -21,13 +21,13 @@ export default {
   name: "Counter",
   data() {
     return {
-      count: 1,
+      shopCount: 1,
       showAnimate: false
     };
   },
   created() {
     this.$events.onEvent(EventName.ChangeCount, _count => {
-      this.count = _count;
+      this.shopCount = _count;
     });
     this.shopCar = new this.$store.ShopCar();
   },
@@ -43,7 +43,7 @@ export default {
       setTimeout(() => {
         this.shopCar.countShopItem({
           ...this.$route.query,
-          count: this.count
+          shopCount: this.shopCount
         });
         this.showAnimate = false;
       }, 1000);

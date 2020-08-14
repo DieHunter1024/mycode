@@ -28,22 +28,37 @@ export default class OrderTable {
         align: "center",
         title: "订单状态",
         dataIndex: "orderState",
-        width: 50,
+        width: 60,
         render(text, data) {
           return <div>{OrderTable.createSel.call(_this, text, data)}</div>;
         },
       },
       { align: "center", title: "用户", dataIndex: "username", width: 50 },
+      { align: "center", title: "收货地址", dataIndex: "address", width: 80 },
+      { align: "center", title: "手机号", dataIndex: "phoneNum", width: 80 },
       {
         align: "center",
         title: "创建时间",
         dataIndex: "orderTime",
         width: 100,
+        render: (time) => {
+          return new Date(time).toLocaleString();
+        },
+      },
+
+      {
+        align: "center",
+        title: "总价",
+        dataIndex: "orderPrice",
+        width: 50,
+        render(text) {
+          return <div>{text}元</div>;
+        },
       },
       {
         align: "center",
         title: "操作",
-        width: 30,
+        width: 50,
         fixed: "right",
         render: (record) => {
           return (

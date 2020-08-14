@@ -8,13 +8,14 @@
     <span @click="delSelShop">删除({{selCount}})</span>
     <span>
       <span>￥{{sum}}</span>
-      <span class="icon-qianjin iconfont"></span>
+      <span class="icon-qianjin iconfont" @click="sendOrder"></span>
     </span>
   </div>
 </template>
 
 <script>
 import Config from "../../config/config";
+import ShopCarOrderBussiness from "./bussiness";
 import { Toast } from "mint-ui";
 const { EventName } = Config;
 export default {
@@ -24,11 +25,14 @@ export default {
       shopCar: null,
       isSelAll: false,
       selCount: 0,
-      sum: 0
+      sum: 0,
+      orderList: null,
+      shopCarOrderBussiness: null,
     };
   },
   created() {
     this.shopCar = new this.$store.ShopCar();
+    this.shopCarOrderBussiness = new ShopCarOrderBussiness(this);
     this.$events.onEvent(EventName.SelectParent, this.selAllHandler);
   },
   destroyed() {
@@ -46,8 +50,11 @@ export default {
     },
     delSelShop() {
       this.shopCar.delSelShop();
-    }
-  }
+    },
+    sendOrder() {
+      this.shopCarOrderBussiness.sendOrderList();
+    },
+  },
 };
 </script>
 

@@ -40,7 +40,7 @@ export default {
 @import "../../style/init.less";
 .info {
   .InfoTop {
-    margin-bottom: 10px;
+    margin-bottom: unit(20 / @pxtorem, rem);
   }
   .btn {
     width: 100%;

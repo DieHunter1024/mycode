@@ -142,7 +142,7 @@ export default {
     overflow: hidden;
     .w(200);
     .h(200);
-    .mg(20px auto);
+    .mg(unit(30 / @pxtorem, rem) auto);
     border-radius: 100%;
   }
   .btn {
@@ -151,7 +151,7 @@ export default {
     background: #fff;
   }
   .submit {
-    margin-top: 30px;
+    margin-top: unit(30 / @pxtorem, rem);
     width: 100%;
     // z-index: 100;
   }

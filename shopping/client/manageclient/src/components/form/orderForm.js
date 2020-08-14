@@ -49,6 +49,7 @@ export default class userForm extends React.Component {
       return;
     }
     val.token = this.$utils.getStorage(StorageName.token);
+    console.log(val)
     Bussiness.sendInfo.bind(this, ServerApi.order.addOrder, val)();
   }
   render() {
@@ -95,8 +96,8 @@ export default class userForm extends React.Component {
                   <Col span={8}>
                     <Form.Item
                       {...field}
-                      name={[field.name, "shopNum"]}
-                      fieldKey={[field.fieldKey, "shopNum"]}
+                      name={[field.name, "shopCount"]}
+                      fieldKey={[field.fieldKey, "shopCount"]}
                       rules={[{ required: true, message: "请输入购买数量" }]}
                     >
                       <InputNumber
