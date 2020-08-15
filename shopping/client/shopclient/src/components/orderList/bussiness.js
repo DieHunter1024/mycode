@@ -1,19 +1,21 @@
 import Vue from "vue";
 import { MessageBox } from "mint-ui";
 import config from "../../config/config";
+import Clone from "../../utils/clone";
 const { ServerApi, StorageName, EventName, DefaultPageConfig } = config;
 export default class OrderBussiness extends Vue {
   constructor(_vueComponent) {
     super();
     this.vueComponent = _vueComponent;
+    this._defaultPageConfig = Clone.shallowClone(DefaultPageConfig);
   }
   getOrderList() {
-    DefaultPageConfig.token = this.$storage.getStorage(StorageName.Token);
-    DefaultPageConfig.orderId = this.vueComponent.$route.query.orderId;
+    this._defaultPageConfig.token = this.$storage.getStorage(StorageName.Token);
+    this._defaultPageConfig.orderId = this.vueComponent.$route.query.orderId;
     this.$axios
       .get(ServerApi.order.orderList, {
         params: {
-          crypto: this.$crypto.setCrypto(DefaultPageConfig)
+          crypto: this.$crypto.setCrypto(this._defaultPageConfig)
         }
       })
       .then(res => {
