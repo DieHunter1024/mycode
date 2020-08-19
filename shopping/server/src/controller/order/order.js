@@ -72,9 +72,9 @@ router.post(Config.ServerApi.addOrder, Util.checkToken, async (req, res) => {
   });
 });
 router.get(Config.ServerApi.orderList, Util.checkToken, async (req, res) => {
-  if (!Bussiness.isAdmin(res)) {
-    return;
-  }
+  // if (!Bussiness.isAdmin(res)) {
+  //   return;
+  // }
   Bussiness.findInfo(
     req,
     res,
@@ -96,9 +96,9 @@ router.get(Config.ServerApi.delOrder, Util.checkToken, async (req, res) => {
   Bussiness.delInfo(req, res, Mod);
 });
 router.post(Config.ServerApi.updateOrder, Util.checkToken, async (req, res) => {
-  if (!Bussiness.isAdmin(res)) {
-    return;
-  }
+  // if (!Bussiness.isAdmin(res)) {
+  //   return;
+  // }
   let updateRes = await updateData(Mod, res._data._id, res._data);
   if (updateRes) {
     res.send({

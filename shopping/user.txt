@@ -1,131 +1,160 @@
+﻿/* 1 */
 {
-	_id: ObjectId("5e8c2d95bbfa6d2e0cd30977"),
-	headPic: "public/assets/img/1591930406641.jpeg",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"青云谱区"
-	],
-	address: "某路",
-	descript: "犹豫就会败北,果断就会白给。。。。。",
-	isactive: true,
-	userType: "admin",
-	username: "hunter",
-	password: "$2a$10$jEW2z1zcvFF.6/Umu0Xyfux5d1adXIL886Yq7rRL5.JvipGaryQxm",
-	sex: "man",
-	mailaddress: "313267717",
-	mailurl: "@qq.com",
-	time: "Tue Apr 07 2020 15:36:53 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0),
-	phoneNum: "13257911111"
-},
+    "_id" : ObjectId("5e8c2d95bbfa6d2e0cd30977"),
+    "headPic" : "public/assets/img/1591930406641.jpeg",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "某路",
+    "descript" : "犹豫就会败北,果断就会白给。。。。。",
+    "isactive" : true,
+    "userType" : "admin",
+    "username" : "hunter",
+    "password" : "$2a$10$jEW2z1zcvFF.6/Umu0Xyfux5d1adXIL886Yq7rRL5.JvipGaryQxm",
+    "sex" : "man",
+    "mailaddress" : "313267717",
+    "mailurl" : "@qq.com",
+    "time" : "Tue Apr 07 2020 15:36:53 GMT+0800 (GMT+08:00)",
+    "__v" : 0,
+    "phoneNum" : "13257911111"
+}
 
+/* 2 */
 {
-	_id: ObjectId("5eb9070a246be1184c2b8b18"),
-	headPic: "public/assets/img/1589184449900.png",
-	phoneNum: "123",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"青云谱区"
-	],
-	address: "",
-	descript: "",
-	isactive: true,
-	userType: "user",
-	username: "ly",
-	password: "$2a$10$03nzeo1oPxy6gcO8Gt2/WOdZuCsPkgdDLNAAr/DMXeXefe7X0Rq36",
-	sex: "man",
-	mailaddress: "abcq",
-	mailurl: "@qq.com",
-	time: "Mon May 11 2020 16:04:26 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0)
-},
+    "_id" : ObjectId("5eb9070a246be1184c2b8b18"),
+    "headPic" : "public/assets/img/1589184449900.png",
+    "phoneNum" : "123",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "123",
+    "descript" : "567",
+    "isactive" : true,
+    "userType" : "user",
+    "username" : "ly",
+    "password" : "$2a$10$03nzeo1oPxy6gcO8Gt2/WOdZuCsPkgdDLNAAr/DMXeXefe7X0Rq36",
+    "sex" : "man",
+    "mailaddress" : "abcq",
+    "mailurl" : "@qq.com",
+    "time" : "Mon May 11 2020 16:04:26 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
 
+/* 3 */
 {
-	_id: ObjectId("5eb9071e246be1184c2b8b19"),
-	headPic: "public/assets/img/1589184330668.png",
-	phoneNum: "bbb",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"青云谱区"
-	],
-	address: "",
-	descript: "",
-	isactive: true,
-	userType: "user",
-	username: "bbb",
-	password: "$2a$10$bTqRKbmSPKZiNwibZ4MwAeoJApnL9ab7mAGKgoBC3JPzbLmrtRYqS",
-	sex: "man",
-	mailaddress: "bbb",
-	mailurl: "@qq.com",
-	time: "Mon May 11 2020 16:04:46 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0)
-},
+    "_id" : ObjectId("5eb9071e246be1184c2b8b19"),
+    "headPic" : "public/assets/img/1589184330668.png",
+    "phoneNum" : "bbb",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "",
+    "descript" : "",
+    "isactive" : true,
+    "userType" : "user",
+    "username" : "bbb",
+    "password" : "$2a$10$bTqRKbmSPKZiNwibZ4MwAeoJApnL9ab7mAGKgoBC3JPzbLmrtRYqS",
+    "sex" : "man",
+    "mailaddress" : "bbb",
+    "mailurl" : "@qq.com",
+    "time" : "Mon May 11 2020 16:04:46 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
 
+/* 4 */
 {
-	_id: ObjectId("5eb90739246be1184c2b8b1a"),
-	headPic: "public/assets/img/1589184510132.png",
-	phoneNum: "ccc",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"青云谱区"
-	],
-	address: "cccc",
-	descript: "",
-	isactive: true,
-	userType: "user",
-	username: "ccc",
-	password: "$2a$10$lMoujc2m3nvR9V2osgzBReqHtOy5Akx12.xRB323bum.nLxfONBhG",
-	sex: "man",
-	mailaddress: "ccc",
-	mailurl: "@qq.com",
-	time: "Mon May 11 2020 16:05:13 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0)
-},
+    "_id" : ObjectId("5eb90739246be1184c2b8b1a"),
+    "headPic" : "public/assets/img/1589184510132.png",
+    "phoneNum" : "ccc",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "cccc",
+    "descript" : "",
+    "isactive" : true,
+    "userType" : "user",
+    "username" : "ccc",
+    "password" : "$2a$10$lMoujc2m3nvR9V2osgzBReqHtOy5Akx12.xRB323bum.nLxfONBhG",
+    "sex" : "man",
+    "mailaddress" : "ccc",
+    "mailurl" : "@qq.com",
+    "time" : "Mon May 11 2020 16:05:13 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
 
+/* 5 */
 {
-	_id: ObjectId("5ece1190ffd9041f10ff4292"),
-	headPic: "public/assets/img/default.gif",
-	userType: "user",
-	phoneNum: "暂无",
-	sex: "man",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"青云谱区"
-	],
-	address: "",
-	descript: "这个人啥也没写",
-	isactive: true,
-	username: "hunter1",
-	password: "$2a$10$oLslfKtOhWiRXjecae5Re.244R1PewbMeRStaewD68LXEqmqi6etm",
-	mailurl: "@qq.com",
-	mailaddress: "enchend",
-	time: "Wed May 27 2020 15:06:56 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0)
-},
+    "_id" : ObjectId("5ece1190ffd9041f10ff4292"),
+    "headPic" : "public/assets/img/default.gif",
+    "userType" : "user",
+    "phoneNum" : "暂无",
+    "sex" : "man",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "",
+    "descript" : "这个人啥也没写",
+    "isactive" : true,
+    "username" : "hunter1",
+    "password" : "$2a$10$oLslfKtOhWiRXjecae5Re.244R1PewbMeRStaewD68LXEqmqi6etm",
+    "mailurl" : "@qq.com",
+    "mailaddress" : "enchend",
+    "time" : "Wed May 27 2020 15:06:56 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
 
+/* 6 */
 {
-	_id: ObjectId("5f052b9e73ae5019dcaf8aa4"),
-	headPic: "public/assets/img/default.gif",
-	userType: "user",
-	phoneNum: "18279102379",
-	sex: "man",
-	alladdress: [
-		"江西省",
-		"南昌市",
-		"南昌县"
-	],
-	address: "",
-	descript: "这个人啥也没写",
-	isactive: true,
-	username: "阿裕",
-	password: "$2a$10$jor4.IjePDhMWgtSxYQn/Ow.Rs4.T5rXi18Y0qAolBDal7NQrt5Ti",
-	mailurl: "@qq.com",
-	mailaddress: "3101292788",
-	time: "Wed Jul 08 2020 10:12:46 GMT+0800 (GMT+08:00)",
-	__v: NumberInt(0)
-},
+    "_id" : ObjectId("5f052b9e73ae5019dcaf8aa4"),
+    "headPic" : "public/assets/img/1597485045537.jpeg",
+    "userType" : "user",
+    "phoneNum" : "18279102379",
+    "sex" : "man",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "南昌县"
+    ],
+    "address" : "1111111",
+    "descript" : "这个人啥也没写",
+    "isactive" : true,
+    "username" : "阿裕",
+    "password" : "$2a$10$e7g8p6n78VT/Rk8/oNkxvuZmMyIYcUqnJlWESKK/abVcrhG7EV8w.",
+    "mailurl" : "@qq.com",
+    "mailaddress" : "3101292788",
+    "time" : "Wed Jul 08 2020 10:12:46 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("5f37affb2d2e370cb85ae5ec"),
+    "headPic" : "public/assets/img/default.gif",
+    "userType" : "user",
+    "phoneNum" : "暂无",
+    "sex" : "man",
+    "alladdress" : [ 
+        "江西省", 
+        "南昌市", 
+        "青云谱区"
+    ],
+    "address" : "尚荣城科技产业园",
+    "descript" : "这个人啥也没写",
+    "isactive" : true,
+    "username" : "lz",
+    "password" : "$2a$10$c.RY9kOy5Out9yrq28LKXuagSbvoHFaX7Mm71V5kDSrbStpMWQs4y",
+    "mailurl" : "@qq.com",
+    "mailaddress" : "545659930",
+    "time" : "Sat Aug 15 2020 17:50:51 GMT+0800 (GMT+08:00)",
+    "__v" : 0
+}

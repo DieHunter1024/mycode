@@ -5,7 +5,7 @@ class Storage {
   }
   static getStorage(key) {
     try {
-      return JSON.parse(localStorage.getItem(key));
+      return JSON.parse(localStorage.getItem(key)) || [];
     } catch (error) {}
   }
   static clearStorage(key) {

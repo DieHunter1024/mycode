@@ -19,7 +19,7 @@ export default class ShopCarOrderBussiness extends Vue {
       orderState: "0",
       shopList: _shopCar,
       token: this.$storage.getStorage(StorageName.Token),
-      username: this.$storage.getStorage(StorageName.UserInfo).username
+      username: this.$storage.getStorage(StorageName.UserInfo).username || ""
     };
     this.$axios
       .post(ServerApi.order.addOrder, {
