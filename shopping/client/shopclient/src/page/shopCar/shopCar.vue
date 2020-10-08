@@ -3,6 +3,7 @@
     <Top title="购物车"></Top>
     <div class="content">
       <ShopCarItem></ShopCarItem>
+      <ShopCarOrder></ShopCarOrder>
     </div>
     <TabBar></TabBar>
   </div>
@@ -11,6 +12,7 @@
 <script>
 import Top from "../../components/top/top";
 import ShopCarItem from "../../components/shopCarItem/shopCarItem";
+import ShopCarOrder from "../../components/shopCarOrder/shopCarOrder";
 import TabBar from "../../components/tabBar/tabBar";
 export default {
   name: "shopCar",
@@ -20,6 +22,7 @@ export default {
   components: {
     Top,
     ShopCarItem,
+    ShopCarOrder,
     TabBar
   },
   created() {}

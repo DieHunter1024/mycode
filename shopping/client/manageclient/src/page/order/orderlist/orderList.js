@@ -44,23 +44,23 @@ export default class orderList extends React.Component {
       </div>
     );
   }
-  addOrder = () => {
+  addOrder = () => {//新增订单，触发bussiness中的新增接口
     Events.emit(EventName.ADD_ORDER, FormDefaultVal.shop);
     this.drawerChild.showDrawer("addOrder");
   };
-  changePage = (pageConfig) => {
+  changePage = (pageConfig) => {//分页
     this.setState({ pageConfig });
     this.getList();
   };
-  orderState = (data, type, state) => {
+  orderState = (data, type, state) => {//修改订单状态，触发bussiness中的修改接口
     data.token = this.$utils.getStorage(StorageName.token);
     data.orderState = state;
     Bussiness.orderState.bind(this, ServerApi.order.updateOrder, data)();
   };
-  getList = () => {
+  getList = () => {//获取订单列表，触发bussiness中的获取列表函数
     Bussiness.getInfo.bind(this, ServerApi.order.orderList)();
   };
-  deleteOrder = (record) => {
+  deleteOrder = (record) => {//删除订单，触发bussiness中的删除接口
     Bussiness.delInfo.bind(this, ServerApi.order.delOrder, record)();
   };
 }

@@ -20,7 +20,6 @@
           </div>
         </div>
       </li>
-      <ShopCarOrder></ShopCarOrder>
     </ul>
     <div v-else class="noShop">
       <div class="icon-jiarugouwuche iconfont"></div>
@@ -31,62 +30,58 @@
 
 <script>
 import Config from "../../config/config";
-import ShopCarOrder from "../shopCarOrder/shopCarOrder";
 import { Toast } from "mint-ui";
 const { EventName } = Config;
 export default {
   name: "shopCarItem",
-  components: {
-    ShopCarOrder,
-  },
   data() {
     return {
-      shopCar: null,
-      shopList: [],
-      imgPath: Config.RequestPath,
-      selectAll: false,
+      shopCar: null,//初始化购物车
+      shopList: [],//购物车列表state
+      imgPath: Config.RequestPath,//静态文件根目录
+      selectAll: false,//全选
     };
   },
   created() {
     this.shopCar = new this.$store.ShopCar();
     this.shopList = this.shopCar.state;
-    this.$events.onEvent(EventName.CountShop, this.countHandler);
-    this.$events.onEvent(EventName.SelectAllChild, this.selAllHandler);
+    this.$events.onEvent(EventName.CountShop, this.countHandler);//商品数量监听
+    this.$events.onEvent(EventName.SelectAllChild, this.selAllHandler);//商品全选监听
   },
   mounted() {
-    this.shopCar.filterSelect();
+    this.shopCar.filterSelect();//初始化全选，商品数量，商品总价
   },
   destroyed() {
     this.$events.offEvent(EventName.CountShop, this.countHandler);
     this.$events.offEvent(EventName.SelectAllChild, this.selAllHandler);
   },
   methods: {
-    countHandler(res) {
+    countHandler(res) {//修改商品数量，刷新数据
       this.shopList = this.shopCar.state;
       this.shopCar.filterSelect();
     },
-    selectHandler(_id) {
+    selectHandler(_id) {//修改商品全选，单个商品驱动全选按钮，刷新数据
       this.shopList[_id].isSelect = !this.shopList[_id].isSelect;
       this.shopCar.state = this.shopList;
       this.shopCar.filterSelect();
     },
-    selAllHandler() {
+    selAllHandler() {//修改商品全选，全选按钮驱动单个商品，刷新数据
       this.shopList = this.shopCar.state;
       this.shopCar.filterSelect();
     },
-    addShopHandler(_data) {
+    addShopHandler(_data) {//添加商品，刷新数据
       _data.shopCount = 1;
       this.shopCar.countShopItem({
         ..._data,
       });
     },
-    minusShopHandler(_data) {
+    minusShopHandler(_data) {//减少商品，刷新数据
       _data.shopCount = -1;
       this.shopCar.countShopItem({
         ..._data,
       });
     },
-    delShopHandler(_id) {
+    delShopHandler(_id) {//删除单个商品，刷新数据
       this.shopCar.delShopItem(_id);
     },
   },

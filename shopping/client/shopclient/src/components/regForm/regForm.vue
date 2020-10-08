@@ -3,35 +3,43 @@
     <div>
       <mt-field
         placeholder="请输入用户名"
-        :state="userInfo.username.length?'success':'error'"
+        :state="userInfo.username.length ? 'success' : 'error'"
         v-model="userInfo.username"
       ></mt-field>
       <mt-field
         placeholder="请输入密码"
-        :state="userInfo.password.length?'success':'error'"
+        :state="userInfo.password.length ? 'success' : 'error'"
         v-model="userInfo.password"
         type="password"
       ></mt-field>
       <mt-field
         placeholder="请重复输入密码"
-        :state="userInfo.repassword.length&&userInfo.password==userInfo.repassword?'success':'error'"
+        :state="
+          userInfo.repassword.length && userInfo.password == userInfo.repassword
+            ? 'success'
+            : 'error'
+        "
         v-model="userInfo.repassword"
         type="password"
       ></mt-field>
       <mt-field
         placeholder="请输入邮箱"
         v-model="userInfo.mailaddress"
-        :state="userInfo.mailaddress.length?'success':'error'"
+        :state="userInfo.mailaddress.length ? 'success' : 'error'"
       >
-        <mt-button class="btn" @click="selectMail">{{userInfo.mailurl}}</mt-button>
+        <mt-button class="btn" @click="selectMail">{{
+          userInfo.mailurl
+        }}</mt-button>
       </mt-field>
       <mt-field
         placeholder="请输入验证码"
-        :state="userInfo.mailcode.length==4?'success':'error'"
+        :state="userInfo.mailcode.length == 4 ? 'success' : 'error'"
         v-model="userInfo.mailcode"
         type="number"
       >
-        <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{codeTime}}</mt-button>
+        <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{
+          codeTime
+        }}</mt-button>
       </mt-field>
       <mt-button class="btn" type="primary" @click="submit">注册</mt-button>
       <div class="shopPicker"></div>
@@ -46,32 +54,32 @@ import Mail from "../../config/mail";
 import ShopPicker from "../shopPicker/shopPicker";
 import { Field, Button, Picker, Popup } from "mint-ui";
 import RegBussiness from "./bussiness";
-const { GetCodeTime, EventName } = Config;
+const { GetCodeTime, EventName, CodeText } = Config;
 const { address } = Mail;
 export default {
   components: {
-    ShopPicker
+    ShopPicker,
   },
   data() {
     return {
-      timeTick: null,
-      codeTime: "获取验证码",
-      address,
-      canGetCode: false,
+      codeTime: CodeText, //获取验证码按钮显示值
+      address, //邮箱默认地址
+      canGetCode: false, //防止重复点击开关
       userInfo: {
+        //注册表单默认数据
         username: "",
         password: "",
         repassword: "",
         mailurl: address[0],
         mailaddress: "",
-        mailcode: ""
-      }
+        mailcode: "",
+      },
     };
   },
   created() {
     this.regBussiness = new RegBussiness(this);
-    this.$events.onEvent(EventName.ChangeCount, _count => {
-      this.userInfo.mailurl = _count;
+    this.$events.onEvent(EventName.ChangeCount, (_count) => {
+      this.userInfo.mailurl = _count; //切换邮箱地址
     });
   },
   destroyed() {
@@ -83,30 +91,25 @@ export default {
     },
     getCode() {
       if (this.canGetCode) {
+        //是否允许发送邮箱验证
         return;
       }
-      this.regBussiness
-        .sendCode()
-        .then(res => {
-          this.canGetCode = true;
-          let _codeTime = GetCodeTime / 1000;
-          this.timeTick = setInterval(() => {
-            if (_codeTime-- <= 1) {
-              clearInterval(this.timeTick);
-              this.timeTick = null;
-              this.canGetCode = false;
-              this.codeTime = "获取验证码";
-            } else {
-              this.codeTime = _codeTime + "S";
-            }
-          }, 1000);
-        })
-        .catch(err => {});
+      this.regBussiness.sendCode().then((res) => {
+        this.canGetCode = true;//关闭点击开关
+        this.$timeTick.timeTick((state) => {
+          this.codeTime = state.content;
+          switch (state.res) {
+            case 0:
+              this.canGetCode = false;//允许用户点击
+              break;
+          }
+        });
+      });
     },
     submit() {
       this.regBussiness.submitData();
-    }
-  }
+    },
+  },
 };
 </script>
 

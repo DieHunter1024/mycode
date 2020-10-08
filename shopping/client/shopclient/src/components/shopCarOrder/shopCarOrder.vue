@@ -23,23 +23,23 @@ export default {
   data() {
     return {
       shopCar: null,
-      isSelAll: false,
-      selCount: 0,
-      sum: 0,
-      orderList: null,
+      isSelAll: false,//全选
+      selCount: 0,//商品数量
+      sum: 0,//商品总价
+      orderList: null,//提交订单请求参数
       shopCarOrderBussiness: null,
     };
   },
   created() {
     this.shopCar = new this.$store.ShopCar();
     this.shopCarOrderBussiness = new ShopCarOrderBussiness(this);
-    this.$events.onEvent(EventName.SelectParent, this.selAllHandler);
+    this.$events.onEvent(EventName.SelectParent, this.selAllHandler);//全选按钮监听，通过监听所有商品都选中或未全选，修改状态
   },
   destroyed() {
     this.$events.offEvent(EventName.SelectParent, this.selAllHandler);
   },
   methods: {
-    selectHandler() {
+    selectHandler() {//驱动修改所有商品选中状态
       this.isSelAll = !this.isSelAll;
       this.shopCar.selAllChild(this.isSelAll);
     },
@@ -48,10 +48,10 @@ export default {
       this.selCount = _selCount;
       this.sum = _sum;
     },
-    delSelShop() {
+    delSelShop() {//删除选中商品
       this.shopCar.delSelShop();
     },
-    sendOrder() {
+    sendOrder() {//提交订单
       this.shopCarOrderBussiness.sendOrderList();
     },
   },

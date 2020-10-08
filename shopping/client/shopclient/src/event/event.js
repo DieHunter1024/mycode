@@ -1,9 +1,9 @@
 import Vue from "vue";
-class Events extends Vue {
+class Events extends Vue {//继承Vue的自定义事件，使其直接调用
   constructor() {
     super();
   }
-  static getInstance() {
+  static getInstance() {//返回当前实例的单例
     if (!Events._instance) {
       Object.defineProperty(Events, "_instance", {
         value: new Events()

@@ -98,7 +98,9 @@ module.exports = class Utils {
     });
     return JSON.parse(cryptoJS.enc.Utf8.stringify(decrypt).toString());
   }
-
+  /* 获取缓存图片
+   * @param {object} _file       文件所有信息
+   */
   static readPicFile(_file) {
     let { path, mimetype } = _file;
     let file = fs.readFileSync(path);
@@ -110,6 +112,10 @@ module.exports = class Utils {
     this.delPicFile(path);
     return this.writePicFile(file, fileName);
   }
+  /* 通过缓存生成图片
+   * @param {object} _file       文件所有信息
+   * @param {string} _fileName   生成随机文件名
+   */
   static writePicFile(_file, _fileName) {
     let fileName = "./public/assets/img/" + _fileName;
     fs.writeFileSync(fileName, _file);
@@ -131,32 +137,58 @@ module.exports = class Utils {
   static joinDate() {
     return new Date();
   }
-  static codeLength() {
+
+  /* 生成随机
+   * @method    codeLength
+   * @for    Utils
+   * @param {number/string} len  随机数长度
+   * @return {string}  _count   生成len个随机数
+   */
+  static codeLength(len) {
     let _count = "";
-    for (let i = 0; i < EmailConfig.codeLength; i++) {
-      _count += Math.floor(Math.random() * 10); //生成4个随机数
+    for (let i = 0; i < len; i++) {
+      _count += Math.floor(Math.random() * 10); //生成len个随机数
     }
     return _count;
   }
+  /* 生成时间戳
+   * @method    randomCode
+   * @for    Utils
+   * @param
+   * @return {object}  _count   生成len个随机数
+   */
   static randomCode() {
     return {
-      code: this.codeLength(),
-      sendTime: new Date().getTime() + EmailConfig.sendTime,
-      targetTime: new Date().getTime() + EmailConfig.targetTime,
+      code: this.codeLength(EmailConfig.codeLength), //生成的随机数
+      sendTime: new Date().getTime() + EmailConfig.sendTime, //发送时间
+      targetTime: new Date().getTime() + EmailConfig.targetTime, //截止时间
     };
   }
+  /* 异步发送邮箱验证
+   * @method    createEmailCode
+   * @for    Utils
+   * @param   {Object} codeList  邮箱验证码列表
+   * @param   {String} email   用户邮箱
+   * @param   {Object} findRes  数据库搜寻到的用户信息
+   * @return {Boolean}  isSuccess   是否发送成功
+   */
   static async createEmailCode(codeList, email, findRes) {
-    if (!codeList[email]) {
+    if (!codeList[email] || new Date().getTime() > codeList[email].sendTime) {
+      //已过1分钟,防止多次请求邮箱
       codeList[email] = this.randomCode();
       codeList[email].info = findRes;
       return await this.sendEmailCode(codeList[email].code, email);
-    } else if (new Date().getTime() > codeList[email].sendTime) {
-      //已过1分钟,防止多次请求
-      codeList[email] = this.randomCode();
-      codeList[email].info = findRes;
-      return await this.sendEmailCode(codeList[email].code, email);
+    } else {
+      //未过1分钟
+      return false;
     }
   }
+  /* 生成邮件内容
+   * @method    sendEmailCode
+   * @for    Utils
+   * @param   {String} code  验证码内容
+   * @param   {String} email   用户邮箱
+   */
   static async sendEmailCode(code, email) {
     return await SendMail.sendEmail(
       email,
@@ -164,8 +196,17 @@ module.exports = class Utils {
       `您的验证码为:${code},${EmailConfig.time}分钟内有效`
     );
   }
+  /* 核对验证码
+   * @method    checkEmailCode
+   * @for    Utils
+   * @param   {Object} codeList  用户验证码列表
+   * @param   {String} key   用户邮箱
+   * @param   {Object} _data   用户提交的表单信息
+   * @return   {Object} res   请求响应返回值
+   */
   static checkEmailCode(codeList, key, _data) {
     if (!codeList[key]) {
+      //未发送验证码
       return {
         result: 0,
         msg: "验证码错误",
@@ -174,6 +215,7 @@ module.exports = class Utils {
       new Date().getTime() < codeList[key].targetTime &&
       _data.mailcode == codeList[key].code
     ) {
+      //验证码校对成功
       let _obj = {
         result: 1,
         token: Utils.createToken(
@@ -186,6 +228,7 @@ module.exports = class Utils {
       codeList[key] = null;
       return _obj;
     } else if (new Date().getTime() > codeList[key].targetTime) {
+      //验证码超时
       return {
         result: 0,
         msg: "验证码超时",
@@ -193,7 +236,7 @@ module.exports = class Utils {
     } else {
       return {
         result: 0,
-        msg: "验证码错误",
+        msg: "验证失败",
       };
     }
   }

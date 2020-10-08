@@ -16,8 +16,8 @@ export default {
   name: "banner",
   data() {
     return {
-      list: [],
-      imgPath: Config.RequestPath
+      list: [],//图片列表
+      imgPath: Config.RequestPath//图片根路径
     };
   },
   created() {
@@ -25,9 +25,9 @@ export default {
   },
   methods: {
     init() {
-      new BannerBussiness(this);
+      new BannerBussiness(this);//初始化banner请求
     },
-    clickHandler(_shop) {
+    clickHandler(_shop) {//banner点击跳转
       this.$router.push({
         name: "ShopTheme",
         query: { _type: _shop.shopType, _shopName: _shop.shopName }

@@ -10,8 +10,8 @@ module.exports = {
   AdminKey: "admin", //管理员token加密标识
   CryptoKey: "tokenkey", //Crypto加密关键字，用于生成16进制秘钥
   EmailTransporter: {
-    // service: "163", // 运营商  qq邮箱 网易//
-    host: "smtp.163.com",
+    // service: "qq", // 运营商  qq邮箱 网易  若使用QQ邮箱，则只需配置service：qq
+    host: "smtp.163.com",// 若使用网易邮箱，则只需配置host：smtp.163.com
     port: 465, //端口
     // secure: false,
     auth: {
@@ -20,11 +20,11 @@ module.exports = {
     },
   },
   EmailConfig: {
-    time: 5,
-    codeLength: 4,
-    sendTime: 1 * 60 * 1000,
-    targetTime: 5 * 60 * 1000,
-    title: "零食商贩",
+    time: 5,//验证码有效期，单位分钟
+    codeLength: 4,//验证码长度
+    sendTime: 1 * 60 * 1000,//后端验证码允许再次发送时间间隔，单位毫秒
+    targetTime: 5 * 60 * 1000,//验证码有效期，单位毫秒
+    title: "零食商贩",//验证码标题
   },
   Collections: {
     Users: {

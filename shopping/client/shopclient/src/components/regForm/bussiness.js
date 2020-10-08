@@ -15,7 +15,7 @@ export default class LoginBussiness extends Vue {
   }
   sendCode() {
     return new Promise((resolve, reject) => {
-      if (!this.vueComponent.userInfo.mailaddress.length) {
+      if (!this.vueComponent.userInfo.mailaddress.length) {//过滤邮箱长度为0
         Toast('请填写正确的邮箱');
         return
       }
@@ -23,7 +23,7 @@ export default class LoginBussiness extends Vue {
         .get(ServerApi.user.getMailCode, {
           params: {
             crypto: this.$crypto.setCrypto({
-              codeType: "reg",
+              codeType: "reg",//区分注册登录类型
               username: this.vueComponent.userInfo.mailaddress + this.vueComponent.userInfo.mailurl
             })
           },
@@ -45,7 +45,7 @@ export default class LoginBussiness extends Vue {
   }
   submitData() {
     for (const key in this.vueComponent.userInfo) {
-      if (this.vueComponent.userInfo.hasOwnProperty(key) && !this.vueComponent.userInfo[key].length) {
+      if (this.vueComponent.userInfo.hasOwnProperty(key) && !this.vueComponent.userInfo[key].length) {//过滤表单项长度为0
         Toast('请填写完整的信息');
         return
       }
@@ -56,13 +56,14 @@ export default class LoginBussiness extends Vue {
           ...this.vueComponent.userInfo
         })
       }).then(res => {
+        //成功后重置用户信息
         this.vueComponent.userInfo.password = "";
         this.vueComponent.userInfo.repassword = "";
         this.vueComponent.userInfo.mailcode = "";
         switch (res.result) {
           case 1:
             Toast(res.msg);
-            history.go(-1)
+            history.go(-1)//返回登录页面
             break;
           default:
             break;

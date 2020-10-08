@@ -1,4 +1,5 @@
 export default class ShopType {
+  //商品类型，图片类型，订单状态
   static shopType = [
     { name: "炒货", val: "0" },
     { name: "果味", val: "1" },

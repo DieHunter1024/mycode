@@ -56,7 +56,6 @@ export default {
     .f_s(26);
   }
   .change {
-    // background: white;
     .fontColorOn();
   }
 }

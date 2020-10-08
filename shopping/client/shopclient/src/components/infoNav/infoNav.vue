@@ -35,10 +35,10 @@ export default {
   name: "infoNav",
   data() {
     return {
-      selected: "0",
+      selected: "0",//默认选中第一项
       navTitle: NavConfig.NavTitle,
       Type: ShopType.shopType,
-      ...this.$route.query
+      ...this.$route.query//路由传参，将商品信息传递到data中
     };
   }
 };

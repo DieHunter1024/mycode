@@ -1,28 +1,32 @@
 <template>
   <div class="login">
-    <mt-button class="btn" @click="changeLoginType">{{loginType == "psd"?"切换为验证码登录":'切换为账号登录'}}</mt-button>
+    <mt-button class="btn" @click="changeLoginType">{{
+      loginType == "psd" ? "切换为验证码登录" : "切换为账号登录"
+    }}</mt-button>
     <div>
       <mt-field
         :label="LoginFieldConfig[loginType].namelabel"
         :placeholder="LoginFieldConfig[loginType].nameplaceholder"
         v-model="userInfo.username"
-        :type="loginType == 'psd'?'':'email'"
+        :type="loginType == 'psd' ? '' : 'email'"
       ></mt-field>
       <mt-field
-        v-if="loginType=='psd'"
+        v-if="loginType == 'psd'"
         :label="LoginFieldConfig[loginType].codelabel"
         :placeholder="LoginFieldConfig[loginType].codeplaceholder"
         v-model="userInfo['password']"
-        :type="loginType == 'psd'?'password':'number'"
+        :type="loginType == 'psd' ? 'password' : 'number'"
       ></mt-field>
       <mt-field
         v-else
         :label="LoginFieldConfig[loginType].codelabel"
         :placeholder="LoginFieldConfig[loginType].codeplaceholder"
         v-model="userInfo['mailcode']"
-        :type="loginType == 'psd'?'password':'number'"
+        :type="loginType == 'psd' ? 'password' : 'number'"
       >
-        <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{codeTime}}</mt-button>
+        <mt-button class="btn" :disabled="canGetCode" @click="getCode">{{
+          codeTime
+        }}</mt-button>
       </mt-field>
       <router-link to="/Register">
         <mt-button class="btn">还没账号？点击注册</mt-button>
@@ -38,7 +42,7 @@ import FieldConfig from "../../config/fieldConfig";
 import Config from "../../config/config";
 import { Field, Button } from "mint-ui";
 import LoginBussiness from "./bussiness";
-const { GetCodeTime } = Config;
+const { GetCodeTime, CodeText } = Config;
 const { LoginFieldConfig } = FieldConfig;
 export default {
   components: {},
@@ -47,15 +51,15 @@ export default {
       loginBussiness: null,
       LoginFieldConfig,
       loginType: "psd",
-      codeTime: "获取验证码",
+      codeTime: CodeText,
       timeTick: null,
       canGetCode: false,
       userInfo: {
         username: "",
         password: "",
         mailcode: "",
-        remember: true
-      }
+        remember: true,
+      },
     };
   },
   created() {
@@ -75,28 +79,22 @@ export default {
       if (this.canGetCode) {
         return;
       }
-      this.loginBussiness
-        .sendCode()
-        .then(res => {
-          this.canGetCode = true;
-          let _codeTime = GetCodeTime / 1000;
-          this.timeTick = setInterval(() => {
-            if (_codeTime-- <= 1) {
-              clearInterval(this.timeTick);
-              this.timeTick = null;
+      this.loginBussiness.sendCode().then((res) => {
+        this.canGetCode = true;
+        this.$timeTick.timeTick((state) => {
+          this.codeTime = state.content;
+          switch (state.res) {
+            case 0:
               this.canGetCode = false;
-              this.codeTime = "获取验证码";
-            } else {
-              this.codeTime = _codeTime + "S";
-            }
-          }, 1000);
-        })
-        .catch(err => {});
+              break;
+          }
+        });
+      });
     },
     submit() {
       this.loginBussiness.submitData();
-    }
-  }
+    },
+  },
 };
 </script>
 

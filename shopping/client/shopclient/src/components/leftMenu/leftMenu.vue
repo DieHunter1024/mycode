@@ -17,14 +17,14 @@ export default {
   data() {
     return {
       list: ShopType.shopType,
-      onesel: "0"
+      onesel: "0"//默认选中第一项
     };
   },
   methods: {
     sel(item) {
-      if (this.onesel == item) return;
+      if (this.onesel == item) return;//防止重复点击同一个选项
       this.onesel = item;
-      this.$events.emitEvent(EventName.SelectKind, item);
+      this.$events.emitEvent(EventName.SelectKind, item);//触发选中商品类型事件
     }
   }
 };

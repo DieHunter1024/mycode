@@ -1,4 +1,4 @@
-export default class BannerModel {
+export default class BannerModel {//banner数据存取
   constructor() {
     this._bannerList = []
     this._pageConfig = {}

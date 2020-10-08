@@ -31,13 +31,13 @@ export default {
   created() {
     this.rightShopBussiness = new RightShopBussiness(this);
     this.rightShopBussiness.initPageConfig(this.beforeIndex);
-    this.$events.onEvent(EventName.SelectKind, data => {
-      this.transitionSwitch = false;
+    this.$events.onEvent(EventName.SelectKind, data => {//监听选择种类事件
+      this.transitionSwitch = false;//通过v-show实现fade动画效果
       this.rightShopBussiness.initPageConfig(data);
     });
   },
   destroyed() {
-    this.$events.offEvent(EventName.SelectKind);
+    this.$events.offEvent(EventName.SelectKind);//销毁事件监听
   },
   methods: {
     clickHandler(data) {
