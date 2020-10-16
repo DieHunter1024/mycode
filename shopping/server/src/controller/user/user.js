@@ -7,7 +7,7 @@ const { addData, updateData, findData } = require("../../command/command");
 userCodeList = {};
 router.get(Config.ServerApi.checkToken, Util.checkToken, async (_req, res) => {
   let findRes = await findData(Mod, {
-    username: res._data.id.user,
+    _id: res._data.id.user,
   });
   if (findRes.length && findRes) {
     res.send({
@@ -76,7 +76,7 @@ router.post(Config.ServerApi.userLogin, async (req, res) => {
               result: 1,
               token: Util.createToken(//生成前端token
                 findRes[0].userType,
-                findRes[0].username,
+                findRes[0]._id,
                 _data.remember
               ),
               msg: "登录成功",

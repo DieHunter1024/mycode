@@ -50,7 +50,7 @@ export default {
     > span {
       display: inline-block;
       vertical-align: middle;
-      padding-left: unit(40 / @pxtorem, rem);
+      margin-left: unit(40 / @pxtorem, rem);
     }
     > img {
       .w(145);
