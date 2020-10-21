@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ball</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #big_box{width: 500px;height: 500px;border: 1px solid lightcoral; }
+        #small_box{width: 50px;height: 50px;background: deepskyblue;border-radius: 50%;text-align: center;line-height: 50px;position: absolute; }
+    </style>
+</head>
+<body>
+    <div id="big_box">
+        <div id="small_box">Z</div>
+    </div>
+    <script>
+        var dbox = document.getElementById("big_box");
+        var xbox = document.getElementById("small_box");
+        var big = dbox.getBoundingClientRect();
+        var speedX = 20;
+        var speedY = 40;
+        move();
+        function move() {
+            requestAnimationFrame(move);
+                if (xbox.offsetLeft<=big.left||xbox.offsetLeft>=big.width-xbox.offsetWidth) {
+                    speedX = -speedX;
+                }
+                if (xbox.offsetTop<=big.top||xbox.offsetTop>=big.height-xbox.offsetHeight) {
+                    speedY = -speedY;
+                }
+
+
+            xbox.style.left = xbox.offsetLeft+speedX+"px";
+            xbox.style.top = xbox.offsetTop+speedY+"px";
+        }
+    </script>
+</body>
+</html>

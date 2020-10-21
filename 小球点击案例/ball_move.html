@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: lightcoral;
+            position: absolute;
+            left: 0;
+            top: 0;
+            /* float: left; */
+            transition: 1s;
+        }
+
+        /* .ball0 {
+            transition: 1s;
+            left: 0;
+        }
+
+        .ball1 {
+            transition: 1.1s;
+            left: 100px;
+        }
+
+        .ball2 {
+            transition: 1.3s;
+            left: 200px;
+        }
+
+        .ball3 {
+            transition: 1.6s;
+            left: 300px;
+        }
+
+        .ball4 {
+            transition: 2s;
+            left: 400px;
+        }
+
+        .ball5 {
+            transition: 2.5s;
+            left: 500px;
+        }
+
+        .ball6 {
+            transition: 3.1s;
+            left: 600px;
+        }
+
+        .ball7 {
+            transition: 3.8s;
+            left: 700px;
+        }
+
+        .ball8 {
+            transition: 4.7s;
+            left: 800px;
+        }
+
+        .ball9 {
+            transition: 5.7s;
+            left: 900px;
+        } */
+    </style>
+</head>
+
+<body>
+    <script>
+        function Ball() {}
+        Ball.prototype = {
+            ball: [],
+            // boolAll: false,
+            creatBall: function () {
+                for (var i = 0; i < 10; i++) {
+                    this.ball[i] = document.createElement("div");
+                    this.ball[i].className = "ball" + i;
+                    this.ball[i].style.left = i*100+"px";
+                    this.ball[i].style.transition = i*0.2+"s";
+                    this.ball[i].bool = false;
+                    document.body.appendChild(this.ball[i]);
+                }
+                document.self = this;
+                document.addEventListener("click", this.isMove);
+            },
+            isMove: function (e) {
+                this.posi = {
+                    x: e.offsetX,
+                    y: e.offsetY
+                };
+                this.ball = e.target;
+                console.log(e.target);
+                if (e.target instanceof HTMLDivElement) {
+                    // console.log(this);
+                    document.addEventListener("click", this.self.ballMove);
+                } else {
+                    document.addEventListener("click", this.self.ballAllMove);
+                }
+                this.removeEventListener("click", this.self.isMove);
+            },
+            ballMove: function (e) {
+                // this.ball.bool = true;
+                // console.log(this.ball);
+                // if (this.ball.bool) {
+                this.ball.style.left = e.x - this.posi.x + "px";
+                this.ball.style.top = e.y - this.posi.y + "px";
+                // this.ball.addEventListener("click", this.self.stopMove);
+                // }
+                this.ball.removeEventListener("click", this.self.ballMove);
+                // this.ball.bool = false;
+                // this.addEventListener("click", this.self.isMove);
+                this.removeEventListener("click", this.self.ballMove);
+                this.addEventListener("click", this.self.isMove);
+            },
+            ballAllMove: function (e) {
+
+                for (var i = 0; i < this.self.ball.length; i++) {
+                    this.self.ball[i].style.left = this.posi.x + "px";
+                    this.self.ball[i].style.top = this.posi.y + "px";
+                }
+                // this.addEventListener("click", this.self.isMove);
+                this.removeEventListener("click", this.self.ballAllMove);
+                this.addEventListener("click", this.self.isMove);
+
+            }
+            // stopMove: function () {
+            //     console.log("aaa");
+                
+            // }
+
+        }
+        init();
+
+        function init() {
+            var ball = new Ball();
+            ball.creatBall();
+        }
+    </script>
+</body>
+
+</html>

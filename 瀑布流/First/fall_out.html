@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fall_out</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <ul></ul>
+    <script>
+        var ul, img;
+        const count = 5;
+        var arr = [];
+        var pic = 1;
+        init();
+
+        function init() {
+            ul = document.querySelector("ul");
+            for (var i = 0; i < count; i++) {
+                var li = document.createElement("li");
+                ul.appendChild(li);
+                li.style.margin = "5px";
+                li.style.width = (document.documentElement.clientWidth) / count - 22 + "px";
+                li.style.border = "1px solid lightcoral";
+                li.style.float = "left";
+                arr.push(0);
+            }
+            img = new Image();
+            img.src = "img/" + pic + ".jpg";
+            img.addEventListener("load", addPic);
+            document.addEventListener("scroll", move)
+        }
+
+        function addPic(e) {
+            var copy = this.cloneNode(false);
+            var min = Math.min.apply(null, arr);
+            var index = arr.indexOf(min);
+            ul.children[index].appendChild(copy);
+            copy.style.width = "100%";
+            arr[index] = copy.parentElement.offsetHeight;
+            if ((document.documentElement.scrollHeight - document.documentElement.scrollTop) / document.documentElement
+                .clientHeight > 4) {
+                return;
+            }
+            pic = parseInt(Math.random() * 10 + 1);
+            img.src = "img/" + pic + ".jpg";
+        }
+
+        function move(e) {
+            if ((document.documentElement.scrollHeight - document.documentElement.scrollTop) / document.documentElement
+                .clientHeight < 2) {
+                pic = parseInt(Math.random() * 10 + 1);
+                img.src = "img/" + pic + ".jpg";
+            }
+        }
+    </script>
+</body>
+
+</html>

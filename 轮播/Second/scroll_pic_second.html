@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            margin: 50px auto;
+            width: 960px;
+            height: 320px;
+            background: lightcoral;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #pic_box {
+            height: 320px;
+            /* width: 4800px; */
+            background: lightblue;
+            position: absolute;
+            /* transition: all 1s; */
+        }
+
+        #left {
+            position: absolute;
+            top: 130px;
+            left: 10px;
+        }
+
+        #right {
+            position: absolute;
+            top: 130px;
+            right: 10px;
+        }
+
+        ul {
+            list-style: none;
+            position: absolute;
+            bottom: 20px;
+            left: 400px;
+        }
+
+        li {
+            width: 20px;
+            height: 20px;
+            list-style: none;
+            border-radius: 50%;
+            float: left;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="pic_box"></div>
+        <img id="left" src="img/left.png" alt="">
+        <img id="right" src="img/right.png" alt="">
+        <ul id="dot_box"></ul>
+    </div>
+
+    <script>
+        var box, pic_box, left, right, dot_box, liList;
+        var count = 0;
+        var num = 160;
+        var direct;
+        var bool = false;
+        var autoPlay = false;
+        var picurl = ["img/a.jpeg", "img/b.jpeg", "img/c.jpeg", "img/d.jpeg", "img/e.jpeg"];
+        var piclist = [];
+        init();
+
+        function init() {
+            box = document.getElementById("box");
+            pic_box = document.getElementById("pic_box");
+            left = document.getElementById("left");
+            right = document.getElementById("right");
+            dot_box = document.getElementById("dot_box");
+            left.addEventListener("click", picChange);
+            right.addEventListener("click", picChange);
+            box.addEventListener("mouseenter", isAuto);
+            box.addEventListener("mouseleave", isAuto);
+            creatImg();
+            animation();
+            creatDot();
+        }
+
+        function creatImg() {
+
+            for (var j = 0; j < picurl.length; j++) {
+                piclist[j] = new Image();
+                piclist[j].src = picurl[j];
+                piclist[j].style.width = "960px";
+                piclist[j].style.height = "320px";
+            }
+            pic_box.appendChild(piclist[0]);
+
+        }
+
+        function picChange(e) {
+            if (bool) return;
+            if (this === left) {
+                direct = "left";
+                count--;
+                if (count === -1) {
+                    count = picurl.length - 1;
+                }
+            } else if (this === right) {
+                direct = "right";
+                count++;
+                if (count === picurl.length) {
+                    count = 0;
+                }
+            }
+            console.log(count)
+            nextPic();
+        }
+
+        function nextPic() {
+            pic_box.style.width = 960 * 2 + "px";
+            if (direct === "right") {
+                pic_box.appendChild(piclist[count]);
+                pic_box.style.left = 0;
+            } else if (direct === "left") {
+                pic_box.insertBefore(piclist[count], pic_box.firstElementChild);
+                pic_box.style.left = -960 + "px";
+            }
+            bool = true;
+            liChange();
+        }
+
+        function animation() {
+            requestAnimationFrame(animation);
+            picMove();
+            autoScroll();
+        }
+
+        function creatDot() {
+            for (var i = 0; i < picurl.length; i++) {
+                var li = document.createElement("li");
+                dot_box.appendChild(li);
+                li.style.background = "rgba(255,255,255,0.7)";
+            }
+            dot_box.firstElementChild.style.background = "rgba(255,255,255,1)";
+            dot_box.addEventListener("click", changeDot);
+            liChange();
+        }
+
+        function changeDot(e) {
+            // if(dot_box)
+            if (bool) return;
+            var list = Array.from(dot_box.children);
+            var index = list.indexOf(e.target);
+            if (index === count) {
+                return;
+            }
+            if (index > count) {
+                direct = "right";
+            } else if (index < count) {
+                direct = "left";
+            }
+            count = index;
+            nextPic();
+        }
+
+        function liChange() {
+            if (liList) {
+                liList.style.backgroundColor = "rgba(255,255,255,0.7)";
+            }
+            liList = dot_box.children[count];
+            liList.style.background = "rgba(255,255,255,1)";
+        }
+
+        function picMove() {
+            if (!bool) return;
+            if (direct === "left") {
+                pic_box.style.left = pic_box.offsetLeft + 20 + "px";
+                if (pic_box.offsetLeft === 0) {
+                    bool = false;
+                    pic_box.lastElementChild.remove();
+                }
+            } else if (direct === "right") {
+                pic_box.style.left = pic_box.offsetLeft - 20 + "px";
+                if (pic_box.offsetLeft === -960) {
+                    bool = false;
+                    pic_box.firstElementChild.remove();
+                    pic_box.style.left = 0;
+                }
+            }
+        }
+
+        function autoScroll() {
+            if (!autoPlay) return;
+            num--;
+            if (num === 0) {
+                num = 160;
+                direct = "right";
+                count++;
+                if (count === picurl.length) {
+                    count = 0;
+                }
+                nextPic();
+            }
+
+        }
+
+        function isAuto(e) {
+            if (e.type === "mouseenter") {
+                autoPlay = false;
+            } else if (e.type = "mouseleave") {
+                autoPlay = true;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		#box{
+			width:350px;
+			height:350px;
+			border:1px solid #000;
+			margin:100px;
+			position:relative;
+		}
+		#big{
+			width:400px;
+			height:400px;
+			border:1px solid #000;
+			position:absolute;
+			top : 0;
+			left : 360px;
+			overflow:hidden;
+			display:none;
+		}
+		#mask{
+			width:175px;
+			height:175px;
+			background:pink;
+			opacity:0.3;
+			position:absolute;
+			top:0;
+			left:0;
+			cursor:move;
+			display:none
+		}
+		#small{
+			position:relative;
+		}
+		#bigImg{
+			position:absolute;
+			left:0;
+			top:0;
+		}
+	</style>
+	<body>
+		<div id="box">
+			<div id="small">
+				<img src="images/iphone.jpg" alt="" id="smallImg"/>
+				<div id="mask"></div>
+			</div>
+			<div id="big">
+				<img src="images/iphone_big.jpg" alt="" id="bigImg"/>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+	/*
+	 思路：
+	 	1、鼠标移入到小图区域  显示mask和big   离开让big 和mask 隐藏
+	 	2、鼠标在小图区域上移动  改变mask的left和top   控制bigImg的left和top
+	 */
+	var mask = document.getElementById("mask");
+	var small = document.getElementById("small");
+	var smallImg = document.getElementById("smallImg");
+	var big = document.getElementById("big");
+	var bigImg = document.getElementById("bigImg");
+	var box = document.getElementById("box");
+	
+	small.onmouseover = function(){
+		mask.style.display = "block";
+		big.style.display = "block";
+	}
+	
+	small.onmouseout = function(){
+		mask.style.display = "none";
+		big.style.display = "none";
+	}
+	
+	small.onmousemove = function(e){
+		 var e = e || event;
+		  //将要设置mask的left值
+		 var x = e.pageX - box.offsetLeft - mask.offsetWidth / 2;    
+		 //将要设置mask的top值
+		 var y = e.pageY - box.offsetTop - mask.offsetHeight / 2;
+		 var maxL = small.offsetWidth - mask.offsetWidth; // 最大的left值      最小left 0
+		 var maxT = small.offsetHeight - mask.offsetHeight; // 最大的top值    最小top 0		 
+		//边界判断
+		x =  x < 0 ? x = 0 :  x > maxL ? maxL : x;
+		y = y < 0 ? y = 0 : y > maxT ? maxT : y;	
+		bigImg.style.left = -x * (bigImg.offsetWidth - big.offsetWidth) / (small.offsetWidth - mask.offsetWidth) + "px";
+		bigImg.style.top = -y * (bigImg.offsetHeight - big.offsetHeight) / (small.offsetHeight - mask.offsetHeight) + "px";	 
+		mask.style.left = x + "px"; 
+		mask.style.top = y + "px";
+	}
+	
+	
+</script>

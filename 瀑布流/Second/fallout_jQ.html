@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      ul {
+        list-style: none;
+      }
+    </style>
+    <script src="js/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <ul></ul>
+    <script>
+      // 面向对象jQ瀑布流
+      function Pic() {}
+      Pic.prototype = {
+        // 新建图片，传图片的列表，li的个数，ul，图片的名称
+        img: null,
+        list: [],
+        _count: 5,
+        ul: $("ul"),
+        pic: 1,
+        // 新建li的方法，
+        creatLi: function () {
+          // 根据_count创造li，设置样式并加入到ul
+          for (var i = 0; i < this._count; i++) {
+            var li = $("<li></li>")
+              .css({
+                width: $(document.documentElement).innerWidth() / this._count -
+                  20 +
+                  "px",
+                margin: "5px",
+                border: "1px solid lightcoral",
+                float: "left"
+              })
+              .appendTo(this.ul);
+              // 每一个放高度的列表中放入初始值 0
+            this.list.push(0);
+          }
+          // 加载图片，并添加加载事件，若图片加载完后执行事件
+          this.img = $("<img></img>")
+            .attr("src", "img/" + this.pic + ".jpg")
+            .on("load", this.loadHandler);
+          this.img[0].self = this;
+          // 给document加入滚动事件
+          document.self = this;
+          document.img = this.img;
+          document.addEventListener("scroll", this.scrollHandler);
+        },
+        // 加载事件
+        loadHandler: function (e) {
+          // 取得列表中最小的那个数作为下一张图片的放置处
+          var min = Math.min.apply(null, this.self.list);
+          // console.log(min);
+          // 获取最小高度的那个li的索引
+          var index = this.self.list.indexOf(min);
+          // 复制图片并根据min，index放置图片
+          var copy = $(this)
+            .clone(false)
+            .css({
+              width: "100%",
+              "vertical-align": "bottom"
+            })
+            .appendTo(this.self.ul.children().eq(index));
+          // console.log(copy.parent());
+          // 每次对最矮的li放到列表中
+          this.self.list[index] = copy.parent().outerHeight();
+          // 随机文件名
+          this.self.pic = parseInt(Math.random() * 10 + 1);
+          if (
+            (document.documentElement.scrollHeight -
+              document.documentElement.scrollTop) /
+            document.documentElement.clientHeight >
+            4
+          ) 
+          // 判断滚轮的长度（记就行）
+          {
+            return;
+          }
+          $(this).attr("src", "img/" + this.self.pic + ".jpg");
+        },
+        scrollHandler: function (e) {
+          // 判断滚轮的长度（记就行）与上面的类似，更改了一个符号
+          if (
+            (document.documentElement.scrollHeight -
+              document.documentElement.scrollTop) /
+            document.documentElement.clientHeight <
+            2
+          ) {
+            console.log(this.self, this.img);
+            this.self.pic = parseInt(Math.random() * 10 + 1);
+            this.img.attr("src", "img/" + this.self.pic + ".jpg");
+          }
+        }
+      };
+      Pic.prototype.constructor = Pic;
+
+      var img = new Pic();
+      img.creatLi();
+    </script>
+  </body>
+
+</html>

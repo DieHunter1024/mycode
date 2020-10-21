@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>三级联动</title>
+    <style type="text/css">
+        select,
+        option {
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <select id='select1' name="">
+        <option value="">--省份--</option>
+    </select>
+    <select id='select2' name="">
+        <option value="">--城市--</option>
+    </select>
+    <select id='select3' name="">
+        <option value="">--县/区--</option>
+    </select>
+    <script>
+        function GetArea(url) {
+            this.url = url
+            this.init()
+        }
+        GetArea.prototype = {
+            num: 0,
+            selections: null,
+            list: [],
+            _nowList: [],
+            _city: null,
+            _options: null,
+            createOptions(data, parent) {
+                if (!parent) return
+                if (parent.children) {
+                    var leng = parent.children.length
+                    for (var j = 0; j < leng-1; j++) {
+                        parent.lastElementChild.textContent = ''
+                        parent.lastElementChild.remove()
+                    }
+                }
+                for (var i = 0; i < data.length; i++) {
+                    var option = document.createElement('option');
+                    option.textContent = data[i].name || data[i]
+                    parent.appendChild(option)
+                }
+                parent.addEventListener('change', this.changeHandler);
+                parent.data = data
+                parent.self = this
+            },
+            init() {
+                this.selections = document.querySelectorAll('select')
+                var xhr = new XMLHttpRequest();
+                xhr.addEventListener('load', this.loadHandler);
+                xhr.open('get', this.url)
+                xhr.send('')
+                xhr.self = this
+            },
+            loadHandler(e) {
+                this.self.list = JSON.parse(this.response)
+                this.self.createOptions(this.self.list, this.self.selections[this.self.num])
+            },
+            changeHandler(e) {
+                var list;
+                this.data.forEach((item, val) => {
+                    if (item.name === this.value) {
+                        list = item.city ? item.city : item
+                    }
+                });
+                this.self.selections.forEach((item, val) => {
+                    if (item.id === this.id) {
+                        console.log(this.self.num)
+                        this.self.num = item.id.split('select')[1] - 1
+                    }
+                })
+                if (this.self.num > this.self.num) {
+                    return
+                }
+                this.self.num++
+                this.self.createOptions(list, this.self.selections[this.self.num])
+            }
+        }
+        var getArea = new GetArea('http://127.0.0.1:5500/city.json');
+    </script>
+</body>
+
+</html>

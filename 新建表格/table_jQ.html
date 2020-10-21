@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <title>tab</title>
+    <script src="js/jquery.min.js" charset="utf-8"></script>
+    <style media="screen">
+      /* table {
+         height: 500px; 
+         width: 500px; 
+         background: lightcyan; 
+    } */
+    tr {
+        background: lightcoral;
+        width: 200px;
+        height: 50px;
+    }
+    td {
+      border: 1px solid lightgreen;
+        text-align: center;
+    }
+    </style>
+  </head>
+
+  <body>
+    编号：<input type="text" name="bookNo"><br>
+    书名：<input type="text" name="bookName"><br>
+    作者：<input type="text" name="author"><br>
+    出版社：<input type="text" name="press"><br>
+    <input type="button" value="添加" id="bn">
+    查找：<input type="text" id="search">
+    <input type="button" value="查找" id="searchBn">
+    <input type="button" value="清除" id="clear">
+    <script type="text/javascript">
+      var list = [];
+      var btnCount = [];
+      var table = $("<table></table>").css({
+        width: "800px",
+        borderCollapse: "collapse"
+      }).appendTo('body');
+      $("#clear").on("click", clearAll);
+      $("#bn").on('click', addData);
+      $("#searchBn").on("click", searchItem);
+
+      function addData() {
+        // $.each(list,function(index,value) {
+        //   console.log(value);
+        // })
+        // if (list.length === 0) {
+        //   alert("输入有误")
+        //   return;
+        // }
+        var obj = {};
+        $(":text:not(#search)").each(function (index, el) {
+          var str = $(el).attr("name");
+          obj[str] = $(el).val();
+        });
+        obj.Del = "del";
+        list.push(obj);
+        addTable(list);
+      }
+
+      function addTable(arr) {
+        $("table").empty();
+        delHandler();
+        var thr = $("<tr></tr>").appendTo("table");
+        $.each(arr[0], function (index0, value) {
+          var td = $("<th></th>").appendTo(thr).text(index0);
+        });
+        $.each(arr, function (index, value) {
+          var tr = $("<tr></tr>").appendTo("table");
+          $.each(arr[index], function (str) {
+            var count = index + 2;
+            var td = $("<td></td>").appendTo("tr:nth-child(" + count +
+              ")").text(arr[index][str]);
+            if (arr[index][str] === "del") {
+              td.empty();
+              var btn = $("<button>Del</button>").appendTo(td).css({
+                width: "100%",
+                height: "100%"
+              }).on("click", {
+                arr: arr
+              }, removeTr);
+              btnCount.push(btn);
+            }
+          });
+        });
+      }
+
+      function clearAll(e) {
+        delHandler();
+        table.empty();
+        list = [];
+      }
+
+      function delHandler() {
+        for (var i = 0; i < btnCount.length; i++) {
+          btnCount[i].off("click");
+          btnCount[i] = null;
+        }
+        btnCount.length = 0;
+      }
+
+      function removeTr(e) {
+        var arr = e.data.arr;
+        // console.log(arr);
+        var trs = $(this).parent().parent()[0];
+        var tr = Array.from($("tr"));
+        var index = tr.indexOf(trs);
+        arr.splice(index - 1, 1);
+        addTable(arr);
+      }
+
+      function searchItem() {
+        var arr = [];
+        var str = $("#search").val();
+        // console.log(str);
+        $.each(list,function(index,value){
+          // console.log(value,list[index]);
+          if (list[index].bookName.indexOf(str)>-1) {
+            arr.push(value);
+          }
+        });
+        console.log(arr);
+        addTable(arr);
+      }
+    </script>
+  </body>
+
+</html>

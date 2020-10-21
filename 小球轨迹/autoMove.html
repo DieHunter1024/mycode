@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background: lightcoral;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var arrX = [];
+        var arrY = [];
+        // var start, end;
+        var i = 0;
+        var stop;
+
+        function Ball() {
+            // arguments.callee.arrX = [];
+            // arguments.callee.arrY = [];
+            // arguments.callee.i = 0;
+            // arguments.callee.stop;
+        }
+        Ball.prototype = {
+            createBall: function () {
+                var div = document.createElement("div");
+                document.body.appendChild(div);
+                div.className = "box";
+                div.self = this;
+                div.addEventListener("mousedown", this.mouseHandler);
+                return div;
+            },
+            mouseHandler: function (e) {
+                if (e.type === "mousedown") {
+                    // start = new Date();
+                    this.addEventListener("mouseup", this.self.mouseHandler);
+                    document.box = this;
+                    document.boxObj = {
+                        x: e.offsetX,
+                        y: e.offsetY
+                    };
+                    document.addEventListener("mousemove", this.self.mouseHandler);
+                } else if (e.type === "mousemove") {
+                    this.box.style.left = e.x - this.boxObj.x + "px";
+                    this.box.style.top = e.y - this.boxObj.y + "px";
+                    arrX.push(this.box.style.left);
+                    arrY.push(this.box.style.top);
+                    console.log(arrX, arrY);
+                } else if (e.type === "mouseup") {
+                    this.removeEventListener("mouseHandler", this.self.mouseHandler);
+                    document.removeEventListener("mousemove", this.self.mouseHandler);
+                    document.self = this;
+                    // end = new Date();
+                    // console.log(end - start);
+                    i = arrX.length;
+                    stop = setInterval(this.self.autoMove, 16);
+                    // console.log("a");
+                    // arrX = null;
+                    // arrY = null;
+                    // this.self.autoMove(end - start, arrX, arrY);
+                }
+            },
+            autoMove: function () {
+                document.self.style.left = arrX[i];
+                document.self.style.top = arrY[i];
+                // var timestep = end - start;
+                // if (i >= arrX.length - 1 || i >= arrY.length - 1) {
+                if (i <= 0) {
+                    // i = 0;
+                    arrX.length = 0;
+                    arrY.length = 0;
+                    clearInterval(stop);
+                    return;
+                    // }
+                }
+                // console.log(document.self.style.left,document.self.style.top);
+                i--;
+                // i++;
+                console.log(i);
+                // console.log(timestep);
+            }
+        };
+        var ball1 = new Ball();
+        ball1.createBall();
+        // var ball2 = new Ball();
+        // ball2.createBall();
+        // var ball3 = new Ball();
+        // ball3.createBall();
+    </script>
+</body>
+
+</html>

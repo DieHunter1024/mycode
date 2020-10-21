@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            #nav{
+                width: 120px;
+                height:80px;
+                position: absolute;
+                right: 310px;
+                top: 60px;
+                z-index: 2;
+            }
+            #nav img{
+                width: 100%;
+                height: 100%;
+                margin: 10px 0;
+                transition: 0.5s;
+            }
+            #nav img:hover{
+                border: 5px solid lightcoral;
+                box-sizing: border-box;
+            }
+            #pic{
+                width: 1000px;
+                height:600px;
+                position: relative;
+                margin: 50px auto;
+            }
+            #pic img{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                display: none;
+            }
+        </style>
+        <script src="js/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div id="nav">
+            <img src="img/1.jpg" alt="1" />
+            <img src="img/2.jpg" alt="2" />
+            <img src="img/3.jpg" alt="3" />
+            <img src="img/4.jpg" alt="4" />
+            <img src="img/5.jpg" alt="5" />
+        </div>
+        <div id="pic">
+            <img src="img/1.jpg" alt="1" />
+            <img src="img/2.jpg" alt="2" />
+            <img src="img/3.jpg" alt="3" />
+            <img src="img/4.jpg" alt="4" />
+            <img src="img/5.jpg" alt="5" />
+        </div>
+        <script>
+            // slideUp和slideDown
+            // $("#pic img").eq(1).slideDown(1);
+            // $("#nav img").on("click",changePic);
+            // function changePic(e) {
+            //     var list = Array.from($("#nav img"));
+            //     var index = list.indexOf(this);
+            //     console.log(index);
+            //     $("#pic img:visible").slideUp(500);
+            //     $("#pic img").eq(index).slideDown(500);
+            // }
+
+            // 用fadeout fadein
+            $("#pic img").eq(0).fadeIn(1);
+            $("#nav img").on("click",changePic);
+            function changePic(e) {
+                var list = Array.from($("#nav img"));
+                var index = list.indexOf(this);
+                // console.log(index);
+                $("#pic img:visible").fadeOut(500);
+                $("#pic img").eq(index).fadeIn(500);
+            }
+
+            // 自动轮播
+            // var count = 0;
+            // $("#pic img").eq(0).fadeIn(1);
+            // $("#nav img").on("click",changePic);
+            // var list = Array.from($("#nav img"));
+            // function changePic(e) {
+            //     var index = list.indexOf(this);
+            //     // console.log(index);
+            //     $("#pic img:visible").fadeOut(500);
+            //     $("#pic img").eq(index).fadeIn(500);
+            // }
+            // autoMove();
+            // setInterval(autoMove,1000);
+            // function autoMove() {
+                
+            //     // requestAnimationFrame(autoMove)
+                
+            //     count++;
+            //     if (count>4) {
+            //         count=0;
+            //     }
+            //     $("#pic img:visible").fadeOut(500);
+            //     $("#pic img").eq(count).fadeIn(500);
+            // }
+
+
+            
+
+        </script>
+    </body>
+
+</html>

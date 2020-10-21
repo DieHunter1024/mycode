@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #box{margin: 50px auto;width:960px;height: 320px; background: lightcoral;position: relative;overflow: hidden;}
+        #pic_box{height: 320px;width:4800px;background: lightblue;position: absolute;transition: all 1s; }
+        #left{position: absolute;top:130px;left: 10px;}
+        #right{position: absolute;top:130px;right: 10px;}
+        ul{list-style: none;position: absolute;bottom: 20px;left: 400px;}
+        li{width: 20px;height:20px;list-style: none;border-radius: 50%;border: 3px solid lightcoral;float: left;margin-left: 5px;}
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="pic_box"></div>
+        <img id="left" src="img/left.png" alt="">
+        <img id="right" src="img/right.png" alt="">
+        <ul id="dot_box"></ul>
+    </div>
+        <script>
+            var pic_box, box, left, right,dot_box,dot,count = 0;
+            var arr_img = ["a.jpeg","b.jpeg","c.jpeg","d.jpeg","e.jpeg"];
+            function init() {
+                dot_box = document.getElementById("dot_box");
+                pic_box = document.getElementById("pic_box");
+                pic_box.style.left = 0;
+                box = document.getElementById("box");
+                left = document.getElementById("left");
+                right = document.getElementById("right");
+                for(var i = 0;i < arr_img.length;i ++){
+                    var img = new Image();
+                    img.src = "img/"+arr_img[i];
+                    img.style.width="960px";
+                    img.style.height="320px";
+                    pic_box.appendChild(img);
+                    var li = document.createElement("li");
+                    dot_box.appendChild(li);
+                }
+                dot = dot_box.firstElementChild;
+                dot.style.backgroundColor = "lightcoral";
+                left.addEventListener("click",change_pic);
+                right.addEventListener("click",change_pic);
+                dot_box.addEventListener("click",changedot);
+            }
+            init();
+            function change_pic(e) {
+                if(this === left){
+                    count --;
+                    if (count<0) {
+                        count = arr_img.length-1;
+                    }
+                }else if(this === right){
+                    count ++;
+                    if (count>arr_img.length-1) {
+                        count = 0;
+                    }
+                }
+                pic_box.style.left = -count*960+"px";
+                count_pic();
+            }
+            function changedot(e) {
+                for(var j = 0;j < arr_img.length;j ++){
+                    if(dot_box.children[j] === e.target){
+                        count = j;
+                    }
+                }
+                pic_box.style.left = -count*960+"px";
+                count_pic();
+            }
+            function count_pic(){
+                dot.style.backgroundColor = "transparent";
+                dot = dot_box.children[count];
+                dot.style.backgroundColor = "lightcoral";
+            }
+            function autochange() {
+                count ++;
+                    if (count>arr_img.length-1) {
+                        count = 0;
+            }
+            pic_box.style.left = -count*960+"px";
+                count_pic();
+        }
+            setInterval(autochange,3000);
+        </script>
+    
+</body>
+</html>

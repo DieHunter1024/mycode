@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Carousel</title>
+        <script src="js/Carousel.js"></script>
+        <style>
+            /* *{transition: 1s;} */
+            /* body{color: lightcoral} */
+        </style>
+    </head>
+
+    <body>
+        <script>
+            var arr = ["img/left.png", "img/right.png"];
+            var arr1 = ["img/a.png", "img/b.png", "img/c.png", "img/d.png", "img/e.png"];
+            var arr2 = ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg", "img/6.jpg", "img/7.jpg"];
+            // var arr3 = ["img/aaa.jpg", "img/bbb.jpg", "img/ccc.jpg"]
+            var carousel = new Carousel(document.body, arr1, arr);
+            var carousel2 = new Carousel(document.body, arr1, arr);
+            // var carousel3 = new Carousel(document.body,arr3,arr);
+            carousel.autoPlay = true;
+            carousel2.autoPlay = true;
+            // carousel3.autoPlay = true;
+            // carousel.heightValue = 600;
+            // carousel3.widthValue =1600;
+            animate();
+            function animate() {
+                requestAnimationFrame(animate);
+                carousel.animate();
+                carousel2.animate();
+                // carousel3.animate();
+            }
+        </script>
+    </body>
+
+</html>

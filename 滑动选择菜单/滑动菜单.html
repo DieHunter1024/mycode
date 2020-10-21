@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 500px;
+            margin: 50px auto;
+            position: relative;
+        }
+
+        .box {
+
+            width: 500px;
+            height: 50px;
+            /* background: lightblue; */
+            position: absolute;
+            z-index: 10;
+        }
+
+        li {
+            z-index: 10;
+            float: left;
+            width: 100px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            list-style: none;
+        }
+
+        .moveBox {
+            position: absolute;
+            left: 0;
+            background: lightcoral;
+            transition: all 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <li class="moveBox" id="moveBox"></li>
+        <ul class="box" id="box">
+            <li class="boxItem">a</li>
+            <li class="boxItem">b</li>
+            <li class="boxItem">c</li>
+            <li class="boxItem">d</li>
+            <li class="boxItem">e</li>
+        </ul>
+    </div>
+    <script>
+        var box = document.getElementById('box')
+        var moveBox = document.getElementById('moveBox')
+        var left = [0, 1, 2, 3, 4]
+        var index = 0;
+        var liList = document.querySelectorAll('.boxItem')
+        box.addEventListener('mouseover', mouseHandler);
+        box.addEventListener('mouseleave', mouseHandler);
+        box.addEventListener('click', mouseHandler);
+
+        function mouseHandler(e) {
+            liList = Array.from(liList)
+            if (e.type === 'mouseover') {
+                for (let i = 0; i < liList.length; i++) {
+                    if (e.target.textContent === liList[i].textContent) {
+                        moveBox.style.left = 100 * left[i] + 'px'
+                    }
+                }
+            } else if (e.type === 'mouseleave') {
+                moveBox.style.left = 100 * left[index] + 'px'
+            } else {
+                for (let j = 0; j < liList.length; j++) {
+                    if (e.target.textContent === liList[j].textContent) {
+                        index = j;
+                    }
+                }
+            }
+
+        }
+    </script>
+</body>
+
+</html>
