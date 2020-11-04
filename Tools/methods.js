@@ -67,10 +67,6 @@ let Methods = (function () {
             } else if (window.XMLHttpRequest) { //其他浏览器
                 xhr = new XMLHttpRequest();
             }
-            xhr.timeout = 3000
-            xhr.ontimeout = function (event) {
-                fn('请求超时！');
-            }
             if (method == 'get') {
                 url = this.urlJoin(url, data)
                 data = null
@@ -434,6 +430,29 @@ let Methods = (function () {
                 }
             }
             return getArea = new GetArea(url);
+        },
+        // 函数防抖
+        unShake(fn, time) {
+            var count = null;
+            return (function () {
+                var _self = this;
+                clearTimeout(count)
+                var args = arguments;
+                count = setTimeout(function () {
+                    fn.call(_self, ...args)
+                }, time)
+            }())
+        },
+        // 函数节流
+        throttle(fn, time) {
+            let _timer = null
+            return function () {
+                if (_timer) {
+                    clearTimeout(_timer)
+                    _timer = null
+                }
+                _timer = setTimeout(fn, time)
+            }
         }
     }
 }())
