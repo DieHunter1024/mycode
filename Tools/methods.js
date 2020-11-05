@@ -434,7 +434,7 @@ let Methods = (function () {
         // 函数节流
         throttle(fn, time) {
             var canDo = true
-            return function () {
+            return function (e) {
                 if (!canDo) {
                     return false
                 }
