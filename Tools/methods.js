@@ -432,20 +432,18 @@ let Methods = (function () {
             return getArea = new GetArea(url);
         },
         // 函数防抖
-        unShake(fn, time) {
-            var count = null;
-            return (function () {
-                var _self = this;
-                clearTimeout(count)
-                var args = arguments;
-                count = setTimeout(function () {
-                    fn.call(_self, ...args)
-                }, time)
-            }())
+        debounce(fn, time) { //防抖
+            var _timer = null
+            return function () {
+                if (!_timer) {
+                    clearTimeout(_timer)
+                }
+                _timer = setTimeout(fn, time);
+            }
         },
         // 函数节流
-        throttle(fn, time) {
-            let _timer = null
+        throttle(fn, time) { //节流
+            var _timer = null
             return function () {
                 if (_timer) {
                     clearTimeout(_timer)
