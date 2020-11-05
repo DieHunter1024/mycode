@@ -431,18 +431,22 @@ let Methods = (function () {
             }
             return getArea = new GetArea(url);
         },
-        // 函数防抖
-        debounce(fn, time) { //防抖
-            var _timer = null
+        // 函数节流
+        throttle(fn, time) {
+            var canDo = true
             return function () {
-                if (!_timer) {
-                    clearTimeout(_timer)
+                if (!canDo) {
+                    return false
                 }
-                _timer = setTimeout(fn, time);
+                canDo = false
+                setTimeout(() => {
+                    fn.call(this)
+                    canDo = true
+                }, time)
             }
         },
-        // 函数节流
-        throttle(fn, time) { //节流
+        // 函数防抖
+        debounce(fn, time) {
             var _timer = null
             return function () {
                 if (_timer) {
