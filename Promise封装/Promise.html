@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./Promise.js"></script>
+    <script>
+        var count = 1
+        new MyPromise(function (res, rej) {
+                // setTimeout(function () {
+                //     rej('success' + count++)
+                // }, 1000)
+                setTimeout(function () {
+                    res('success' + count++)
+                }, 1000)
+            })
+            .then(function (res) {
+                console.log(res) // success1
+                return new MyPromise(function (res, rej) {
+                    setTimeout(function () {
+                        res('success' + count++)
+                    }, 1000)
+                })
+            }).then(function (res) {
+                console.log(res) // success1
+                return new MyPromise(function (res, rej) {
+                    setTimeout(function () {
+                        res('success' + count++)
+                    }, 1000)
+                })
+            }).then(function (res) {
+                console.log(res) // success1
+                return new MyPromise(function (res, rej) {
+                    setTimeout(function () {
+                        res('success' + count++)
+                    }, 1000)
+                })
+            }).catch(function (err) {
+                console.log(err) // success1
+            })
+    </script>
+</body>
+
+</html>
