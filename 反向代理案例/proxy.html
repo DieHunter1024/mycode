@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $.post('http://127.0.0.1:1024', {// 访问代理服务端，获取目标服务器的数据
+            token: '1234'
+        }, function (res) {
+            console.log(JSON.parse(res))
+        })
+    </script>
+</body>
+
+</html>
