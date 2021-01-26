@@ -451,6 +451,17 @@
         "isCustom": true,
         "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/basic-custom/9001crr0c56orw2lukb7my6y2cjf7p.png",
         "tempBgColor": "transparent"
+    }, {
+        "id": "a713a380-849a-4a9e-b790-b1c53a4338e7",
+        "uid": "b308c4718d465f58492a6145376914a5",
+        "imageType": "image",
+        "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/8001con2blvmkqn5x67734chgzxb5n.png",
+        "url": "https://bower.io/",
+        "name": "Bower",
+        "isCustom": false,
+        "bgColor": "transparent",
+        "tempBgColor": "transparent",
+        "updateTime": 1611474237647
     }],
     [{
         "id": "3d77fbf7-5a4f-45e8-8a5b-8c4ccfeefe0f",
@@ -463,6 +474,28 @@
         "isCustom": true,
         "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/basic-custom/9001crr0c57nhr37ai1qr7ueazh54j.png",
         "tempBgColor": "transparent"
+    }, {
+        "id": "1c2381e8-edc2-4b42-b549-2e746f599308",
+        "uid": "basic-old1crr0c52rr2dnjstwcf1xvihhuo",
+        "imageType": "image",
+        "name": "npm",
+        "url": "https://www.npmjs.com/",
+        "bgColor": "transparent",
+        "updateTime": 0,
+        "isCustom": true,
+        "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/basic-custom/9001crr0c57bibeeqxw4tm21x3o6ue.png",
+        "tempBgColor": "transparent"
+    }, {
+        "id": "33c8440d-2115-4c98-970b-72742143f5cc",
+        "uid": "b1801997b3e5180f38935c49a8f921a3",
+        "imageType": "image",
+        "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/9001chducufjpvinvpx1tpkwhipdhy.png",
+        "url": "https://chocolatey.org/packages",
+        "name": "Chocolatey Packages  ",
+        "isCustom": false,
+        "bgColor": "transparent",
+        "tempBgColor": "transparent",
+        "updateTime": 1611475224942
     }, {
         "id": "f54a07a5-665b-4782-b713-bba5af785bbe",
         "uid": "basic-old1crr0c52rvff0hxwp0p5nvs798y",
@@ -551,17 +584,6 @@
         "bgColor": "transparent",
         "tempBgColor": "transparent",
         "updateTime": 1603250061467
-    }, {
-        "id": "1c2381e8-edc2-4b42-b549-2e746f599308",
-        "uid": "basic-old1crr0c52rr2dnjstwcf1xvihhuo",
-        "imageType": "image",
-        "name": "npm",
-        "url": "https://www.npmjs.com/",
-        "bgColor": "transparent",
-        "updateTime": 0,
-        "isCustom": true,
-        "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/basic-custom/9001crr0c57bibeeqxw4tm21x3o6ue.png",
-        "tempBgColor": "transparent"
     }, {
         "id": "842c5c66-5358-4df0-9c2b-e5f59961aeab",
         "uid": "basic-old1crr0c52rxd40kxm1wg3vo5hrqo",
@@ -740,6 +762,17 @@
         "tempBgColor": "transparent",
         "updateTime": 1611327095608
     }, {
+        "id": "ace1d66f-8e1d-4bcc-882d-585438ef358c",
+        "uid": "c49fbcf909bca3eebc91fdb92183de26",
+        "imageType": "image",
+        "src": "https://infinityicon.infinitynewtab.com/user-share-icon/c49fbcf909bca3eebc91fdb92183de26.png",
+        "url": "https://ionicframework.com/",
+        "name": "Ionic",
+        "isCustom": false,
+        "bgColor": "transparent",
+        "tempBgColor": "transparent",
+        "updateTime": 1611474130629
+    }, {
         "id": "8a567416-db9f-47cf-9b46-5c1077d8c753",
         "uid": "3536e771b1be710d7a114bb3537c7a26",
         "imageType": "image",
@@ -893,7 +926,8 @@
         "bgColor": "transparent",
         "tempBgColor": "transparent",
         "updateTime": 1600237912434
-    }, {
+    }],
+    [{
         "id": "e180f603-07dc-410f-975f-6dd825cffa00",
         "uid": "44302b7dcc0324d99532190872cbdebc",
         "imageType": "image",
@@ -904,8 +938,7 @@
         "bgColor": "transparent",
         "tempBgColor": "transparent",
         "updateTime": 1608191681015
-    }],
-    [{
+    }, {
         "id": "40581319-46bc-45c8-b49d-35c3295029f8",
         "uid": "85c50a8be7f12e25cae8bd104a6f3ad5",
         "imageType": "image",
@@ -1125,7 +1158,8 @@
         "bgColor": "transparent",
         "tempBgColor": "transparent",
         "updateTime": 1598843138431
-    }, {
+    }],
+    [{
         "id": "fd01bc50-1d13-45ec-9159-59d00938851c",
         "uid": "89fc120372e4b9d12f976f478a9974fa",
         "imageType": "image",
@@ -1136,8 +1170,7 @@
         "bgColor": "transparent",
         "tempBgColor": "transparent",
         "updateTime": 1608190430257
-    }],
-    [{
+    }, {
         "id": "0d689e43-b79e-4847-aced-8b679372523c",
         "uid": "4a944458c343dc4ccb83f9fb515f4e36",
         "imageType": "image",
@@ -1605,6 +1638,28 @@
             "tempBgColor": "transparent",
             "updateTime": 1599222542061
         }, {
+            "id": "ad1ce736-2e62-4e7f-ac05-35712a246c9d",
+            "uid": "b8d6340fbe7e52f25d9fed368f34882a",
+            "imageType": "image",
+            "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/8001e5ufcv48ml2oce4iutnsyt1dud.png",
+            "url": "http://www.qijishow.com/down/index.html",
+            "name": "奇迹秀设计工具箱",
+            "isCustom": false,
+            "bgColor": "transparent",
+            "tempBgColor": "transparent",
+            "updateTime": 1611538779023
+        }, {
+            "id": "60c26708-6055-4030-9b45-2a88db2800e9",
+            "uid": "971c1bb7e8b05f90742c1453c7ae437b",
+            "imageType": "image",
+            "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/9001chv2pf346wdy5k6n1gfckisfw4.png",
+            "url": "https://c.runoob.com/",
+            "name": "菜鸟工具",
+            "isCustom": false,
+            "bgColor": "transparent",
+            "tempBgColor": "transparent",
+            "updateTime": 1611539508449
+        }, {
             "id": "6a841074-6c68-41d8-b2d4-8f6410c7a9a1",
             "uid": "344f86902d0c2f7dd2bd860da2066ce3",
             "imageType": "image",
@@ -1659,6 +1714,17 @@
             "bgColor": "transparent",
             "tempBgColor": "transparent",
             "updateTime": 1600136884002
+        }, {
+            "id": "7b03b2de-27d7-4806-9198-5020d6d7992b",
+            "uid": "3b3e77d8e157712e18da514e2dd9aef3",
+            "imageType": "image",
+            "src": "https://infinitypro-img.infinitynewtab.com/custom-icon/9001c30eeg2pncx4rf3firmoaf5xc7.png",
+            "url": "http://tool.oschina.net/",
+            "name": "在线工具",
+            "isCustom": false,
+            "bgColor": "transparent",
+            "tempBgColor": "transparent",
+            "updateTime": 1611538818434
         }, {
             "id": "cb0b2fde-b99e-48d1-81a8-5f259c4a198b",
             "uid": "63264b39d449c310ce9de9aa1ebe80ec",
