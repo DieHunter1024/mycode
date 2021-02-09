@@ -1,25 +1,20 @@
 # myCode
 
 #### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
 
-#### 软件架构
-软件架构说明
+{**简介**
+该仓库是一个案例仓库，里面存放了一些作者发布在博客上的案例及项目的集合，当前仓库以整合为主，后续可能将案例分模块单独展示
+博客地址：https://blog.csdn.net/time**\_**
+}
 
+#### 技术栈
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+主要以JS为主，商城项目包含Vue，React，Node，后续将使用TS等
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  git init
+2.  git clone git@gitee.com:DieHunter/myCode.git
 
 #### 参与贡献
 
@@ -28,10 +23,9 @@
 3.  提交代码
 4.  新建 Pull Request
 
-
 #### 码云特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
+1.  使用 Readme_XXX.md 来支持不同的语言，例如 Readme_en.md, Readme_zh.md
 2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
 3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
 4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
