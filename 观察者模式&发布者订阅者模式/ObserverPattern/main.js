@@ -1,17 +1,19 @@
 const Observer = require('./js/observer');
+const Subject = require('./js/subject')
+
 class MyObserver extends Observer {}
-const observerA = new MyObserver()
-const observerB = new MyObserver()
-const observerC = new MyObserver()
-observerA.subscribe(observerA, function (e) {
-    console.log(e.target + 'observerA')
+class MySubject extends Subject {}
+
+// 实例化两个观察者，同时对一个subject进行监听
+const observer = new MyObserver()
+const observer2 = new MyObserver()
+const subject = new MySubject()
+
+observer.subscribe(subject, (e) => {
+    console.log(e) //hello world
 })
-observerB.subscribe(observerA, function (e) {
-    console.log(e.target + 'observerB')
+observer2.subscribe(subject, (e) => {
+    console.log(e) //hello world
 })
-observerC.subscribe(observerA, function (e) {
-    console.log(e.target + 'observerC')
-})
-setTimeout(observerA.fireEvent.bind(observerA, {
-    target: 'name:'
-}), 1000)
+// 延时激活观察者注册的函数，传递参数
+setTimeout(subject.fireEvent.bind(subject, 'hello world'), 1000)
