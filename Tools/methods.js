@@ -33,10 +33,13 @@ let Methods = (function () {
         },
         //拆分url变成对象
         urlSplit(url) {
+            if (url.indexOf('?') == -1) {
+                return false
+            }
             var list = url.split('?')[1].split('&');
             var leng = list.length;
-            let obj = {}
-            for (let i = 0; i < leng; i++) {
+            var obj = {}
+            for (var i = 0; i < leng; i++) {
                 var key = list[i].split('=')[0];
                 var val = list[i].split('=')[1];
                 obj[key] = val
@@ -431,23 +434,21 @@ let Methods = (function () {
             }
             return getArea = new GetArea(url);
         },
+        // 函数防抖
+        unShake(fn, time) {
+            var count = null;
+            return (function () {
+                var _self = this;
+                clearTimeout(count)
+                var args = arguments;
+                count = setTimeout(function () {
+                    fn.call(_self, ...args)
+                }, time)
+            }())
+        },
         // 函数节流
         throttle(fn, time) {
-            var canDo = true
-            return function (e) {
-                if (!canDo) {
-                    return false
-                }
-                canDo = false
-                setTimeout(() => {
-                    fn.call(this)
-                    canDo = true
-                }, time)
-            }
-        },
-        // 函数防抖
-        debounce(fn, time) {
-            var _timer = null
+            let _timer = null
             return function () {
                 if (_timer) {
                     clearTimeout(_timer)
