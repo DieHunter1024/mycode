@@ -33,16 +33,15 @@ let Methods = (function () {
         },
         //拆分url变成对象
         urlSplit(url) {
-            if (url.indexOf('?') == -1) {
-                return false
+            if (url.indexOf('?') === -1) {
+                return {}
             }
-            var list = url.split('?')[1].split('&');
-            var leng = list.length;
-            var obj = {}
-            for (var i = 0; i < leng; i++) {
-                var key = list[i].split('=')[0];
-                var val = list[i].split('=')[1];
-                obj[key] = val
+            let list = url.split('?')[1].split('&');
+            let len = list.length;
+            let obj = {}
+            for (let i = 0; i < len; i++) {
+                let key = list[i].split('=')[0];
+                obj[key] = list[i].split('=')[1];
             }
             return obj
         },
@@ -62,27 +61,38 @@ let Methods = (function () {
                 elem.style[str] = style[str];
             }
         },
-        // Ajax请求函数
-        AjaxTool(method, url, data, fn) {
-            var xhr;
+        /*
+         * ajax请求方法
+         * @param config method：请求类型 url：接口地址 data：输入参数 timeout：超时时间
+         * @return Promise:Promise异步处理
+         */
+        myAjax(config) {
+            let xhr,
+                t = this;
             if (window.ActiveXObject) { //ie浏览器
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             } else if (window.XMLHttpRequest) { //其他浏览器
                 xhr = new XMLHttpRequest();
             }
-            if (method == 'get') {
-                url = this.urlJoin(url, data)
-                data = null
-            }
-            xhr.open(method, url);
-            xhr.send(data ? JSON.stringify(data) : '')
-            xhr.addEventListener('load', function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    fn(this.response)
-                } else {
-                    fn('err')
-                }
-
+            config.method === 'get' ? (function () { //判断get与post等请求方式
+                config.url = t.urlJoin(config.url, config.data);
+                config.data = null
+            }()) : "";
+            xhr.open(config.method, config.url);
+            xhr.send(config.data ? config.data : {})
+            xhr.timeout = config.timeout || 10 * 1000 //ajax请求超时，默认10秒
+            return new Promise((resolve, reject) => {
+                xhr.addEventListener('timeout', function () { //超时抛错
+                    reject(this)
+                    throw Error('request timeout')
+                })
+                xhr.addEventListener('load', function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) { //请求成功
+                        resolve(this.response)
+                    } else {
+                        reject(this)
+                    }
+                })
             })
         },
         //拖拽事件
