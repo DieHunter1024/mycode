@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .svn
+.vscode
 .idea
 .pnp.js
 

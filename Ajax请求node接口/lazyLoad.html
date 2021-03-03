@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        lazyLoad</title>
+    <style>
+        li, li > img {
+            float: left;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<ul id="loadBox"></ul>
+<script type="module">
+    import Utils
+        from "./js/utils.js"
+    import LoadPic
+        from './js/loadPic.js'
+
+    let baseUrl = 'http://127.0.0.1:1024'
+    let picPath = '/static/'
+    let utils = new Utils()
+    let loadBox = document.querySelector('#loadBox')
+    let loadPic = new LoadPic()
+    loadPic.baseUrl = baseUrl + picPath
+    utils.myAjax({
+        url: baseUrl + '/getList',
+        method: 'get',
+        data: {len: 100},
+        timeout: 3 * 1000
+    }).then((data) => {
+        loadPic.create(loadBox, data)
+        console.log(data)
+    }).catch((err) => {
+        console.log(err)
+    })
+
+</script>
+</body>
+</html>
