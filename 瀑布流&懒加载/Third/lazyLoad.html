@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        lazyLoad</title>
+    <style>
+        ul {
+            height: 800px;
+            overflow-y: scroll;
+        }
+
+        li, li > img {
+            float: left;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<ul id="loadBox"></ul>
+<script type="module">
+    import Utils
+        from "./js/utils.js"
+    import LoadPic
+        from './js/loadPic.js'
+    import LazyLoad
+        from "./js/lazyLoad.js";
+    import eventBus
+        from './js/eventBus.js'
+
+    let pageConfig = {
+        page: 1,//第几页
+        pageSize: 30,//每页大小
+        clear: false//翻页时是否清空上一页
+    }
+    let baseUrl = 'http://127.0.0.1:1024'//请求地址
+    let picPath = '/static/'//静态文件路径
+    let utils = new Utils()
+    let loadBox = document.querySelector('#loadBox')//需要进行懒加载的元素
+    let loadPic = new LoadPic()
+    let lazyLoad;
+    let serverDate = new Date(),//服务器响应时间
+        domDate;//view渲染时间
+    loadPic.baseUrl = baseUrl + picPath
+    eventBus.onEvent('lazyLoadStep', function (e) {//监听翻页动作，渲染页面
+        domDate = new Date()//初始化view渲染时间
+        loadPic.create(loadBox, e)
+        console.log('DOM渲染：', (new Date() - domDate) / 1000)//DOM渲染速度（单位/秒）
+    })
+    utils.myAjax({
+        url: baseUrl + '/getList',
+        method: 'get',
+        data: {len: 1000},//传递长度为多少的列表（加载几张图片）
+        timeout: 10 * 1000//请求超时时间
+    }).then((data) => {
+        console.log('收到请求：', (new Date() - serverDate) / 1000)//后端运行速度+传输速度等等（单位/秒）
+        lazyLoad = new LazyLoad(pageConfig, loadBox, data)//初始化懒加载
+    }).catch((err) => {
+        console.log(err)
+    })
+</script>
+</body>
+</html>
