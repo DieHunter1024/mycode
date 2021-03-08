@@ -1,18 +1,18 @@
 const http = require('http');
 const WebSocket = require('ws');
 const port = 1024
-const route = '/ws/'
+const pathname = '/ws/'
 const server = http.createServer()
 
 class WebSocketServer extends WebSocket.Server {
     constructor () {
         super(...arguments);
         this.webSocketClient = {}
-        this.on('connection', this.connectHandler);
     }
 
     set ws (val) {
         this._ws = val
+        val.t = this;
         val.on('error', this.errorHandler)
         val.on('close', this.closeHandler)
         val.on('message', this.messageHandler)
@@ -22,47 +22,63 @@ class WebSocketServer extends WebSocket.Server {
         return this._ws
     }
 
-    connectHandler (ws) {
-        this.ws = ws
-        console.info('客户端已连接')
-    }
-
     messageHandler (e) {
         console.info('接收客户端消息')
-        console.log(e)
-    }
-
-    errorHandler (e) {
-        console.info('客户端出错')
-        console.log(e)
-    }
-
-    closeHandler (e) {
-        console.info('客户端已断开')
-        console.log(e)
-    }
-
-    addClient (item) {
-        if(!this.webSocketClient[item['name']]) {
-            this.webSocketClient[item['name']] = item
-        } else {
-            console.log(item['name'] + '客户端已存在')
+        let data = JSON.parse(e)
+        switch(data.ModeCode) {
+            case 'message':
+                console.log('收到消息' + data.msg)
+                this.send(e)
+                break;
+            case 'heart_beat':
+                console.log(`收到${this.name}心跳${data.msg}`)
+                this.send(e)
+                break;
         }
     }
 
+    errorHandler (e) {
+        this.t.removeClient(this)
+        console.info('客户端出错')
+    }
+
+    closeHandler (e) {
+        this.t.removeClient(this)
+        console.info('客户端已断开')
+    }
+
+    addClient (item) {
+        if(this.webSocketClient[item['name']]) {
+            console.log(item['name'] + '客户端已存在')
+            this.webSocketClient[item['name']].close()
+        }
+        console.log(item['name'] + '客户端已添加')
+        this.webSocketClient[item['name']] = item
+    }
+
+    removeClient (item) {
+        if(!this.webSocketClient[item['name']]) {
+            console.log(item['name'] + '客户端不存在')
+            return;
+        }
+        console.log(item['name'] + '客户端已移除')
+        this.webSocketClient[item['name']] = null
+    }
 }
 
 const webSocketServer = new WebSocketServer({noServer: true})
 server.on("upgrade", (req, socket, head) => {
-    let params = urlSplit(req.url)
-    if(!checkUrl(params.baseUrl, route)) {//未按标准
+    let url = new URL(req.url, `http://${req.headers.host}`)
+    let name = url.searchParams.get('name')
+    if(!checkUrl(url.pathname, pathname)) {//未按标准
         socket.write('未按照标准访问');
         socket.destroy();
         return;
     }
     webSocketServer.handleUpgrade(req, socket, head, function (ws) {
-        ws.name = params.obj.name
-        webSocketServer.emit('connection', ws, req);
+        ws.name = name
+        webSocketServer.addClient(ws);
+        webSocketServer.ws = ws
     });
 })
 server.listen(port, () => {
@@ -72,22 +88,4 @@ server.listen(port, () => {
 //验证url标准
 function checkUrl (url, key) {
     return - ~ url.indexOf(key)
-}
-
-//拆分url变成对象
-function urlSplit (url) {
-    if(url.indexOf('?') === - 1) {
-        return {}
-    }
-    let list = url.split('?')[1].split('&');
-    let len = list.length;
-    let obj = {}
-    for(let i = 0; i < len; i ++) {
-        let key = list[i].split('=')[0];
-        obj[key] = list[i].split('=')[1];
-    }
-    return {
-        baseUrl: url.split('?')[0],
-        obj
-    }
 }

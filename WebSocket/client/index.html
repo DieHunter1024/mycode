@@ -6,12 +6,77 @@
         Title</title>
 </head>
 <body>
+<button id="connect">
+    连接
+</button>
+<button disabled
+        id="sendMessage">
+    发送
+</button>
+<button disabled
+        id="destroy">
+    关闭
+</button>
 <script type="module">
+    import eventBus
+        from "./js/eventBus.js"
     import MyWebSocket
         from './js/webSocket.js'
 
-    let name = 'test'
-    let myWebSocket = new MyWebSocket('ws://127.0.0.1:1024/ws/?name=' + name);
+    const name = 'test'
+    let connect = document.querySelector('#connect')
+    let sendMessage = document.querySelector('#sendMessage')
+    let destroy = document.querySelector('#destroy')
+    let myWebSocket,
+        wsUrl = 'ws://127.0.0.1:1024/ws/?name=' + name
+
+    eventBus.onEvent('changeBtnState', setButtonState)
+    eventBus.onEvent('reconnect', reconnectWebSocket)
+    connect.addEventListener('click', reconnectWebSocket)
+    sendMessage.addEventListener('click', function (e) {
+        myWebSocket.sendMsg({
+            ModeCode: "message",
+            msg: 'hello'
+        })
+    })
+    destroy.addEventListener('click', function (e) {
+        myWebSocket.close()
+    })
+
+    function reconnectWebSocket () {
+        if(!myWebSocket) {//初始化
+            connectWebSocket()
+        }
+        if(myWebSocket && myWebSocket.reconnectTimer) {
+            clearTimeout(myWebSocket.reconnectTimer)
+            myWebSocket.reconnectTimer = null
+            connectWebSocket()
+        }
+    }
+
+    function connectWebSocket () {
+        myWebSocket = new MyWebSocket(wsUrl);
+        myWebSocket.init({
+            time: 5 * 1000,
+            timeout: 3 * 1000,
+            reconnect: 5 * 1000
+        }, true)
+    }
+
+    function setButtonState (state) {
+        switch(state) {
+            case 'open':
+                connect.disabled = true
+                sendMessage.disabled = false
+                destroy.disabled = false
+                break;
+            case 'close':
+                connect.disabled = false
+                sendMessage.disabled = true
+                destroy.disabled = true
+                break;
+        }
+    }
 </script>
 </body>
 </html>
