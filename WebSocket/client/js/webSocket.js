@@ -68,6 +68,7 @@ export default class MyWebSocket extends WebSocket {
     getMsg (e) {
         return JSON.parse(e.data)
     }
+
     /*
      * 心跳初始函数
      * @param time：心跳时间间隔
@@ -81,6 +82,7 @@ export default class MyWebSocket extends WebSocket {
             this.waitingServer()
         }, time)
     }
+
     //延时等待服务端响应，通过webSocketState判断是否连线成功
     waitingServer () {
         this.webSocketState = false
@@ -90,10 +92,15 @@ export default class MyWebSocket extends WebSocket {
                 return
             }
             console.log('心跳无响应，已断线')
-            this.close()
+            try {
+                this.close()
+            } catch(e) {
+                console.log('连接已关闭，无需关闭')
+            }
             this.reconnectWebSocket()
         }, this.heartBeat.timeout)
     }
+
     //重连操作
     reconnectWebSocket () {
         if(!this.isReconnect) {
