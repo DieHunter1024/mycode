@@ -23,15 +23,15 @@
     import MyWebSocket
         from './js/webSocket.js'
 
-    const name = 'test'
+    const name = 'test'//连接用户名
     let connect = document.querySelector('#connect')
     let sendMessage = document.querySelector('#sendMessage')
     let destroy = document.querySelector('#destroy')
     let myWebSocket,
         wsUrl = 'ws://127.0.0.1:1024/ws/?name=' + name
 
-    eventBus.onEvent('changeBtnState', setButtonState)
-    eventBus.onEvent('reconnect', reconnectWebSocket)
+    eventBus.onEvent('changeBtnState', setButtonState)//设置按钮样式
+    eventBus.onEvent('reconnect', reconnectWebSocket)//接收重连消息
     connect.addEventListener('click', reconnectWebSocket)
     sendMessage.addEventListener('click', function (e) {
         myWebSocket.sendMsg({
@@ -44,10 +44,10 @@
     })
 
     function reconnectWebSocket () {
-        if(!myWebSocket) {//初始化
+        if(!myWebSocket) {//第一次执行，初始化
             connectWebSocket()
         }
-        if(myWebSocket && myWebSocket.reconnectTimer) {
+        if(myWebSocket && myWebSocket.reconnectTimer) {//防止多个websocket同时执行
             clearTimeout(myWebSocket.reconnectTimer)
             myWebSocket.reconnectTimer = null
             connectWebSocket()
@@ -56,13 +56,17 @@
 
     function connectWebSocket () {
         myWebSocket = new MyWebSocket(wsUrl);
-        myWebSocket.init({
-            time: 5 * 1000,
+        myWebSocket.init({//time：心跳时间间隔 timeout：心跳超时间隔 reconnect：断线重连时
+            time: 10 * 1000,
             timeout: 3 * 1000,
-            reconnect: 5 * 1000
+            reconnect: 10 * 1000
         }, true)
     }
 
+    /*
+     * 设置按钮是否可点击
+     * @param state：open表示开启状态，close表示关闭状态
+     */
     function setButtonState (state) {
         switch(state) {
             case 'open':
