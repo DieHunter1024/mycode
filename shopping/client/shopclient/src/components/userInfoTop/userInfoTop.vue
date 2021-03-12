@@ -22,7 +22,7 @@ const { RequestPath, StorageName } = Config;
 import { Cell } from "mint-ui";
 export default {
   name: "userinfotop",
-  props: ["userInfo"],
+  props: ["userInfo"],//父组件传递用户信息至当前组件，并渲染
   data() {
     return {
       imgPath: RequestPath

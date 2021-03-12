@@ -52,9 +52,9 @@ export default {
     return {
       imgPath: RequestPath,
       updateBussiness: null,
-      popupVisible: false,
+      popupVisible: false,//控制picker显示
       selectArea: null,
-      sexOption: [
+      sexOption: [//性别配置
         {
           label: "男",
           value: "man"
@@ -64,7 +64,7 @@ export default {
           value: "woman"
         }
       ],
-      myAddressSlots: [
+      myAddressSlots: [//省市县联动配置
         {
           flex: 1,
           defaultIndex: 0,
@@ -95,14 +95,14 @@ export default {
           textAlign: "center"
         }
       ],
-      userInfo: this.$storage.getStorage(StorageName.UserInfo)
+      userInfo: this.$storage.getStorage(StorageName.UserInfo)//获取缓存的用户信息，用于显示默认项
     };
   },
   components: {
     UploadPic
   },
   created() {
-    this.$events.onEvent(EventName.UploadPic, headPic => {
+    this.$events.onEvent(EventName.UploadPic, headPic => {//上传头像后将新地址保存至当前组件
       this.userInfo.headPic = headPic;
     });
     this.updateBussiness = new UpdateBussiness(this);
@@ -111,11 +111,11 @@ export default {
     this.$events.offEvent(EventName.UploadPic);
   },
   methods: {
-    selectAddress() {
+    selectAddress() {//显示picker
       this.myAddressSlots[0].values = address;
       this.popupVisible = true;
     },
-    changeAddress(picker, values) {
+    changeAddress(picker, values) {//三级联动
       if (values[0]) {
         this.userInfo.alladdress = [values[0].name];
         picker.setSlotValues(1, values[0].children);
@@ -129,7 +129,7 @@ export default {
       }
     },
     submit() {
-      this.updateBussiness.submitData();
+      this.updateBussiness.submitData();//提交信息
     }
   }
 };

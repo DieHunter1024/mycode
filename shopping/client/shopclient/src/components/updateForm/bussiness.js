@@ -14,14 +14,13 @@ export default class UpdateBussiness extends Vue {
     this.vueComponent = _vueComponent
   }
   submitData() {
-    for (const key in this.vueComponent.userInfo) {
+    for (const key in this.vueComponent.userInfo) {//表单非空判断
       let value = this.vueComponent.userInfo[key]
       if (!value.length && value != true && value != 0 && typeof value == 'string') {
         Toast('请填写完整的信息');
         return
       }
     }
-    console.log(this.vueComponent.userInfo)
     this.$axios
       .post(ServerApi.user.updateUser, {
         crypto: this.$crypto.setCrypto({

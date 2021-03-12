@@ -34,9 +34,9 @@ export default {
   created() {
     this.userInfoBussiness = new UserInfoBussiness(this);
     this.$events.onEvent(EventName.IsLogin, () => {
-      this.userInfoBussiness.checkToken();
+      this.userInfoBussiness.checkToken();//退出登录响应事件，重重页面
     });
-    this.userInfoBussiness.checkToken();
+    this.userInfoBussiness.checkToken();//初始化先验证token
   },
   destroyed() {
     this.$events.offEvent(EventName.IsLogin);

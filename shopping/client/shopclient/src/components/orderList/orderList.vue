@@ -52,7 +52,7 @@ export default {
     return {
       orderState: ShopType.orderState,
       imgPath: Config.RequestPath,
-      orderList: [],
+      orderList: [],//订单详情
       orderBussiness: null,
     };
   },
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     submitOrder() {
-      this.orderBussiness.sendOrderPay(this.orderList);
+      this.orderBussiness.sendOrderPay(this.orderList);//支付
     },
   },
 };
