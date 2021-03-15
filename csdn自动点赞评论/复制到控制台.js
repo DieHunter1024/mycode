@@ -1,6 +1,8 @@
-let index = 0 //第几条
-let maxPage = 30 //总页数
-let page = 5 //5页停止一次
+let index = 0 //第几条博客
+let maxPage = 30 //博客总数
+let page = 5 //5页停止一次，防止检测评论太快
+let time = 30 * 1000 //延时评论
+let speed = 3 * 1000 //评论速度
 let timeTick //计时器
 init()
 
@@ -10,13 +12,10 @@ function init() {
             clearInterval(timeTick)
             return
         }
-        if (index % page == 0) {
+        if (index && index % page == 0) {
             clearInterval(timeTick)
-            setTimeout(function (params) { //暂停60秒
-                init()
-            }, 60 * 1000)
-            return
+            setTimeout(init, time)
         }
         document.querySelector('#feedlist_id').querySelectorAll('.clearfix')[index++].querySelector('a').click()
-    }, 5000)
+    }, speed)
 }
