@@ -15,7 +15,6 @@ function init() {
         }
         if (index && index % page == 0) {
             clearInterval(timeTick)
-            pageList = clearPage(pageList)
             setTimeout(init, time)
         }
         let hrefItem = elements[index++].querySelector('a').href
