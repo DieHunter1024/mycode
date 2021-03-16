@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion]
+"CommonFilesDir"="D:\\Program Files (x86)\\Common Files"
+"CommonFilesDir (x86)"="D:\\Program Files (x86)\\Common Files"
+"CommonW6432Dir"="D:\\Program Files\\Common Files"
+"ProgramFilesDir"="D:\\Program Files (x86)"
+"ProgramFilesDir (x86)"="D:\\Program Files (x86)"
+"ProgramW6432Dir"="D:\\Program Files"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion]
+"CommonFilesDir"="D:\\Program Files\\Common Files"
+"CommonFilesDir (x86)"="D:\\Program Files (x86)\\Common Files"
+"CommonW6432Dir"="D:\\Program Files\\Common Files"
+"ProgramFilesDir"="D:\\Program Files"
+"ProgramFilesDir (x86)"="D:\\Program Files (x86)"
+"ProgramW6432Dir"="D:\\Program Files"
