@@ -4,7 +4,7 @@ module.exports = {
   DataBasePort: ":27017", //数据库端口
   DataBaseName: "shopping", //数据库文档名称
   ServerUrl: "",
-  ServerPort: ":1024", //服务端请求端口
+  ServerPort: "2468", //服务端请求端口
   Path: "/", //路由名
   UserKey: "user", //用户token加密标识
   AdminKey: "admin", //管理员token加密标识

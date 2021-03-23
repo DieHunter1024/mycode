@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const config = require("./config/config")
 const routes = require("./routes/routes");
 const cors = require("cors"); //引入cors模块（解决跨域问题）
 const path = require("path");
@@ -21,6 +22,6 @@ app.use(bodyParser.json());
 app.use("/public", express.static(path.join(__dirname, "./public")));//静态目录
 new routes(app);//初始化路由
 
-app.listen(1024, () => {
+app.listen(config.ServerPort, () => {
   console.log("Server Start~");
 });
