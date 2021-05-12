@@ -1,14 +1,19 @@
 import event from "./eventBus.js"
+import PcPrint from './pc.js';
+import MobilePrint from './mobile.js';
 let that = null
 export default class Print {
-    constructor(canvasEle) {
+    constructor(canvasEle, options) {
         that = this
+        this.options = options
         this.canvasEle = canvasEle
         this.init()
         this.initCanvas()
         return this
     }
     init() {
+        this.Pc = this.options.Pc ? (new PcPrint(this.canvasEle)) : null
+        this.Mobile = this.options.Mobile ? (new MobilePrint(this.canvasEle)) : null
         this.point = null //存储上一次坐标
         event.onEvent('pointMove', that.pointMove)
         event.onEvent('pointStart', that.pointStart)

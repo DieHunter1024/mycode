@@ -2,8 +2,8 @@ import event from './eventBus.js'
 import Base from './base.js'
 let that = null
 export default class PcPrint extends Base {
-    constructor(ele, dom, window) {
-        super(ele, dom, window)
+    constructor(ele) {
+        super(ele)
         that = this
         this.init()
         return this;

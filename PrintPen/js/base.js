@@ -1,8 +1,6 @@
 export default class Base {
-    constructor(ele, dom, window) {
+    constructor(ele) {
         this.ele = ele
-        this.dom = dom
-        this.window = window
         return this;
     }
 

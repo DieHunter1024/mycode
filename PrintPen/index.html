@@ -16,11 +16,11 @@
 </body>
 <script type="module">
     import Print from "./js/print.js"
-    import MobilePrint from './js/mobile.js';
-    import PcPrint from './js/pc.js';
-    new Print(printBox)
-    const pcPrint = new PcPrint(printBox,document,window)
-    const mobilePrint = new MobilePrint(printBox,document,window)
+    new Print(printBox,{
+        Pc:true,
+        Mobile:true
+    })
+
     
 </script>
 
