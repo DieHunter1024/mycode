@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    width: 70vw;
+    height: 70vh;
+    margin: 50px auto 0;
+}
+
+.printBox {
+    margin: 0;
+    background: lightblue;
+}

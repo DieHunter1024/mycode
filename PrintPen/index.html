@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/print.css">
+</head>
+
+<body>
+    <div id="app" class="app">
+        <canvas id="printBox" class="printBox"></canvas>
+    </div>
+</body>
+<script type="module">
+    import Print from "./js/print.js"
+    import MobilePrint from './js/mobile.js';
+    import PcPrint from './js/pc.js';
+    new Print(printBox)
+    const pcPrint = new PcPrint(printBox,document,window)
+    const mobilePrint = new MobilePrint(printBox,document,window)
+    
+</script>
+
+</html>
