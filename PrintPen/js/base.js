@@ -3,7 +3,7 @@ import event from './eventBus.js'
 export default class Base {
     constructor(canvasEle, dom = document) {
         this.event = event //注册发布订阅
-        this.canvasEle = canvasEle //待操作标签
+        this.canvasEle = canvasEle //待操作的画布标签
         this.dom = dom //dom
         return this;
     }
