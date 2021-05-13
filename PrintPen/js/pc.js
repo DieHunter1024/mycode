@@ -1,30 +1,30 @@
-import event from './eventBus.js'
+// PC端，鼠标事件
 import Base from './base.js'
 let that = null
 export default class PcPrint extends Base {
-    constructor(ele) {
-        super(ele)
-        that = this
+    constructor(ele, dom) {
+        super(ele, dom)
+        that = this //注册全局this
         this.init()
         return this;
     }
     init() {
-        that.ele.addEventListener('mousedown', that.onMouseDown)
+        that.canvasEle.addEventListener('mousedown', that.onMouseDown)
     }
-    onMouseDown(e) {
-        that.clearDefaultEvent(e || event)
-        that.ele.addEventListener('mouseup', that.onMouseUp)
-        that.ele.addEventListener('mousemove', that.onMouseMove)
-        event.emitEvent('pointStart', that.getClient(e))
+    onMouseDown(e = event) {
+        that.clearDefaultEvent(e)
+        that.dom.addEventListener('mouseup', that.onMouseUp) //给dom添加mouseup避免产生鼠标点下时，移出画布造成其他的问题
+        that.canvasEle.addEventListener('mousemove', that.onMouseMove)
+        that.event.emitEvent('pointStart', that.getClient(e)) //触发开始签字事件
     }
-    onMouseUp(e) {
-        that.clearDefaultEvent(e || event)
-        event.emitEvent('pointEnd')
-        that.ele.removeEventListener('mousemove', that.onMouseMove)
+    onMouseUp(e = event) {
+        that.clearDefaultEvent(e)
+        that.event.emitEvent('pointEnd') //触发结束签字事件
+        that.canvasEle.removeEventListener('mousemove', that.onMouseMove) //移除移动事件
     }
-    onMouseMove(e) {
-        that.clearDefaultEvent(e || event)
-        event.emitEvent('pointMove', that.getClient(e))
+    onMouseMove(e = event) {
+        that.clearDefaultEvent(e)
+        that.event.emitEvent('pointMove', that.getClient(e)) //触发签字事件
     }
 
 }
