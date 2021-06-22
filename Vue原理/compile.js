@@ -45,12 +45,24 @@ class Compile {
     }
     // 渲染标签
     renderNode(elem) {
-        const attributes = elem.attributes;
+        const attributes = [...elem.attributes];
         console.log(attributes)
+        attributes.forEach(_ => {
+
+        })
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
+        switch (type) {
+            case 'text':
+                elem.textContent = value
+                break;
+            case 'text':
 
+                break;
+            default:
+                break;
+        }
     }
 }
 export default Compile

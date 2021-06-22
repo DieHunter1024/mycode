@@ -29,15 +29,13 @@
     <script type="module">
         import VueDemo from './vue-demo.js'
         let vm = new VueDemo({
-            elem:'#app',
-            data() {
-                return {
-                    title:'hello',
-                    name:'张三',
-                    age:23,
-                    isShow:true,
-                    modelData:123
-                }
+            el:'#app',
+            data:{
+                title:'hello',
+                name:'张三',
+                age:23,
+                isShow:true,
+                modelData:123
             },
             methods: {
                 handlerShow(){
