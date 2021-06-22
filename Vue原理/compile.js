@@ -1,4 +1,6 @@
 // 指令解析器
+
+const textRegex = /\{\{(.+?)\}\}/g
 class Compile {
     constructor(elem, vm) {
         this.elem = this.isElemNode(elem) === '1' ? elem : document.querySelector(elem)
@@ -9,10 +11,10 @@ class Compile {
     }
     // 递归子元素
     getTemp(fragment) {
-        const cloneFragment = Array.from(fragment.cloneNode(true).childNodes)
-        cloneFragment.map(item => {
+        const cloneFragment = Array.from(fragment.childNodes)
+        cloneFragment.forEach(item => {
             this.filterElem(item)
-            item.children && item.children.length && this.getTemp(item)
+            item.childNodes && item.childNodes.length && this.getTemp(item)
         })
     }
     // 创建标签碎片
@@ -41,12 +43,12 @@ class Compile {
     // 渲染文本主要解析‘{{}}’
     renderText(elem) {
         const content = elem.textContent;
-        (/\{\{(.+?)\}\}/.test(content)) && this.compileUtils(elem, this.vm, content, 'text')
+        textRegex.test(content) && this.compileUtils(elem, this.vm, content, 'text')
     }
     // 渲染标签
     renderNode(elem) {
-        const attributes = [...elem.attributes];
-        console.log(attributes)
+        const attributes = Array.from(elem.attributes);
+        // console.log(attributes)
         attributes.forEach(_ => {
 
         })
@@ -55,14 +57,18 @@ class Compile {
     compileUtils(elem, vm, value, type) {
         switch (type) {
             case 'text':
+                elem.textContent = value.replace(textRegex, (..._) => {
+                    return this.getDeepData(vm, _[1])
+                })
+                break;
+            case 'text-attr':
                 elem.textContent = value
                 break;
-            case 'text':
-
-                break;
-            default:
-                break;
         }
+    }
+    //lodash中的 _.get()，获取对象属性
+    getDeepData(object, path, defaultValue = {}) {
+        return (!Array.isArray(path) ? path.replace(/\[/g, '.').replace(/\]/g, '').split('.') : path).reduce((o, k) => (o || {})[k], object) || defaultValue;
     }
 }
 export default Compile
