@@ -11,8 +11,8 @@ class Compile {
     }
     // 递归子元素
     getTemp(fragment) {
-        const cloneFragment = Array.from(fragment.childNodes)
-        cloneFragment.forEach(item => {
+        const fragmentChild = Array.from(fragment.childNodes)
+        fragmentChild.forEach(item => {
             this.filterElem(item)
             item.childNodes && item.childNodes.length && this.getTemp(item)
         })
@@ -48,10 +48,22 @@ class Compile {
     // 渲染标签
     renderNode(elem) {
         const attributes = Array.from(elem.attributes);
-        // console.log(attributes)
-        attributes.forEach(_ => {
-
+        attributes.forEach(attr => {
+            // console.log(attr)
+            const {
+                name,
+                value
+            } = attr;
+            // name.split('v-')[1] ? :
         })
+    }
+    // v- 指令解析
+    compileV_Command(){
+
+    }
+    // @ 指令解析
+    compileEventComment(){
+
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
@@ -66,7 +78,7 @@ class Compile {
                 break;
         }
     }
-    //lodash中的 _.get()，获取对象属性
+    //lodash中的 _.get()，获取对象多级属性
     getDeepData(object, path, defaultValue = {}) {
         return (!Array.isArray(path) ? path.replace(/\[/g, '.').replace(/\]/g, '').split('.') : path).reduce((o, k) => (o || {})[k], object) || defaultValue;
     }
