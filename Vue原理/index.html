@@ -10,25 +10,44 @@
 
 <body>
     <div id="app">
-        <span>hello</span>
-        <div>
+        <span v-text='title'></span>
+        <div v-if='isRender'>
             <span>1</span>
             <span>2</span>
             <span>3</span>
         </div>
         <ul>
-            <li>a</li>
-            <li>b</li>
-            <li>c</li>
-            <li>d</li>
-            <li>e</li>
+            <li>{{name}}</li>
+            <li>{{age}}</li>
+            <li>{{modelData}}</li>
         </ul>
-        <div>world</div>
-        <button v-on:click='handlerClick'></button>
+        <div v-show='isShow'>world</div>
+        <button v-on:click='handlerShow'>点击隐藏</button>
+        <button @click='handlerRender'>点击渲染</button>
+        <input v-model='modelData' type="text">
     </div>
-    <script src="./compile.js"></script>
-    <script>
-        let vm = new Compile('#app', null)
+    <script type="module">
+        import VueDemo from './vue-demo.js'
+        let vm = new VueDemo({
+            elem:'#app',
+            data() {
+                return {
+                    title:'hello',
+                    name:'张三',
+                    age:23,
+                    isShow:true,
+                    modelData:123
+                }
+            },
+            methods: {
+                handlerShow(){
+                    this.isShow = !this.isShow
+                },
+                handlerRender(){
+                    this.isRender = !this.isRender
+                }
+            },
+        })
     </script>
 </body>
 
