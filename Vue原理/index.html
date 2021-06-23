@@ -10,7 +10,7 @@
 
 <body>
     <div id="app">
-        <span v-text='title'></span>
+        <span v-text='title.name'></span>
         <div v-if='isRender'>
             <span>1</span>
             <span>2</span>
@@ -22,7 +22,7 @@
             <li>{{modelData}}</li>
         </ul>
         <div v-show='isShow'>world</div>
-        <button v-on:click='handlerShow'>点击隐藏</button>
+        <button v-on:click='handlerShow'>点击显示</button>
         <button @click='handlerRender'>点击渲染</button>
         <input v-model='modelData' type="text">
     </div>
@@ -31,7 +31,9 @@
         let vm = new VueDemo({
             el:'#app',
             data:{
-                title:'hello',
+                title:{
+                    name:'hello'
+                },
                 name:'张三',
                 age:23,
                 isShow:true,

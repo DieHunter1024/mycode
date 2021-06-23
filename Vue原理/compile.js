@@ -6,15 +6,15 @@ class Compile {
         this.elem = this.isElemNode(elem) === '1' ? elem : document.querySelector(elem)
         this.vm = vm
         const fragment = this.createFragment(this.elem)
-        this.getTemp(fragment)
+        this.getTemp(fragment, this.vm)
         this.elem.appendChild(fragment);
     }
     // 递归子元素
-    getTemp(fragment) {
+    getTemp(fragment, vm) {
         const fragmentChild = Array.from(fragment.childNodes)
         fragmentChild.forEach(item => {
-            this.filterElem(item)
-            item.childNodes && item.childNodes.length && this.getTemp(item)
+            this.filterElem(item, vm)
+            item.childNodes && item.childNodes.length && this.getTemp(item, vm)
         })
     }
     // 创建标签碎片
@@ -30,40 +30,57 @@ class Compile {
         return elem.nodeType
     }
     // 针对不同元素节点进行分离
-    filterElem(elem) {
+    filterElem(elem, vm) {
         switch (this.isElemNode(elem)) {
             case 1: //元素节点
-                this.renderNode(elem)
+                this.renderNode(elem, vm)
                 break;
             case 3: //文本节点
-                this.renderText(elem)
+                this.renderText(elem, vm)
                 break;
         }
     }
     // 渲染文本主要解析‘{{}}’
-    renderText(elem) {
+    renderText(elem, vm) {
         const content = elem.textContent;
-        textRegex.test(content) && this.compileUtils(elem, this.vm, content, 'text')
+        textRegex.test(content) && this.compileUtils(elem, vm, content, 'text')
     }
     // 渲染标签
-    renderNode(elem) {
+    renderNode(elem, vm) {
         const attributes = Array.from(elem.attributes);
         attributes.forEach(attr => {
-            // console.log(attr)
             const {
                 name,
                 value
             } = attr;
-            // name.split('v-')[1] ? :
+            name.startsWith('v-') ? this.compileV_Command(elem, vm, name, value) : name.startsWith('@') ? this.compileEventComment(elem, vm, name.split('@')[1], value) : null
         })
     }
-    // v- 指令解析
-    compileV_Command(){
+    // v- 指令解析,指令
+    compileV_Command(elem, vm, name, value) {
+        const key = name.split('v-')[1]
+        const eventCommand = key.split(':')[1]
+        // 事件
+        eventCommand && this.compileEventComment(elem, vm, eventCommand, value)
+        switch (name.split('v-')[1]) {
+            case 'text':
+                this.compileUtils(elem, vm, value, 'text-attr')
+                break;
+            case 'model':
 
+                break;
+            case 'if':
+
+                break;
+            case 'show':
+
+                break;
+        }
     }
-    // @ 指令解析
-    compileEventComment(){
-
+    // @ 指令解析,事件
+    compileEventComment(elem, vm, name, value) {
+        console.log(elem, vm, name, value)
+        // elem.addEventListener(name, value)
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
@@ -74,7 +91,7 @@ class Compile {
                 })
                 break;
             case 'text-attr':
-                elem.textContent = value
+                elem.textContent = this.getDeepData(vm, value)
                 break;
         }
     }
