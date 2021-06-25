@@ -53,34 +53,36 @@ class Compile {
                 name,
                 value
             } = attr;
-            name.startsWith('v-') ? this.compileV_Command(elem, vm, name, value) : name.startsWith('@') ? this.compileEventComment(elem, vm, name.split('@')[1], value) : null
+            name.startsWith('v-') ? (this.compileV_Command(elem, vm, name, value), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
         })
     }
     // v- 指令解析,指令
     compileV_Command(elem, vm, name, value) {
-        const key = name.split('v-')[1]
-        const eventCommand = key.split(':')[1]
+        const key = name.split('v-')
+        const eventCommand = key[1] && key[1].split(':')[1]
         // 事件
         eventCommand && this.compileEventComment(elem, vm, eventCommand, value)
-        switch (name.split('v-')[1]) {
+        switch (key[1]) {
             case 'text':
                 this.compileUtils(elem, vm, value, 'text-attr')
                 break;
+            case 'html':
+                this.compileUtils(elem, vm, value, 'html')
+                break;
             case 'model':
-
+                this.compileUtils(elem, vm, value, 'model')
                 break;
             case 'if':
-
+                this.compileUtils(elem, vm, value, 'if')
                 break;
             case 'show':
-
+                this.compileUtils(elem, vm, value, 'show')
                 break;
         }
     }
     // @ 指令解析,事件
     compileEventComment(elem, vm, name, value) {
-        console.log(elem, vm, name, value)
-        // elem.addEventListener(name, value)
+        elem.addEventListener(name, vm.options.methods[value].bind(vm))
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
@@ -93,11 +95,27 @@ class Compile {
             case 'text-attr':
                 elem.textContent = this.getDeepData(vm, value)
                 break;
+            case 'html':
+                elem.innerHTML = value
+                break;
+            case 'model':
+                elem.value = this.getDeepData(vm, value)
+                break;
+            case 'if':
+                this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
+                break;
+            case 'show':
+                elem.hidden = !this.getDeepData(vm, value)
+                break;
         }
+        // elem.removeAttribute()
     }
     //lodash中的 _.get()，获取对象多级属性
     getDeepData(object, path, defaultValue = {}) {
         return (!Array.isArray(path) ? path.replace(/\[/g, '.').replace(/\]/g, '').split('.') : path).reduce((o, k) => (o || {})[k], object) || defaultValue;
+    }
+    removeAttr(elem, key) {
+        elem.removeAttribute(key)
     }
 }
 export default Compile

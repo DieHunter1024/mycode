@@ -3,7 +3,7 @@ export default class Dep {
     constructor() {
         this.observerList = []
     }
-    
+
     fireEvent(e) {
         this.observerList.forEach(item => {
             item.update(e)

@@ -21,6 +21,7 @@
             <li>{{age}}</li>
             <li>{{modelData}}</li>
         </ul>
+        <div v-html='<span style="color:red;">html</span>'></div>
         <div v-show='isShow'>world</div>
         <button v-on:click='handlerShow'>点击显示</button>
         <button @click='handlerRender'>点击渲染</button>
@@ -37,13 +38,16 @@
                 name:'张三',
                 age:23,
                 isShow:true,
+                isRender:false,
                 modelData:123
             },
             methods: {
                 handlerShow(){
+                    console.log(this.isShow)
                     this.isShow = !this.isShow
                 },
                 handlerRender(){
+                    console.log(this.isRender)
                     this.isRender = !this.isRender
                 }
             },
