@@ -17,8 +17,8 @@
             <span>3</span>
         </div>
         <ul>
-            <li>{{name}}</li>
-            <li>{{age}}</li>
+            <li>{{info.name}}</li>
+            <li>{{info.age}}</li>
             <li>{{modelData}}</li>
         </ul>
         <div v-html='<span style="color:red;">html</span>'></div>
@@ -35,8 +35,10 @@
                 title:{
                     name:'hello'
                 },
-                name:'张三',
-                age:23,
+                info:{
+                    name:'张三',
+                    age:23,
+                },
                 isShow:true,
                 isRender:false,
                 modelData:123

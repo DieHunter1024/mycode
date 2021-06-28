@@ -1,2 +1,6 @@
 // 订阅模式
-class Watcher{}
+class Watcher{
+    constructor(){
+        
+    }
+}
