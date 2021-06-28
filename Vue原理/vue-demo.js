@@ -1,16 +1,26 @@
 import DataProxy from './proxy.js'
 import Compile from './compile.js'
 import Observer from './observer.js'
+import Watcher from './watcher.js'
 class VueDemo {
     constructor(options) {
-        this.data = options.data
-        this.el = options.el
         this.options = options //配置信息
-        if (this.el) {
-            this.proxy = new DataProxy(this.data, this) //data代理到this
-            this.compile = new Compile(options.el, this) //vue指令解析器
-            this.observer = new Observer(this.data)
-        }
+        this.data = options.data;
+        // 判断options.el是否存在
+        (this.el = options.el) && Object.defineProperties(this, {
+            proxy: {
+                value: new DataProxy(this.data, this) //data代理到this
+            },
+            compile: {
+                value: new Compile(options.el, this) //指令解析器
+            },
+            observer: {
+                value: new Observer(this.data) // 数据监听器
+            },
+            watcher: {
+                value: new Watcher()
+            }
+        })
     }
 }
 export default VueDemo
