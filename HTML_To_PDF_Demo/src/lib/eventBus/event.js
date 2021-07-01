@@ -56,5 +56,4 @@ class EventBus {
         return Object.hasOwnProperty.call(obj, key)
     }
 }
-
-module.exports = EventBus.Instance()
+export default EventBus.Instance()

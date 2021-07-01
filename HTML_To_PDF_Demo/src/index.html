@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fall_out</title>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+
+<body>
+    <button id="printEle">生成</button>
+    <button id="downloadPrint">下载</button>
+    <div id="canvasBox">
+    </div>
+    <ul id="pdfEle"></ul>
+    <script type="module">
+        import LazyLoad from './js/fall.js'
+        import Html2Pdf from './js/Html2Pdf_1.js'
+        import eventBus from './lib/eventBus/event.js'
+        for (var i = 1,imgList = []; i < 50; i++) {
+            imgList.push(`./img/${parseInt(Math.random() * 10 + 1)}.jpg`)
+        }
+        printEle.addEventListener('click', (e)=> {
+            console.log('print')
+            eventBus.emitEvent('print')
+        })
+        downloadPrint.addEventListener('click', (e)=> {
+            eventBus.emitEvent('download')
+        })
+        new LazyLoad({
+            elem: pdfEle,
+            imgList
+        })
+        new Html2Pdf(pdfEle)
+    </script>
+</body>
+
+</html>
