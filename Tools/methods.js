@@ -466,6 +466,28 @@ let Methods = (function () {
                 }
                 _timer = setTimeout(fn, time)
             }
+        },
+        /*新增标签，设置属性及样式
+         * @param {ElementObject} ele  元素
+         * @param {StyleObject} style  样式
+         * @param {object} attribute   属性
+         * @param {object} parent   父元素
+         * @return 生成的标签
+         */
+        createEle(ele, style, attribute, parent) {
+            let element = document.createElement(ele);
+            if (style) {
+                for (let key in style) {
+                    element.style[key] = style[key];
+                }
+            }
+            if (attribute) {
+                for (let key in attribute) {
+                    element[key] = attribute[key];
+                }
+            }
+            parent && parent.appendChild(element);
+            return element;
         }
     }
 }())
