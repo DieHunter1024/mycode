@@ -21,7 +21,7 @@ export default class Html2Pdf {
             this.canvas = await html2canvas(elem, { //截取标签转换为canvas
                 canvas: this.createCanvas(elem, scale),
                 background,
-                scale: 1, //新版与之前的一定要设置scale，不然会导致成像缩放(重要！)
+                scale: 1, //新版与之前的一定要设置scale，不然会导致成像缩放(重要)
             })
         })
         eventBus.onEvent('showEle', async (e) => {
