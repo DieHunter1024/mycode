@@ -48,7 +48,7 @@
  *    kim3er, mfo, alnorth, Flamenco
  */
 
-// import { zlibSync, unzlibSync } from 'fflate';
+import { zlibSync, unzlibSync } from '../fflate/browser.js';
 
 var globalObject = (function() {
   return "undefined" !== typeof window
