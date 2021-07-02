@@ -9,24 +9,28 @@ import eventBus from '../lib/eventBus/event.js'
  * @param background 导出PDF的背景色
  */
 export default class Html2Pdf {
-    constructor(elem, scale = 2, fileName = 'test', background = '#FFFFFF') {
+    constructor(elem, scale = 2, fileName = 'fileName', background = '#FFFFFF') {
         if (!elem) {
             elem = document.body
         }
         this.canvas = null
         this.init(elem, scale, fileName, background)
     }
-    init(elem, scale = 2, fileName = 'test', background = '#FFFFFF') {
+    init(elem, scale, fileName, background) {
         eventBus.onEvent('print', async (e) => {
             this.canvas = await html2canvas(elem, { //截取标签转换为canvas
                 canvas: this.createCanvas(elem, scale),
-                background
+                background,
+                scale: 1, //新版与之前的一定要设置scale，不然会导致成像缩放
             })
         })
-        eventBus.onEvent('download', async (e) => {
-            this.downloadPdf(this.canvas, fileName, scale)
+        eventBus.onEvent('showEle', async (e) => {
+            this.canvas && canvasBox.appendChild(this.canvas) //显示效果
+            pdfEle.style.display = 'none'
         })
-
+        eventBus.onEvent('download', async (e) => {
+            this.canvas && this.downloadPdf(this.canvas, fileName, scale)
+        })
     }
     downloadPdf(canvas, fileName, scale) { //将canvas变成PDF并下载
         const size = [canvas.width / scale, canvas.height / scale] //pdf真实宽高
@@ -39,59 +43,13 @@ export default class Html2Pdf {
     createCanvas(target, scale) { //target是待截取的标签，我们通过target生成对应大小的canvas
         let canvas = document.createElement("canvas");
         let context = canvas.getContext("2d")
-        let clientRect = target.getBoundingClientRect() // 获取标签相对可视区域的偏移量
+        // const clientRect = target.getBoundingClientRect() // 获取标签相对可视区域的偏移量
         canvas.width = target.offsetWidth * scale; // 画布实际宽度
         canvas.height = target.offsetHeight * scale; // 画布实际高度
         canvas.style.width = target.offsetWidth + 'px' // 浏览器上显示的宽度
         canvas.style.height = target.offsetHeight + 'px' //浏览器上显示的高度
         context.scale(scale, scale); //等比缩放
-        context.translate(-clientRect?.left, -clientRect?.top); //通过translate取反位移
+        // context.translate(-(clientRect ?.left), -(clientRect ?.top)); //通过translate取反位移
         return canvas
     }
 }
-// const {
-//     jsPDF
-// } = jspdf, scale = 2 //缩放程度，清晰度，越大越清晰，图片也越大
-// let printEle, //截图按钮
-//     pdfEle, //待截取标签
-//     canvasBox //canvas显示区域
-
-
-// (function init(_dom) {
-//     printEle = _dom.querySelector('#printEle')
-//     pdfEle = _dom.querySelector('#pdfEle')
-//     canvasBox = _dom.querySelector('#canvasBox')
-//     printEle.addEventListener('click', clickHandler) //点击按钮生成截屏
-// })(document)
-
-// async function clickHandler(e) {
-//     if (canvasBox.children.length) return //若canvas显示区域已经有标签则退出
-//     const canvas = await html2canvas(pdfEle, { //截取标签转换为canvas
-//         canvas: createCanvas(pdfEle),
-//         background: '#FFFFFF'
-//     })
-//     downloadPdf(canvas)
-//     pdfEle.hidden = true //隐藏之前的元素，更好对比
-//     canvasBox.appendChild(canvas) //显示效果
-// }
-
-// function downloadPdf(canvas) { //将canvas变成PDF并下载
-//     const size = [canvas.width / scale, canvas.height / scale] //pdf真实宽高
-//     第一个参数表示横向与纵向，具体可看文档，我这里做了一个适配，宽比高长则是横向反之则是纵向
-//     const doc = new jsPDF(size[0] / size[1] > 1 ? 'l' : 'p', 'px', size)
-//     doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, ...size) //将canvas转换为图片并添加到jsPDF中
-//     doc.save("test.pdf"); //保存PDF
-// }
-
-// function createCanvas(target) { //target是待截取的标签，我们通过target生成对应大小的canvas
-//     let canvas = document.createElement("canvas");
-//     let context = canvas.getContext("2d")
-//     let clientRect = target.getBoundingClientRect() // 获取标签相对可视区域的偏移量
-//     canvas.width = target.offsetWidth * scale; // 画布实际宽度
-//     canvas.height = target.offsetHeight * scale; // 画布实际高度
-//     canvas.style.width = target.offsetWidth + 'px' // 浏览器上显示的宽度
-//     canvas.style.height = target.offsetHeight + 'px' //浏览器上显示的高度
-//     context.scale(scale, scale); //等比缩放
-//     context.translate(-clientRect.left, -clientRect.top); //通过translate取反位移
-//     return canvas
-// }

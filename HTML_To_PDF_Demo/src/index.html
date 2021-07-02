@@ -11,10 +11,12 @@
 
 <body>
     <button id="printEle">生成</button>
+    <button id="showEle">显示</button>
     <button id="downloadPrint">下载</button>
     <div id="canvasBox">
     </div>
     <ul id="pdfEle"></ul>
+    <!-- <script src="./lib/html2canvas/html2canvas_1.js"></script> 老版本的-->
     <script type="module">
         import LazyLoad from './js/fall.js'
         import Html2Pdf from './js/Html2Pdf_1.js'
@@ -23,8 +25,10 @@
             imgList.push(`./img/${parseInt(Math.random() * 10 + 1)}.jpg`)
         }
         printEle.addEventListener('click', (e)=> {
-            console.log('print')
             eventBus.emitEvent('print')
+        })
+        showEle.addEventListener('click', (e)=> {
+            eventBus.emitEvent('showEle')
         })
         downloadPrint.addEventListener('click', (e)=> {
             eventBus.emitEvent('download')
