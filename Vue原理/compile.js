@@ -1,7 +1,6 @@
 // 指令解析器
 
 const textRegex = /\{\{(.+?)\}\}/g
-const deepData = /\[(\d+)\]/g
 class Compile {
     constructor(elem, vm) {
         this.elem = this.isElemNode(elem) === '1' ? elem : document.querySelector(elem)
@@ -103,24 +102,19 @@ class Compile {
                 elem.value = this.getDeepData(vm, value)
                 break;
             case 'if':
-                console.log(this.getDeepData(vm, value))
-                // this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
+                !this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
                 break;
             case 'show':
-                console.log(this.getDeepData(vm, value))
-                // elem.hidden = !this.getDeepData(vm, value)
-
+                elem.hidden = !this.getDeepData(vm, value)
                 break;
         }
         // elem.removeAttribute()
     }
     //lodash中的 _.get()，获取对象多级属性
     getDeepData(object, path, defaultValue) {
-        debugger
         const paths = path.split('.')
-        console.log(path.replace(deepData, '.$1'))
-        for (const i of paths) {
-            object = Object(object)[i]
+        for (const i of paths) {//逐层遍历path
+            object = object[i]
             if (object === undefined) {
                 return defaultValue
             }

@@ -11,11 +11,14 @@ class Dep {
         return Dep._instance;
     }
     fireEvent(e) {
+        console.log('fire')
         this.observerList.forEach(item => {
             item.update(e)
         })
     }
-    subscribe(fn) {
+    subscribe(fn) {        
+        console.log('subscribe')
+
         this.observerList.push(fn)
     }
 }
