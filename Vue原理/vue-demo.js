@@ -1,7 +1,6 @@
 import DataProxy from './proxy.js'
 import Compile from './compile.js'
 import Observer from './observer.js'
-import Watcher from './watcher.js'
 class VueDemo {
     constructor(options) {
         this.options = options //配置信息
@@ -16,9 +15,6 @@ class VueDemo {
             },
             observer: {
                 value: new Observer(this.data) // 数据监听器
-            },
-            watcher: {
-                value: new Watcher()
             }
         })
     }

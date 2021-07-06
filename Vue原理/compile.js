@@ -1,5 +1,5 @@
 // 指令解析器
-
+import Watcher from './watcher.js'
 const textRegex = /\{\{(.+?)\}\}/g
 class Compile {
     constructor(elem, vm) {
@@ -53,7 +53,9 @@ class Compile {
                 name,
                 value
             } = attr;
-            name.startsWith('v-') ? (this.compileV_Command(elem, vm, name, value), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
+
+            
+            name.startsWith('v-') ? (new Watcher(vm, value, this.compileV_Command.bind(this, elem, vm, name, value)), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
         })
     }
     // v- 指令解析,指令
@@ -113,7 +115,7 @@ class Compile {
     //lodash中的 _.get()，获取对象多级属性
     getDeepData(object, path, defaultValue) {
         const paths = path.split('.')
-        for (const i of paths) {//逐层遍历path
+        for (const i of paths) { //逐层遍历path
             object = object[i]
             if (object === undefined) {
                 return defaultValue
