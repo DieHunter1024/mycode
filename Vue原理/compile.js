@@ -54,7 +54,6 @@ class Compile {
                 value
             } = attr;
 
-            
             name.startsWith('v-') ? (new Watcher(vm, value, this.compileV_Command.bind(this, elem, vm, name, value)), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
         })
     }
@@ -117,7 +116,7 @@ class Compile {
         const paths = path.split('.')
         for (const i of paths) { //逐层遍历path
             object = object[i]
-            if (object === undefined) {
+            if (object === undefined) { //不能用 '!object' null，0，false等等会等于false
                 return defaultValue
             }
         }
