@@ -21,7 +21,7 @@
             <li>{{info.age}}</li>
             <li>{{modelData}}</li>
         </ul>
-        <div v-html='<span style="color:red;">html</span>'></div>
+        <div v-html='htmlTemp'></div>
         <div v-show='isShow'>world</div>
         <button v-on:click='handlerShow'>点击显示</button>
         <button @click='handlerRender'>点击渲染</button>
@@ -41,7 +41,8 @@
                 },
                 isShow:false,
                 isRender:true,
-                modelData:123
+                modelData:123,
+                htmlTemp:'<span style="color:red;">html</span>'
             },
             methods: {
                 handlerShow(){

@@ -1,13 +1,17 @@
 // 订阅模式(比较绑定值的变化)
-import dep from './dep.js'
+import Dep from './dep.js'
 export default class Watcher {
-    constructor(vm, val, update) {
+    constructor(compile, vm, val, update) {
         this.vm = vm
         this.val = val;
         this.update = update
-        update()
-        console.log(...arguments)
-        this.compareVal()
+        this.oldVal = compile.getDeepData(vm, val)
+
+        this.compareVal('', this.oldVal)
     }
-    compareVal(){}
+    compareVal(newVal, oldVal) {
+        newVal !== oldVal && Dep.clear(),this.update(),Dep.subscribe(this)
+
+    }
+
 }

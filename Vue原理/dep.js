@@ -10,16 +10,18 @@ class Dep {
         });
         return Dep._instance;
     }
-    fireEvent(e) {
+    fireEvent() {
         console.log('fire')
         this.observerList.forEach(item => {
-            item.update(e)
+            item.update()
         })
     }
-    subscribe(fn) {        
+    subscribe(fn) {
         console.log('subscribe')
-
         this.observerList.push(fn)
+    }
+    clear() {
+        this.observerList = []
     }
 }
 export default new Dep().Instance

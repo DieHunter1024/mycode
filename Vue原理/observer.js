@@ -1,5 +1,5 @@
 // 发布模式
-import dep from './dep.js'
+import Dep from './dep.js'
 class Observer {
     constructor(data) {
         this.initObserver(data)
@@ -16,7 +16,7 @@ class Observer {
         this.initObserver(val)
         Object.defineProperty(data, key, {
             get: _ => val,
-            set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), dep.fireEvent())
+            set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), Dep.fireEvent())
         })
     }
 }
