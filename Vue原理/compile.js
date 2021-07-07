@@ -54,11 +54,12 @@ class Compile {
                 value
             } = attr;
 
-            name.startsWith('v-') ? (new Watcher(vm, value, this.compileV_Command.bind(this, elem, vm, name, value)), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
+            name.startsWith('v-') ? (new Watcher(this, vm, value, this.compileV_Command.bind(this, elem, vm, name, value)), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
         })
     }
     // v- 指令解析,指令
     compileV_Command(elem, vm, name, value) {
+        // new Watcher(this, vm, value, this.compileV_Command.bind(this, elem, vm, name, value))
         const key = name.split('v-')
         const eventCommand = key[1] && key[1].split(':')[1]
         // 事件
@@ -97,7 +98,7 @@ class Compile {
                 elem.textContent = this.getDeepData(vm, value)
                 break;
             case 'html':
-                elem.innerHTML = value
+                elem.innerHTML = this.getDeepData(vm, value)
                 break;
             case 'model':
                 elem.value = this.getDeepData(vm, value)
@@ -121,6 +122,9 @@ class Compile {
             }
         }
         return object
+    }
+    setDeepData(object, path, value) {
+
     }
     removeAttr(elem, key) {
         elem.removeAttribute(key)
