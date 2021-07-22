@@ -2,6 +2,7 @@
 class Dep {
     constructor() {
         this.observerList = []
+        this.target = null
     }
     get Instance() {
         //返回当前类的实例的单例
@@ -11,14 +12,14 @@ class Dep {
         return Dep._instance;
     }
     fireEvent() {
-        console.log('fire')
+        console.log(this.observerList)
         this.observerList.forEach(item => {
             item.update()
         })
     }
     subscribe(fn) {
-        console.log('subscribe')
         this.observerList.push(fn)
+        console.log(this.observerList)
     }
     clear() {
         this.observerList = []

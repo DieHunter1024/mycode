@@ -42,8 +42,9 @@ class Compile {
     }
     // 渲染文本主要解析‘{{}}’
     renderText(elem, vm) {
-        const content = elem.textContent;
-        textRegex.test(content) && this.compileUtils(elem, vm, content, 'text')
+        if (!textRegex.test(elem.textContent)) return
+        const content = elem.textContent.replace(textRegex, (..._) => _[1])
+        new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text'))
     }
     // 渲染标签
     renderNode(elem, vm) {
@@ -53,34 +54,15 @@ class Compile {
                 name,
                 value
             } = attr;
-
-            name.startsWith('v-') ? (new Watcher(this, vm, value, this.compileV_Command.bind(this, elem, vm, name, value)), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
+            name.startsWith('v-') ? (this.compileV_Command(elem, vm, name, value), this.removeAttr(elem, name)) : name.startsWith('@') ? (this.compileEventComment(elem, vm, name.split('@')[1], value), this.removeAttr(elem, name)) : null
         })
     }
     // v- 指令解析,指令
     compileV_Command(elem, vm, name, value) {
-        // new Watcher(this, vm, value, this.compileV_Command.bind(this, elem, vm, name, value))
         const key = name.split('v-')
         const eventCommand = key[1] && key[1].split(':')[1]
         // 事件
-        eventCommand && this.compileEventComment(elem, vm, eventCommand, value)
-        switch (key[1]) {
-            case 'text':
-                this.compileUtils(elem, vm, value, 'text-attr')
-                break;
-            case 'html':
-                this.compileUtils(elem, vm, value, 'html')
-                break;
-            case 'model':
-                this.compileUtils(elem, vm, value, 'model')
-                break;
-            case 'if':
-                this.compileUtils(elem, vm, value, 'if')
-                break;
-            case 'show':
-                this.compileUtils(elem, vm, value, 'show')
-                break;
-        }
+        eventCommand ? this.compileEventComment(elem, vm, eventCommand, value) : new Watcher(this, vm, value, this.compileUtils.bind(this, elem, vm, value, key[1]))
     }
     // @ 指令解析,事件
     compileEventComment(elem, vm, name, value) {
@@ -90,11 +72,6 @@ class Compile {
     compileUtils(elem, vm, value, type) {
         switch (type) {
             case 'text':
-                elem.textContent = value.replace(textRegex, (..._) => {
-                    return this.getDeepData(vm, _[1])
-                })
-                break;
-            case 'text-attr':
                 elem.textContent = this.getDeepData(vm, value)
                 break;
             case 'html':
@@ -110,7 +87,6 @@ class Compile {
                 elem.hidden = !this.getDeepData(vm, value)
                 break;
         }
-        // elem.removeAttribute()
     }
     //lodash中的 _.get()，获取对象多级属性
     getDeepData(object, path, defaultValue) {

@@ -15,7 +15,10 @@ class Observer {
     newReactive(data, key, val) {
         this.initObserver(val)
         Object.defineProperty(data, key, {
-            get: _ => val,
+            get: _ => {
+                Dep.target && Dep.subscribe(Dep.target);
+                return val
+            },
             set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), Dep.fireEvent())
         })
     }
