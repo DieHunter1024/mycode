@@ -5,18 +5,21 @@ export default class Watcher {
         this.vm = vm
         this.val = val;
         this.update = update
-        this.oldVal = this.getOldValue(compile)
-        console.log(val)
+        this.compile = compile
+        this.oldVal = this.getOldValue()
         this.compareVal()
     }
-    getOldValue(compile) {
+    getOldValue() {
         Dep.target = this
-        const oldVal = compile.getDeepData(this.vm, this.val)
+        const oldVal = this.compile.getDeepData(this.vm, this.val)
         Dep.target = null
         return oldVal;
     }
     compareVal() {
-        this.val !== this.oldVal && Dep.clear(), this.update(), Dep.subscribe(this)
+        const newVal = this.compile.getDeepData(this.vm, this.val)
+        if (newVal== this.oldVal) {
+            Dep.clear(), this.update(), Dep.subscribe(this),this.oldVal = newVal
+        }
     }
 
 }

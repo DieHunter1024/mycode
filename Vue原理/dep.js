@@ -12,9 +12,10 @@ class Dep {
         return Dep._instance;
     }
     fireEvent() {
-        console.log(this.observerList)
+        // console.log(this.observerList)
         this.observerList.forEach(item => {
-            item.update()
+            console.log(item)
+            item.compareVal()
         })
     }
     subscribe(fn) {

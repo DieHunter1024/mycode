@@ -19,7 +19,9 @@ class Observer {
                 Dep.target && Dep.subscribe(Dep.target);
                 return val
             },
-            set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), Dep.fireEvent())
+            set: newVal => {
+                newVal !== val && (val = newVal, this.initObserver(newVal), Dep.fireEvent())
+            }
         })
     }
 }

@@ -100,7 +100,7 @@ class Compile {
         return object
     }
     setDeepData(object, path, value) {
-
+        object[path] = value
     }
     removeAttr(elem, key) {
         elem.removeAttribute(key)
