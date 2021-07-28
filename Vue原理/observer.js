@@ -16,11 +16,13 @@ class Observer {
         this.initObserver(val)
         Object.defineProperty(data, key, {
             get: _ => {
+                console.log(Dep.target)
                 Dep.target && Dep.subscribe(Dep.target);
                 return val
             },
             set: newVal => {
-                newVal !== val && (val = newVal, this.initObserver(newVal), Dep.fireEvent())
+                // console.log(Dep)
+                newVal !== val && (this.initObserver(newVal), Dep.fireEvent(), val = newVal)
             }
         })
     }

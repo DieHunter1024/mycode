@@ -7,7 +7,7 @@ export default class Watcher {
         this.update = update
         this.compile = compile
         this.oldVal = this.getOldValue()
-        this.compareVal()
+        this.update() //首次渲染初始化
     }
     getOldValue() {
         Dep.target = this
@@ -15,10 +15,13 @@ export default class Watcher {
         Dep.target = null
         return oldVal;
     }
+
     compareVal() {
         const newVal = this.compile.getDeepData(this.vm, this.val)
-        if (newVal== this.oldVal) {
-            Dep.clear(), this.update(), Dep.subscribe(this),this.oldVal = newVal
+        console.log(this.val)
+        console.log(this.oldVal, newVal)
+        if (newVal !== this.oldVal) {
+            Dep.clear(), this.update(), Dep.subscribe(this), this.oldVal = newVal
         }
     }
 

@@ -43,7 +43,9 @@ class Compile {
     // 渲染文本主要解析‘{{}}’
     renderText(elem, vm) {
         if (!textRegex.test(elem.textContent)) return
+        // elem.textContent.replace(textRegex, (..._) => console.log(_))
         const content = elem.textContent.replace(textRegex, (..._) => _[1])
+        // console.log(content)
         new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text'))
     }
     // 渲染标签
@@ -78,6 +80,7 @@ class Compile {
                 elem.innerHTML = this.getDeepData(vm, value)
                 break;
             case 'model':
+                elem.addEventListener('input', _ => this.setDeepData(vm, value, _.target.value))
                 elem.value = this.getDeepData(vm, value)
                 break;
             case 'if':
@@ -99,8 +102,17 @@ class Compile {
         }
         return object
     }
+    //lodash中的 _.set()，赋值对象某级属性
     setDeepData(object, path, value) {
-        object[path] = value
+        const paths = path.split('.')
+        const total = paths[paths.length - 2]
+        const last = paths[paths.length - 1]
+        for (const i of paths) {
+            object = object[i] || {}
+            if (total === i) {
+                object[last] = value
+            }
+        }
     }
     removeAttr(elem, key) {
         elem.removeAttribute(key)

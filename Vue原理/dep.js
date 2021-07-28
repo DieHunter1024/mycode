@@ -9,10 +9,12 @@ class Dep {
         !Dep._instance && Object.defineProperty(Dep, "_instance", {
             value: new Dep()
         });
+        debugger
+        console.log(Dep._instance)
         return Dep._instance;
     }
     fireEvent() {
-        // console.log(this.observerList)
+        console.log(this.observerList)
         this.observerList.forEach(item => {
             console.log(item)
             item.compareVal()
@@ -20,7 +22,6 @@ class Dep {
     }
     subscribe(fn) {
         this.observerList.push(fn)
-        console.log(this.observerList)
     }
     clear() {
         this.observerList = []
