@@ -1,5 +1,5 @@
 // 调度中心（观察者模式）
-class Dep {
+export default class Dep {
     constructor() {
         this.observerList = []
         this.target = null
@@ -9,14 +9,10 @@ class Dep {
         !Dep._instance && Object.defineProperty(Dep, "_instance", {
             value: new Dep()
         });
-        debugger
-        console.log(Dep._instance)
         return Dep._instance;
     }
     fireEvent() {
-        console.log(this.observerList)
         this.observerList.forEach(item => {
-            console.log(item)
             item.compareVal()
         })
     }
@@ -27,4 +23,3 @@ class Dep {
         this.observerList = []
     }
 }
-export default new Dep().Instance

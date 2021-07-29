@@ -1,5 +1,6 @@
 // 订阅模式(比较绑定值的变化)
 import Dep from './dep.js'
+const dep = new Dep()
 export default class Watcher {
     constructor(compile, vm, val, update) {
         this.vm = vm
@@ -7,21 +8,25 @@ export default class Watcher {
         this.update = update
         this.compile = compile
         this.oldVal = this.getOldValue()
+        console.log(dep)
         this.update() //首次渲染初始化
+        dep.subscribe(this)
+        // console.log(this.oldVal)
     }
     getOldValue() {
-        Dep.target = this
+        dep.target = this
         const oldVal = this.compile.getDeepData(this.vm, this.val)
-        Dep.target = null
+        dep.target = null
         return oldVal;
     }
 
     compareVal() {
         const newVal = this.compile.getDeepData(this.vm, this.val)
-        console.log(this.val)
-        console.log(this.oldVal, newVal)
+        // console.log(dep.target)
+        // console.log(this.oldVal,newVal)
         if (newVal !== this.oldVal) {
-            Dep.clear(), this.update(), Dep.subscribe(this), this.oldVal = newVal
+            console.log(newVal)
+            this.update(), this.oldVal = newVal
         }
     }
 

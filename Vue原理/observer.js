@@ -1,5 +1,6 @@
 // 发布模式
 import Dep from './dep.js'
+const dep = new Dep()
 class Observer {
     constructor(data) {
         this.initObserver(data)
@@ -14,16 +15,13 @@ class Observer {
     // 响应拦截器，递归监听所有层级
     newReactive(data, key, val) {
         this.initObserver(val)
+        // const _dep = new Dep()
         Object.defineProperty(data, key, {
             get: _ => {
-                console.log(Dep.target)
-                Dep.target && Dep.subscribe(Dep.target);
+                dep.target && dep.subscribe(dep.target);
                 return val
             },
-            set: newVal => {
-                // console.log(Dep)
-                newVal !== val && (this.initObserver(newVal), Dep.fireEvent(), val = newVal)
-            }
+            set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), dep.fireEvent())
         })
     }
 }
