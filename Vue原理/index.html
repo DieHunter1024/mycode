@@ -17,15 +17,17 @@
             <span>3</span>
         </div>
         <ul>
-            <li>{{info.name}}</li>
+            <li>{{info.name}}---{{info.age}}</li>
             <li>{{info.age}}</li>
             <li>{{modelData}}</li>
+            <li>{{inputVal.item.value}}</li>
         </ul>
         <div v-html='htmlTemp'></div>
         <div v-show='isShow'>world</div>
         <button v-on:click='handlerShow'>点击显示</button>
         <button @click='handlerRender'>点击渲染</button>
         <input v-model='modelData' type="text">
+        <input v-model='inputVal.item.value' type="text">
     </div>
     <script type="module">
         import VueDemo from './vue-demo.js'
@@ -42,7 +44,10 @@
                 isShow:false,
                 isRender:true,
                 modelData:123,
-                htmlTemp:'<span style="color:red;">html</span>'
+                htmlTemp:'<span style="color:red;">html</span>',
+                inputVal:{
+                    item:{value:'abc'}
+                }
             },
             methods: {
                 handlerShow(){
