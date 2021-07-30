@@ -43,10 +43,8 @@ class Compile {
     // 渲染文本主要解析‘{{}}’
     renderText(elem, vm) {
         if (!textRegex.test(elem.textContent)) return
-        // elem.textContent.replace(textRegex, (..._) => console.log(_))
-        const content = elem.textContent.replace(textRegex, (..._) => _[1])
-        // console.log(content)
-        new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text'))
+        const content = elem.textContent.replace(textRegex, (..._) => this.getDeepData(vm, _[1]))
+        new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text-content'))
     }
     // 渲染标签
     renderNode(elem, vm) {
@@ -64,11 +62,17 @@ class Compile {
         const key = name.split('v-')
         const eventCommand = key[1] && key[1].split(':')[1]
         // 事件
+        key[1] === 'model' && this.compileEventComment(elem, vm, 'input', value, _ => this.setDeepData(vm, value, _.target.value))
         eventCommand ? this.compileEventComment(elem, vm, eventCommand, value) : new Watcher(this, vm, value, this.compileUtils.bind(this, elem, vm, value, key[1]))
     }
     // @ 指令解析,事件
-    compileEventComment(elem, vm, name, value) {
-        elem.addEventListener(name, vm.options.methods[value].bind(vm))
+    compileEventComment(elem, vm, name, value, fn) {
+        !fn && elem.addEventListener(name, vm.options.methods[value].bind(vm))
+        fn && elem.addEventListener(name, fn.bind(vm))
+    }
+    // 单独解析model事件
+    compileModel(elem, vm, value) {
+        elem.addEventListener('input', _ => this.setDeepData(vm, value, _.target.value))
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
@@ -76,15 +80,17 @@ class Compile {
             case 'text':
                 elem.textContent = this.getDeepData(vm, value)
                 break;
+            case 'text-content':
+                elem.textContent = value
+                break;
             case 'html':
                 elem.innerHTML = this.getDeepData(vm, value)
                 break;
             case 'model':
-                elem.addEventListener('input', _ => this.setDeepData(vm, value, _.target.value))
                 elem.value = this.getDeepData(vm, value)
                 break;
             case 'if':
-                !this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
+                // this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
                 break;
             case 'show':
                 elem.hidden = !this.getDeepData(vm, value)
@@ -105,13 +111,11 @@ class Compile {
     //lodash中的 _.set()，赋值对象某级属性
     setDeepData(object, path, value) {
         const paths = path.split('.')
-        const total = paths[paths.length - 2]
         const last = paths[paths.length - 1]
+        let _obj = object
         for (const i of paths) {
-            object = object[i] || {}
-            if (total === i) {
-                object[last] = value
-            }
+            last === i && (_obj[last] = value)
+            _obj = _obj[i]
         }
     }
     removeAttr(elem, key) {
