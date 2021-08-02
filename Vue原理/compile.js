@@ -62,7 +62,9 @@ class Compile {
         const key = name.split('v-')
         const eventCommand = key[1] && key[1].split(':')[1]
         // 事件
-        key[1] === 'model' && this.compileEventComment(elem, vm, 'input', value, _ => this.setDeepData(vm, value, _.target.value))
+        key[1] === 'model' && this.compileEventComment(elem, vm, 'input', value, e => {
+            this.setDeepData(vm, value, e.target.value)
+        })
         eventCommand ? this.compileEventComment(elem, vm, eventCommand, value) : new Watcher(this, vm, value, this.compileUtils.bind(this, elem, vm, value, key[1]))
     }
     // @ 指令解析,事件
