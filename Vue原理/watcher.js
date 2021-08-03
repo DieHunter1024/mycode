@@ -10,7 +10,7 @@ class Watcher {
     }
     getOldVal() {
         Dep.target = this
-        const oldVal = this.compile.getDeepData(this.vm, this.val)
+        const oldVal = this.compile.getDeepData(this.vm, this.val) //触发Observer中的getter，将watcher注册到dep中
         Dep.target = null
         return oldVal
     }

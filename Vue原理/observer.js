@@ -15,10 +15,11 @@ class Observer {
         this.initObserver(val)
         const dep = new Dep()
         Object.defineProperty(data, key, {
+            enumerable: true, // 允许枚举
+            configurable: false, // 不能被定义
             get: _ => {
-
                 Dep.target && dep.subscribe(Dep.target);
-                Dep.target && console.log(dep)
+                // Dep.target && console.log(dep)
                 return val
             },
             set: newVal => newVal !== val && (val = newVal, this.initObserver(newVal), dep.fireEvent())

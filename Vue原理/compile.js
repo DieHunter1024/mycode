@@ -42,19 +42,13 @@ class Compile {
     // 渲染文本主要解析‘{{}}’
     renderText(elem, vm) {
         if (!textRegex.test(elem.textContent)) return
-        const content = elem.textContent.replace(textRegex, (..._) => this.getDeepData(vm, _[1]))
-        new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text-content'))
+        const content = elem.textContent
+        content.replace(textRegex, (..._) => {
+            new Watcher(this, vm, _[1], () => {
+                this.compileUtils(elem, vm, content.replace(textRegex, (..._) => this.getDeepData(vm, _[1])), 'text-content')
+            })
+        })
     }
-    // // 渲染文本主要解析‘{{}}’
-    // renderText(elem, vm) {
-    //     if (!textRegex.test(elem.textContent)) return
-    //     const content = elem.textContent.replace(textRegex, (..._) => this.getDeepData(vm, _[1]))
-    //     elem.textContent.replace(textRegex, (..._) => {
-    //         // console.log(_)
-    //         new Watcher(this, vm, _[1], this.compileUtils.bind(this, elem, vm, content, 'text-content'))
-    //         return this.getDeepData(vm, _[1])
-    //     })
-    // }
     // 渲染标签
     renderNode(elem, vm) {
         const attributes = Array.from(elem.attributes);
@@ -80,10 +74,6 @@ class Compile {
     compileEventComment(elem, vm, name, value, fn) {
         !fn && elem.addEventListener(name, vm.options.methods[value].bind(vm))
         fn && elem.addEventListener(name, fn.bind(vm))
-    }
-    // 单独解析model事件
-    compileModel(elem, vm, value) {
-        elem.addEventListener('input', _ => this.setDeepData(vm, value, _.target.value))
     }
     // 标签中指令属性处理
     compileUtils(elem, vm, value, type) {
