@@ -1,5 +1,4 @@
 // 指令解析器
-import Watcher from './watcher.js'
 const textRegex = /\{\{(.+?)\}\}/g
 class Compile {
     constructor(elem, vm) {
@@ -46,6 +45,16 @@ class Compile {
         const content = elem.textContent.replace(textRegex, (..._) => this.getDeepData(vm, _[1]))
         new Watcher(this, vm, content, this.compileUtils.bind(this, elem, vm, content, 'text-content'))
     }
+    // // 渲染文本主要解析‘{{}}’
+    // renderText(elem, vm) {
+    //     if (!textRegex.test(elem.textContent)) return
+    //     const content = elem.textContent.replace(textRegex, (..._) => this.getDeepData(vm, _[1]))
+    //     elem.textContent.replace(textRegex, (..._) => {
+    //         // console.log(_)
+    //         new Watcher(this, vm, _[1], this.compileUtils.bind(this, elem, vm, content, 'text-content'))
+    //         return this.getDeepData(vm, _[1])
+    //     })
+    // }
     // 渲染标签
     renderNode(elem, vm) {
         const attributes = Array.from(elem.attributes);
@@ -124,4 +133,3 @@ class Compile {
         elem.removeAttribute(key)
     }
 }
-export default Compile

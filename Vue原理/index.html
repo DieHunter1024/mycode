@@ -17,11 +17,12 @@
             <span>3</span>
         </div>
         <ul>
-            <li>{{info.name}}---{{info.age}}</li>
+            <li>{{info.name}}---{{info.age}}---{{modelData}}---{{inputVal.item.value}}</li>
             <li>{{info.age}}</li>
             <li>{{modelData}}</li>
             <li>{{inputVal.item.value}}</li>
         </ul>
+        <span v-text='inputVal.item.value'></span>
         <div v-html='htmlTemp'></div>
         <div v-show='isShow'>world</div>
         <button v-on:click='handlerShow'>点击显示</button>
@@ -29,31 +30,38 @@
         <input v-model='modelData' type="text">
         <input v-model='inputVal.item.value' type="text">
     </div>
-    <script type="module">
-        import VueDemo from './vue-demo.js'
+    <script src="./dependence.js"></script>
+    <script src="./watcher.js"></script>
+    <script src="./observer.js"></script>
+    <script src="./compile.js"></script>
+    <script src="./proxy.js"></script>
+    <script src="./vue-demo.js"></script>
+    <script>
         let vm = new VueDemo({
-            el:'#app',
-            data:{
-                title:{
-                    name:'hello'
+            el: '#app',
+            data: {
+                title: {
+                    name: 'hello'
                 },
-                info:{
-                    name:'张三',
-                    age:23,
+                info: {
+                    name: '张三',
+                    age: 23,
                 },
-                isShow:false,
-                isRender:true,
-                modelData:123,
-                htmlTemp:'<span style="color:red;">html</span>',
-                inputVal:{
-                    item:{value:'abc'}
+                isShow: false,
+                isRender: true,
+                modelData: 123,
+                htmlTemp: '<span style="color:red;">html</span>',
+                inputVal: {
+                    item: {
+                        value: 'abc'
+                    }
                 }
             },
             methods: {
-                handlerShow(){
+                handlerShow() {
                     this.isShow = !this.isShow
                 },
-                handlerRender(){
+                handlerRender() {
                     this.isRender = !this.isRender
                 }
             },

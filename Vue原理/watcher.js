@@ -1,8 +1,6 @@
 // 订阅模式(比较绑定值的变化)
-import Dep from './dep.js'
-export default class Watcher {
+class Watcher {
     constructor(compile, vm, val, update) {
-        // Dep.dep.subscribe(this)
         this.vm = vm
         this.val = val;
         this.update = update

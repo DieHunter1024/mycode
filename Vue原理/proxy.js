@@ -1,5 +1,5 @@
 // 数据劫持
-export default class DataProxy {
+class DataProxy {
     constructor(data, vm) {
         for (const key in data) {
             Object.defineProperty(vm, key, {

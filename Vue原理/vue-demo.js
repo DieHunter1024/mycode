@@ -1,6 +1,3 @@
-import DataProxy from './proxy.js'
-import Compile from './compile.js'
-import Observer from './observer.js'
 class VueDemo {
     constructor(options) {
         this.options = options //配置信息
@@ -19,4 +16,3 @@ class VueDemo {
         })
     }
 }
-export default VueDemo

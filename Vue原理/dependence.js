@@ -1,15 +1,20 @@
 // 调度中心（观察者模式）
-export default class Dep {
+class Dep {
     constructor() {
         this.observerList = []
         this.target = null
     }
     fireEvent() {
+        // console.log(this.observerList)
         this.observerList.forEach(item => {
+            // console.log(item)
             item.compareVal()
         })
     }
     subscribe(fn) {
-        this.observerList.push(fn)
+        fn.compareVal && this.observerList.push(fn)
+    }
+    clearObserver() {
+        this.observerList = []
     }
 }
