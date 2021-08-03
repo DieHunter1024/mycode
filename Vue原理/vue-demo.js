@@ -4,6 +4,7 @@ class VueDemo {
         this.data = options.data;
         // 判断options.el是否存在
         (this.el = options.el) && Object.defineProperties(this, {
+            //observer和compile的顺序不要错，否则监听不到compile中的数据
             observer: {
                 value: new Observer(this.data) // 数据监听器
             },

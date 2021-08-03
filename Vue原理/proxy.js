@@ -1,4 +1,4 @@
-// 数据劫持
+// data数据代理到vue
 class DataProxy {
     constructor(data, vm) {
         for (const key in data) {
