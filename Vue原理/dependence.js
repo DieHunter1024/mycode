@@ -11,9 +11,7 @@ class Dep {
         return Dep._instance;
     }
     fireEvent() {
-        // console.log(this.observerList)
         this.observerList.forEach(item => {
-            // console.log(item)
             item.compareVal()
         })
     }
