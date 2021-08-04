@@ -17,10 +17,10 @@
             <span>3</span>
         </div>
         <ul>
-            <li>{{info.name}}---{{info.age}}---{{modelData}}---{{inputVal.item.value}}</li>
-            <li>{{info.age}}</li>
-            <li>{{modelData}}</li>
-            <li>{{inputVal.item.value}}</li>
+            <li v-if='isRender'>{{info.name}}---{{info.age}}---{{modelData}}---{{inputVal.item.value}}</li>
+            <li v-show='isShow'>{{info.age}}</li>
+            <li v-if='isRender'>{{modelData}}</li>
+            <li v-show='isShow'>{{inputVal.item.value}}</li>
         </ul>
         <span v-text='inputVal.item.value'></span>
         <div v-html='htmlTemp'></div>
@@ -47,7 +47,7 @@
                     name: '张三',
                     age: 23,
                 },
-                isShow: false,
+                isShow: true,
                 isRender: true,
                 modelData: 123,
                 htmlTemp: '<span style="color:red;">html</span>',
