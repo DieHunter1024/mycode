@@ -99,10 +99,10 @@ class Compile {
                 })
                 break;
             case 'if':
-                const nextEle = document.createTextNode('')
-                elem.parentNode.insertBefore(nextEle, elem);
+                const temp = document.createTextNode('')
+                elem.parentNode.insertBefore(temp, elem);
                 new Watcher(this, vm, value, () => {
-                    this.getDeepData(vm, value) ? nextEle.parentNode.insertBefore(elem, nextEle) : nextEle.parentNode.removeChild(elem)
+                    this.getDeepData(vm, value) ? temp.parentNode.insertBefore(elem, temp) : temp.parentNode.removeChild(elem)
                 })
                 break;
             case 'show':
