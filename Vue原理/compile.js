@@ -70,33 +70,45 @@ class Compile {
             this.setDeepData(vm, value, e.target.value)
         })
         // 过滤指令是否为事件
-        eventCommand ? this.compileEventComment(elem, vm, eventCommand, value) : new Watcher(this, vm, value, this.compileUtils.bind(this, elem, vm, value, key[1]))
+        eventCommand ? this.compileEventComment(elem, vm, eventCommand, value) : this.compileUtils(elem, vm, value, key[1])
     }
     // @ 指令解析,事件
     compileEventComment(elem, vm, name, value, fn) {
         !fn && elem.addEventListener(name, vm.options.methods[value].bind(vm))
         fn && elem.addEventListener(name, fn.bind(vm))
     }
-    // 标签中指令属性处理
+    // 标签中指令属性处理(后期实现bind，if)
     compileUtils(elem, vm, value, type) {
         switch (type) {
             case 'text':
-                elem.textContent = this.getDeepData(vm, value)
+                new Watcher(this, vm, value, () => {
+                    elem.textContent = this.getDeepData(vm, value)
+                })
                 break;
             case 'text-content':
                 elem.textContent = value
                 break;
             case 'html':
-                elem.innerHTML = this.getDeepData(vm, value)
+                new Watcher(this, vm, value, () => {
+                    elem.innerHTML = this.getDeepData(vm, value)
+                })
                 break;
             case 'model':
-                elem.value = this.getDeepData(vm, value)
+                new Watcher(this, vm, value, () => {
+                    elem.value = this.getDeepData(vm, value)
+                })
                 break;
             case 'if':
-                // this.getDeepData(vm, value) && elem.parentNode.removeChild(elem)
+                const nextEle = document.createTextNode('')
+                elem.parentNode.insertBefore(nextEle, elem);
+                new Watcher(this, vm, value, () => {
+                    this.getDeepData(vm, value) ? nextEle.parentNode.insertBefore(elem, nextEle) : nextEle.parentNode.removeChild(elem)
+                })
                 break;
             case 'show':
-                elem.hidden = !this.getDeepData(vm, value)
+                new Watcher(this, vm, value, () => {
+                    elem.hidden = !this.getDeepData(vm, value)
+                })
                 break;
         }
     }
