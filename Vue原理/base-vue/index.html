@@ -9,20 +9,32 @@
 </head>
 
 <body>
-    <div id="show-text"></div>
     <input id="input-box" type="text">
+    <div id="show-text"></div>
     <script>
+        const showText = document.querySelector('#show-text')
+        const inputBox = document.querySelector('#input-box')
         class VM {
             data = {
                 value: ''
             }
             constructor() {
-                Object.defineProperty(this)
-                console.log(this)
+                Object.defineProperty(this.data, 'value', {
+                    set(v) {
+                        showText.textContent = v
+                    },
+                    get() {
+                        return showText.textContent
+                    }
+                })
             }
         }
 
-        new VM()
+        const vm = new VM()
+        inputBox.addEventListener('input', function (e) {
+            vm.data.value = e.target.value
+            console.log(vm.data.value)
+        })
     </script>
 </body>
 
