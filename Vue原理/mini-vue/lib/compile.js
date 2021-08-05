@@ -1,6 +1,7 @@
 // 指令解析器
 const textRegex = /\{\{(.+?)\}\}/g //解析{{}}的正则
 class Compile {
+    elem = null
     constructor(elem, vm) {
         this.elem = isElemNode(elem) === '1' ? elem : document.querySelector(elem)
         this.vm = vm
@@ -38,14 +39,12 @@ class Compile {
     }
     // 渲染文本，主要解析‘{{}}’及多个‘{{}}’
     renderText(elem, vm) {
-        if (!textRegex.test(elem.textContent)) return
-        const content = elem.textContent
-        updater(elem, vm, content, 'text-content')
+        textRegex.test(elem.textContent) && updater(elem, vm, elem.textContent, 'text-content')
     }
     // 渲染标签
     renderNode(elem, vm) {
-        const attributes = Array.from(elem.attributes); //取出所有属性和值
-        attributes.forEach(attr => {
+        //取出所有属性和值
+        Array.from(elem.attributes).forEach(attr => {
             const {
                 name,
                 value

@@ -6,7 +6,7 @@ class Watcher {
         this.update = update
         this.compile = compile
         this.oldVal = this.getOldVal() //获取初始值，触发observer中属性的get
-        this.update() //首次渲染初始化
+        update() //首次渲染初始化
     }
     getOldVal() {
         Dep.target = this //将watcher暂存到Dep上，在Observer中通过dep.subscribe将watcher传到dep的observerList（调度中心）中，后续当值发送修改时通过fireEvent触发watcher.compareVal来更新视图
@@ -17,10 +17,8 @@ class Watcher {
     }
     // 对比数据，更新视图
     compareVal() {
-        const newVal = getDeepData(this.vm, this.val)
-        if (newVal !== this.oldVal) {
-            this.update(), this.oldVal = newVal //更新视图后将新值赋到oldVal上
-        }
+        const newVal = getDeepData(this.vm, this.val);
+        newVal !== this.oldVal && (this.update(), this.oldVal = newVal) //更新视图后将新值赋到oldVal上
     }
 
 }
