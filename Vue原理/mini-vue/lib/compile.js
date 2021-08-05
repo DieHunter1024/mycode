@@ -1,7 +1,6 @@
 // 指令解析器
 const textRegex = /\{\{(.+?)\}\}/g //解析{{}}的正则
 class Compile {
-    elem = null
     constructor(elem, vm) {
         this.elem = isElemNode(elem) === '1' ? elem : document.querySelector(elem)
         this.vm = vm
