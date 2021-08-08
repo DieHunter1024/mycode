@@ -1,10 +1,9 @@
 // 订阅模式(比较绑定值的变化)
 class Watcher {
-    constructor(compile, vm, val, update) {
+    constructor(vm, val, update) {
         this.vm = vm
         this.val = val;
         this.update = update
-        this.compile = compile
         this.oldVal = this.getOldVal() //获取初始值，触发observer中属性的get
         update() //首次渲染初始化
     }
