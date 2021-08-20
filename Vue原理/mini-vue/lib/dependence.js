@@ -10,13 +10,13 @@ class Dep {
     }
     //触发所有与该属性绑定的事件
     fireEvent() {
-        this.observerList.forEach(item => {
-            item.compareVal()
+        this.observerList.forEach(target => {
+            target.compareVal()
         })
     }
     //注册事件
-    subscribe(fn) {
-        fn.compareVal && this.observerList.push(fn)
+    subscribe(target) {
+        target.compareVal && this.observerList.push(target)
     }
     clearObserver() {
         this.observerList = []
