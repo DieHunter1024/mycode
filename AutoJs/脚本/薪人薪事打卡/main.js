@@ -48,7 +48,7 @@ function openCardView() {
   toast("打卡界面按钮click");
   var cardButton = cardViewBtn();
   console.log("打卡界面按钮click", cardButton.click());
-  exitApp();
+  takeCard()
 }
 
 function takeCard() {
@@ -60,14 +60,15 @@ function takeCard() {
       console.log("打卡按钮click", takeCardButton.click());
       bus.emit(EventName.TakeCard);
       clearInterval(timer);
+      exitApp();
     }
   }, 1000);
 }
 
 function exitApp() {
+  sleep(3000);
   var sh = new Shell(true);
   sh.exec("am force-stop" + " " + packageName);
-  sleep(1000);
   sh.exit();
 }
 
