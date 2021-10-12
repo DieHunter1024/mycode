@@ -8,21 +8,19 @@ var appName = "薪人薪事", //app名
   pwdInput = () => id("et_password").findOne(), //密码输入框
   submit = () => id("btn_login").findOne(), //登录按钮
   bus = events.emitter();
-const EventName = {
-    TakeCard: "TakeCard", //打卡完成
-    AppLoad: "AppLoad", //App加载完成
-  },
-  userName = "123",
+const userName = "123",
   passWord = "123";
 
 init();
 
 function init() {
-  regEvent();
   toast("launchApp:" + appName);
   console.log("launchApp:" + appName, launchApp(appName));
   waitForPackage(packageName);
-  bus.emit(EventName.AppLoad);
+  console.log("launchAppSuccess", packageName);
+  toast("launchAppSuccess", packageName);
+  sleep(200);
+  checkLogin();
 }
 function checkLogin() {
   if (id("tv_password_login").find().size() > 0) {
@@ -34,9 +32,10 @@ function checkLogin() {
 }
 function login() {
   id("cb_agree").waitFor();
-  var cbAgree = cbAgreeCheck();
-  if (!cbAgree.checked()) {
-    console.log("cbAgree", cbAgree.click());
+  id("et_phone").waitFor();
+  id("et_password").waitFor();
+  if (!cbAgreeCheck().checked()) {
+    console.log("cbAgree", cbAgreeCheck().click());
   }
   console.log("userName", userInput().setText(userName));
   console.log("passWord", pwdInput().setText(passWord));
@@ -45,38 +44,24 @@ function login() {
   openCardView();
 }
 function openCardView() {
+  id("ll_clock").waitFor();
   toast("打卡界面按钮click");
   var cardButton = cardViewBtn();
   console.log("打卡界面按钮click", cardButton.click());
-  takeCard()
+  takeCard();
 }
 
 function takeCard() {
-  var takeCardButton;
-  var timer = setInterval(function takeCardTick() {
-    takeCardButton = cardTakeBtn();
-    console.log("clickable", takeCardButton.clickable());
-    if (takeCardButton.clickable()) {
-      console.log("打卡按钮click", takeCardButton.click());
-      bus.emit(EventName.TakeCard);
-      clearInterval(timer);
-      exitApp();
-    }
-  }, 1000);
+  id("rl_my_clock_to_clock_in").clickable().waitFor();
+  console.log("打卡按钮click", cardTakeBtn().click());
+  exitApp();
 }
 
 function exitApp() {
-  sleep(3000);
-  var sh = new Shell(true);
-  sh.exec("am force-stop" + " " + packageName);
-  sh.exit();
-}
-
-function regEvent() {
-  bus.on(EventName.AppLoad, function () {
-    console.log("launchAppSuccess", packageName);
-    toast("launchAppSuccess", packageName);
-    checkLogin();
-  });
-  bus.on(EventName.TakeCard, exitApp);
+  console.log("back", back());
+  if (currentPackage() === packageName) {
+    sleep(200);
+    exitApp();
+    return;
+  }
 }
