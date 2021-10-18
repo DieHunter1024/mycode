@@ -2,7 +2,7 @@
  * @Author: Hunter
  * @Date: 2021-10-09 15:44:31
  * @LastEditTime: 2021-10-12 12:09:21
- * @LastEditors: your name
+ * @LastEditors: Hunter
  * @Description: 
  * @FilePath: \薪人薪事打卡\main.js
  * 可以输入预定的版权声明、个性签名、空行等
