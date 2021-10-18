@@ -3,14 +3,14 @@
  * @Date: 2021-10-09 15:44:31
  * @LastEditTime: 2021-10-12 12:09:21
  * @LastEditors: Hunter
- * @Description: 
+ * @Description:
  * @FilePath: \薪人薪事打卡\main.js
  * 可以输入预定的版权声明、个性签名、空行等
  */
 
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  isAuto = true, // 自动打卡
+  isAuto = false, // 自动打卡
   timer = null, // 时间标记
   roundTimer = 20 * 1000, //定时器间隔60秒
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
@@ -48,7 +48,7 @@ function startProgram() {
   waitForPackage(packageName); //等待app打开
   console.log("launchAppSuccess", packageName);
   toast("launchAppSuccess", packageName);
-  sleep(200); //等待首页加载
+  sleep(500); //等待首页加载
   checkLogin();
 }
 function checkLogin() {
@@ -87,7 +87,7 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  console.log("打卡按钮click", cardTakeBtn().click());
+  // console.log("打卡按钮click", cardTakeBtn().click());
   exitApp();
 }
 //退出程序
@@ -97,5 +97,12 @@ function exitApp() {
     //判断是否在应用内,如果在则再次返回
     sleep(200);
     exitApp();
+    return;
+  }
+  // 未设置自动计时时退出脚本
+  if (!isAuto) {
+    try {
+      exit();
+    } catch (e) {}
   }
 }
