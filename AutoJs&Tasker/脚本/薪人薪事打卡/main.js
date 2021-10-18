@@ -87,7 +87,7 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  // console.log("打卡按钮click", cardTakeBtn().click());
+  console.log("打卡按钮click", cardTakeBtn().click());
   exitApp();
 }
 //退出程序
