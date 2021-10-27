@@ -48,7 +48,7 @@ function startProgram() {
   waitForPackage(packageName); //等待app打开
   console.log("launchAppSuccess", packageName);
   toast("launchAppSuccess", packageName);
-  sleep(500); //等待首页加载
+  sleep(1000); //等待首页加载
   checkLogin();
 }
 function checkLogin() {
@@ -66,14 +66,25 @@ function login() {
   id("cb_agree").waitFor();
   id("et_phone").waitFor();
   id("et_password").waitFor();
+  sleep(1000);
   if (!cbAgreeCheck().checked()) {
     //用户协议同意判断
     console.log("cbAgree", cbAgreeCheck().click());
   }
+  sleep(1000);
   console.log("userName", userInput().setText(userName));
+  sleep(1000);
   console.log("passWord", pwdInput().setText(passWord));
+  sleep(1000);
   console.log("submit", submit().click());
+  sleep(1000);
   toast("submit");
+  setTimeout(function(){
+  if (id("tv_password_login").find().size() > 0) {
+    login();
+    return;
+  }
+      },1000)
   openCardView();
 }
 //首页--->打卡页
