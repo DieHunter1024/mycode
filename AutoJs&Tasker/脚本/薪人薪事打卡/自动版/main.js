@@ -1,18 +1,17 @@
 /*
  * @Author: Hunter
- * @Date: 2021-10-09 15:44:31
- * @LastEditTime: 2021-10-12 12:09:21
- * @LastEditors: Hunter
+ * @Date: 2021-11-01 10:41:31
+ * @LastEditTime: 2021-11-01 14:12:03
+ * @LastEditors: your name
  * @Description:
- * @FilePath: \薪人薪事打卡\main.js
+ * @FilePath: \服务版d:\Code\myCode\AutoJs&Tasker\脚本\薪人薪事打卡\自动版\main.js
  * 可以输入预定的版权声明、个性签名、空行等
  */
 
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  isAuto = false, // 自动打卡
-  timer = null, // 时间标记
   roundTimer = 20 * 1000, //定时器间隔60秒
+  isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
   userLoginBtn = () => id("tv_password_login").findOne(), //账号密码登录按钮
@@ -22,39 +21,28 @@ var appName = "薪人薪事", //app名
   submit = () => id("btn_login").findOne(); //登录按钮
 
 const userName = "123", //用户名
-  passWord = "123", //密码
-  timeTick = {
-    //上下班时间，建议获取法定节假日
-    onWork: 0,
-    offWork: 0,
-  };
+  passWord = "123"; //密码
 
 init();
 
 function init() {
-  if (isAuto) {
-    //自动打卡
-    !timer &&
-      (timer = setInterval(() => {
-        startProgram();
-      }, roundTimer));
-    return;
-  }
   startProgram();
 }
+//开启应用
 function startProgram() {
   toast("launchApp:" + appName);
   console.log("launchApp:" + appName, launchApp(appName)); //打开app
   waitForPackage(packageName); //等待app打开
   console.log("launchAppSuccess", packageName);
   toast("launchAppSuccess", packageName);
-  sleep(1000); //等待首页加载
-  // checkLogin();
+  sleep(3000); //等待首页加载
+  checkLogin();
 }
+//是否登录
 function checkLogin() {
-  if (id("tv_password_login").find().size() > 0) {
-    //通过打卡按钮判断是否登录
-    console.log("userLogin", userLoginBtn().click());
+  if (currentActivity() === isLoginActivity) {
+    id("tv_password_login").waitFor();
+    console.log("userLoginBtn", userLoginBtn().click());
     login();
     return;
   }
@@ -66,25 +54,20 @@ function login() {
   id("cb_agree").waitFor();
   id("et_phone").waitFor();
   id("et_password").waitFor();
-  sleep(1000);
   if (!cbAgreeCheck().checked()) {
     //用户协议同意判断
     console.log("cbAgree", cbAgreeCheck().click());
   }
-  sleep(1000);
   console.log("userName", userInput().setText(userName));
-  sleep(1000);
   console.log("passWord", pwdInput().setText(passWord));
-  sleep(1000);
   console.log("submit", submit().click());
-  sleep(1000);
   toast("submit");
-  setTimeout(function(){
-  if (id("tv_password_login").find().size() > 0) {
-    login();
-    return;
-  }
-      },1000)
+  setTimeout(function () {
+    if (id("tv_password_login").find().size() > 0) {
+      login();
+      return;
+    }
+  }, 1000);
   openCardView();
 }
 //首页--->打卡页
