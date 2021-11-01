@@ -1,0 +1,10 @@
+{
+    "name": "薪人薪事打卡服务版",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.xrxs.auto",
+    "versionName": "1.0.0",
+    "versionCode": 1
+}

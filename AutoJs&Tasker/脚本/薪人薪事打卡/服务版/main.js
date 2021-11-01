@@ -49,7 +49,7 @@ function startProgram() {
   console.log("launchAppSuccess", packageName);
   toast("launchAppSuccess", packageName);
   sleep(1000); //等待首页加载
-  checkLogin();
+  // checkLogin();
 }
 function checkLogin() {
   if (id("tv_password_login").find().size() > 0) {
@@ -98,8 +98,8 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  console.log("打卡按钮click", cardTakeBtn().click());
-  exitApp();
+  // console.log("打卡按钮click", cardTakeBtn().click());
+  // exitApp();
 }
 //退出程序
 function exitApp() {
