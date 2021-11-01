@@ -1,3 +1,12 @@
+<!--
+ * @Author: Hunter
+ * @Date: 2021-11-01 10:44:22
+ * @LastEditTime: 2021-11-01 18:24:10
+ * @LastEditors: your name
+ * @Description: 
+ * @FilePath: \服务版\server\public\index.html
+ * 可以输入预定的版权声明、个性签名、空行等
+-->
 <!DOCTYPE html>
 <html lang='cn'>
 
@@ -27,7 +36,24 @@
 </head>
 
 <body>
+    <div></div>
+    <script src="./utils.js"></script>
+    <script>
+        const utils = new Utils()
+        const baseUrl = 'http://127.0.0.1:2048/'
+        utils.myAjax({
+            method: 'get',
+            url: baseUrl + 'userLogin',
+            data: {
+                phone: 'test',
+                password: '123'
+            }
+        }).then((result) => {
+            console.log(result)
+        }).catch((err) => {
 
+        });
+    </script>
 </body>
 
 </html>

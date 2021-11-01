@@ -1,10 +1,11 @@
 importPackage(Packages["okhttp3"]); //导入包
 const wsUrl = "ws://192.168.202.35:1024/ws/?name=test";
-function CommandSocket() {
+function CommandSocket(takeCard) {
   toast("websocket");
   this.client = null;
   this.request = null;
   this.ws = null;
+  this.takeCard = takeCard
 }
 
 CommandSocket.prototype = {
@@ -42,6 +43,7 @@ CommandSocket.prototype = {
   onMessage: function (webSocket, msg) {
     //msg可能是字符串，也可能是byte数组，取决于服务器送的内容
     print("msg");
+    this.takeCard.startProgram()
     print(msg);
   },
   onClosing: function (webSocket, code, response) {

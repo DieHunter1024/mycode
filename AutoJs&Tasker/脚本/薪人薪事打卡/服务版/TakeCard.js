@@ -10,10 +10,7 @@ var appName = "薪人薪事", //app名
   submit = () => id("btn_login").findOne(), //登录按钮
   userName = "123", //用户名
   passWord = "123"; //密码
-function TakeCard({ userName, passWord }) {
-  userName = userName;
-  passWord = passWord;
-}
+function TakeCard() {}
 TakeCard.prototype = {
   //开启应用
   startProgram() {
