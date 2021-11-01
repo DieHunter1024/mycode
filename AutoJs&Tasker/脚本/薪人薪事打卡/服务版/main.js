@@ -1,4 +1,4 @@
-const TakeCard = require("TakeCard.js");
-const CommandSocket = require("WebSocket.js");
-new CommandSocket().init();
-new TakeCard().startProgram()
+var TakeCard = require("TakeCard.js");
+var CommandSocket = require("WebSocket.js");
+var commandSocket = new CommandSocket().connect()
+var takeCard = new TakeCard().startProgram()

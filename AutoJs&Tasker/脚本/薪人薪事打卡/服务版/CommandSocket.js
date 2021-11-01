@@ -1,5 +1,5 @@
 importPackage(Packages["okhttp3"]); //导入包
-const wsUrl = "ws://192.168.31.164:9317";
+const wsUrl = "ws://192.168.202.35:1024/ws/?name=test";
 function CommandSocket() {
   toast("websocket");
   this.client = null;
@@ -16,6 +16,7 @@ CommandSocket.prototype = {
       .retryOnConnectionFailure(true)
       .build();
     this.request = new Request.Builder().url(_wsUrl || wsUrl).build();
+    return this;
   },
   connect(_wsUrl) {
     if (!this.client) {
@@ -24,17 +25,17 @@ CommandSocket.prototype = {
     this.ws = this.client.newWebSocket(
       this.request,
       new WebSocketListener({
-        onOpen: this.onOpen,
-        onMessage: this.onMessage,
-        onClosing: this.onClosing,
-        onClosed: this.onClosed,
-        onFailure: this.onFailure,
+        onOpen: this.onOpen.bind(this),
+        onMessage: this.onMessage.bind(this),
+        onClosing: this.onClosing.bind(this),
+        onClosed: this.onClosed.bind(this),
+        onFailure: this.onFailure.bind(this),
       })
     ); //创建链接
+    return this;
   },
   onOpen: function (webSocket, response) {
     print("onOpen");
-    //打开链接后，想服务器端发送一条消息
     var json = { name: 111 };
     this.sendWs(json);
   },
@@ -65,4 +66,4 @@ CommandSocket.prototype.constructor = CommandSocket;
 module.exports = CommandSocket;
 setInterval(() => {
   // 防止主线程退出
-}, 1000);
+}, 10000);

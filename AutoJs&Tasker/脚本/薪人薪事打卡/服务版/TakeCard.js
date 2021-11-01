@@ -1,6 +1,5 @@
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  roundTimer = 20 * 1000, //定时器间隔60秒
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
@@ -8,11 +7,13 @@ var appName = "薪人薪事", //app名
   cbAgreeCheck = () => id("cb_agree").findOne(), //同意选项
   userInput = () => id("et_phone").findOne(), //用户名输入框
   pwdInput = () => id("et_password").findOne(), //密码输入框
-  submit = () => id("btn_login").findOne(); //登录按钮
-
-const userName = "123", //用户名
+  submit = () => id("btn_login").findOne(), //登录按钮
+  userName = "123", //用户名
   passWord = "123"; //密码
-function TakeCard() {}
+function TakeCard({ userName, passWord }) {
+  userName = userName;
+  passWord = passWord;
+}
 TakeCard.prototype = {
   //开启应用
   startProgram() {
@@ -23,6 +24,7 @@ TakeCard.prototype = {
     toast("launchAppSuccess", packageName);
     sleep(3000); //等待首页加载
     this.checkLogin();
+    return this;
   },
   //是否登录
   checkLogin() {
@@ -79,12 +81,12 @@ TakeCard.prototype = {
       this.exitApp();
       return;
     }
-    // 未设置自动计时时退出脚本
-    if (!isAuto) {
-      try {
-        exit();
-      } catch (e) {}
-    }
+    this.exitJs();
+  },
+  exitJs() {
+    try {
+      exit();
+    } catch (e) {}
   },
 };
 TakeCard.prototype.constructor = TakeCard;
