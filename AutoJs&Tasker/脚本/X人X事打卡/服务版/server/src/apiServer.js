@@ -18,8 +18,6 @@ let server = http.createServer((req, res) => {
       case "/userLogin":
         console.log("登录", data);
         EventBus.emitEvent("login", { data, res });
-        // res.write(JSON.stringify({ result: 1 }));
-        // res.end();
         break;
       default:
         res.writeHead(404, { "Content-Type": "text/plain" });

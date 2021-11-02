@@ -32,7 +32,7 @@ class WebSocketServer extends WebSocket.Server {
         this.send(e);
         break;
       case "heart_beat":
-        console.log(`收到${this.name}心跳${data.msg}`);
+        console.log(`收到${this.machineId}心跳${data.msg}`);
         this.send(e);
         break;
     }
@@ -50,22 +50,22 @@ class WebSocketServer extends WebSocket.Server {
 
   addClient(item) {
     //设备上线时添加到客户端列表
-    if (this.webSocketClient[item["name"]]) {
-      console.log(item["name"] + "客户端已存在");
-      this.webSocketClient[item["name"]].close();
+    if (this.webSocketClient[item["machineId"]]) {
+      console.log(item["machineId"] + "客户端已存在");
+      this.webSocketClient[item["machineId"]].close();
     }
-    console.log(item["name"] + "客户端已添加");
-    this.webSocketClient[item["name"]] = item;
+    console.log(item["machineId"] + "客户端已添加");
+    this.webSocketClient[item["machineId"]] = item;
   }
 
   removeClient(item) {
     //设备断线时从客户端列表删除
-    if (!this.webSocketClient[item["name"]]) {
-      console.log(item["name"] + "客户端不存在");
+    if (!this.webSocketClient[item["machineId"]]) {
+      console.log(item["machineId"] + "客户端不存在");
       return;
     }
-    console.log(item["name"] + "客户端已移除");
-    this.webSocketClient[item["name"]] = null;
+    console.log(item["machineId"] + "客户端已移除");
+    this.webSocketClient[item["machineId"]] = null;
   }
 }
 
@@ -73,7 +73,7 @@ const webSocketServer = new WebSocketServer({ noServer: true });
 server.on("upgrade", (req, socket, head) => {
   //通过http.server过滤数据
   let url = new URL(req.url, `http://${req.headers.host}`);
-  let name = url.searchParams.get("name"); //获取连接标识
+  let machineId = url.searchParams.get("machineId"); //获取连接标识
   if (!checkUrl(url.pathname, pathname)) {
     //未按标准
     socket.write("未按照标准访问");
@@ -81,7 +81,7 @@ server.on("upgrade", (req, socket, head) => {
     return;
   }
   webSocketServer.handleUpgrade(req, socket, head, function (ws) {
-    ws.name = name; //添加索引，方便在客户端列表查询某个socket连接
+    ws.machineId = machineId; //添加索引，方便在客户端列表查询某个socket连接
     webSocketServer.addClient(ws);
     webSocketServer.ws = ws;
   });

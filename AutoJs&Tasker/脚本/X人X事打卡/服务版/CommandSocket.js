@@ -1,5 +1,5 @@
 importPackage(Packages["okhttp3"]); //导入包
-const wsUrl = "ws://192.168.202.35:1024/ws/?name=test";
+const wsUrl = "ws://192.168.202.35:1024/ws/?machineId=test";
 function CommandSocket(takeCard) {
   toast("websocket");
   this.client = null;
@@ -37,7 +37,7 @@ CommandSocket.prototype = {
   },
   onOpen: function (webSocket, response) {
     print("onOpen");
-    var json = { name: 111 };
+    var json = { msg: 111 };
     this.sendWs(json);
   },
   onMessage: function (webSocket, msg) {

@@ -1,13 +1,19 @@
-const { webSocketServer } = require("./socketServer.js");
-const { apiServer } = require("./apiServer.js");
-const { EventBus } = require("./utils");
-// webSocketServer.sendMsg({ name: "111" });
+const { webSocketServer } = require("./src/socketServer.js");
+const { apiServer } = require("./src/apiServer.js");
+const { EventBus } = require("./src/utils");
 EventBus.onEvent("login", (e) => {
   const { res, data } = e;
-  const clientItem = webSocketServer.webSocketClient[data["phone"]];
+  const clientItem = webSocketServer.webSocketClient[data["machineId"]];
   if (clientItem) {
     clientItem.send(JSON.stringify(data));
+    sendResMsg({ res });
+    return;
   }
-  res.write(JSON.stringify({ result: 1 }));
-  res.end();
+  sendResMsg({ res, state: 0, msg: "设备未在线" });
 });
+
+function sendResMsg({ res, state = 1, msg = "发送成功", data = {} }) {
+  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+  res.write(JSON.stringify({ state, msg, data }));
+  res.end();
+}

@@ -1,7 +1,7 @@
 <!--
  * @Author: Hunter
  * @Date: 2021-11-01 10:44:22
- * @LastEditTime: 2021-11-01 18:24:10
+ * @LastEditTime: 2021-11-02 10:38:57
  * @LastEditors: your name
  * @Description: 
  * @FilePath: \服务版\server\public\index.html
@@ -32,27 +32,34 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin-bottom: 30px;
+            height: 50px;
+        }
+
+        button {
+            height: 40px;
+        }
     </style>
 </head>
 
 <body>
-    <div></div>
+    <div id="app">
+        <input id="username" placeholder="用户名" type="text">
+        <input id="password" placeholder="密码" type="password">
+        <input id="machineId" placeholder="设备ID" type="machineId">
+        <button id="submit">登录设备</button>
+    </div>
     <script src="./utils.js"></script>
+    <script src="./index.js"></script>
     <script>
-        const utils = new Utils()
-        const baseUrl = 'http://127.0.0.1:2048/'
-        utils.myAjax({
-            method: 'get',
-            url: baseUrl + 'userLogin',
-            data: {
-                phone: 'test',
-                password: '123'
-            }
-        }).then((result) => {
-            console.log(result)
-        }).catch((err) => {
-
-        });
+        init()
     </script>
 </body>
 
