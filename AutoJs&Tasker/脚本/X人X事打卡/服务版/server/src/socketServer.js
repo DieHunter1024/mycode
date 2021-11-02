@@ -35,6 +35,9 @@ class WebSocketServer extends WebSocket.Server {
         console.log(`收到${this.machineId}心跳${data.msg}`);
         this.send(e);
         break;
+      default:
+        console.log(data.msg);
+        break;
     }
   }
 

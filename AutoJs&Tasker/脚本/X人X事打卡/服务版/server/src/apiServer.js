@@ -15,9 +15,8 @@ let server = http.createServer((req, res) => {
     });
   } else {
     switch (url.pathname) {
-      case "/userLogin":
-        console.log("登录", data);
-        EventBus.emitEvent("login", { data, res });
+      case "/command":
+        EventBus.emitEvent("@command", { data, res });
         break;
       default:
         res.writeHead(404, { "Content-Type": "text/plain" });

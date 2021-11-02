@@ -81,3 +81,11 @@ class Utils {
     return element;
   }
 }
+
+function showMsg({ content = "提示" }) {
+  layer.open({
+    content,
+    skin: "msg",
+    time: 2, //2秒后自动关闭
+  });
+}

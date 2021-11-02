@@ -67,3 +67,15 @@ class EventBus {
 }
 
 exports.EventBus = EventBus.Instance();
+
+exports.sendResMsg = function ({
+  res,
+  type = "login",
+  state = 1,
+  msg = "发送成功",
+  data = {},
+}) {
+  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+  res.write(JSON.stringify({ state, msg, data, type }));
+  res.end();
+};

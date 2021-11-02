@@ -1,7 +1,7 @@
 <!--
  * @Author: Hunter
  * @Date: 2021-11-01 10:44:22
- * @LastEditTime: 2021-11-02 10:38:57
+ * @LastEditTime: 2021-11-02 17:35:09
  * @LastEditors: your name
  * @Description: 
  * @FilePath: \服务版\server\public\index.html
@@ -25,6 +25,7 @@
         viewport-fit=cover />
     <meta http-equiv='X-UA-Compatible' content='ie=edge,chrome=1'>
     <title></title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/mobile/need/layer.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -54,8 +55,13 @@
         <input id="username" placeholder="用户名" type="text">
         <input id="password" placeholder="密码" type="password">
         <input id="machineId" placeholder="设备ID" type="machineId">
-        <button id="submit">登录设备</button>
+        <button id="login">登录设备</button>
+        <button id="take">打卡</button>
+        <button id="exitApp">退出app</button>
+        <button id="exitJs">退出脚本</button>
     </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/mobile/layer.min.js
+    "></script>
     <script src="./utils.js"></script>
     <script src="./index.js"></script>
     <script>

@@ -1,10 +1,13 @@
 const utils = new Utils();
 const baseUrl = "http://127.0.0.1:2048/";
 function init() {
-  submit.addEventListener("click", handlerSubmitClick);
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((_) => {
+    _.addEventListener("click", handlerSubmitClick);
+  });
   initInfo();
 }
-function handlerSubmitClick() {
+function handlerSubmitClick(e) {
   const usernameValue = username.value,
     passwordValue = password.value,
     machineIdValue = machineId.value;
@@ -14,20 +17,28 @@ function handlerSubmitClick() {
     utils
       .myAjax({
         method: "get",
-        url: baseUrl + "userLogin",
+        url: baseUrl + "command",
         data: {
           username: usernameValue,
           password: passwordValue,
           machineId: machineIdValue,
+          type: this.id,
         },
       })
       .then((result) => {
-        if (result.state) {
-          localStorage.setItem("username", usernameValue);
-          localStorage.setItem("password", passwordValue);
-          localStorage.setItem("machineId", machineIdValue);
+        showMsg({ content: result.msg });
+        if (!result.state) {
+          return;
         }
-        console.log(result);
+        switch (result.type) {
+          case "login":
+            localStorage.setItem("username", usernameValue);
+            localStorage.setItem("password", passwordValue);
+            localStorage.setItem("machineId", machineIdValue);
+            break;
+          default:
+            break;
+        }
       })
       .catch((err) => {});
 }
