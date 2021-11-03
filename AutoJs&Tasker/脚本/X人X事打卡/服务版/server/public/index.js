@@ -1,5 +1,5 @@
 const utils = new Utils();
-const baseUrl = "http://127.0.0.1:2048/";
+const baseUrl = "http://192.168.202.35:2048/";
 function init() {
   const buttons = document.querySelectorAll("button");
   buttons.forEach((_) => {

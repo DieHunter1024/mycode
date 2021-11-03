@@ -10,8 +10,17 @@ var appName = "薪人薪事", //app名
   userInput = () => id("et_phone").findOne(), //用户名输入框
   pwdInput = () => id("et_password").findOne(), //密码输入框
   submit = () => id("btn_login").findOne(), //登录按钮
+  menuMine = () => id("rl_mine").findOne(), //我的
+  menuSetting = () => id("iv_setting").findOne(), //设置
+  userLogout = () => id("tv_logout").findOne(), //注销，登出
+  okBtn = () => id("tv_confirm").findOne(), //确定按钮
   userName = "123", //用户名
-  passWord = "123"; //密码
+  passWord = "123", //密码
+  takeCard,
+  commandSocket;
+let timeTicker = setInterval(function () {
+  // 防止主线程退出
+}, 10000); //线程定时器
 function CommandSocket() {
   toast("websocket");
   this.client = null;
@@ -56,7 +65,6 @@ CommandSocket.prototype = {
     print("msg");
     console.log("onMessage", msg);
     this.command(JSON.parse(msg));
-    // takeCard.startProgram();
   },
   onClosing: function (webSocket, code, response) {
     print("正在关闭");
@@ -69,7 +77,7 @@ CommandSocket.prototype = {
     print(t);
   },
   closeWs() {
-    this.ws && this.ws.close();
+    this.ws && this.ws.cancel(); //清理一次
   },
   sendWs(msg) {
     this.ws &&
@@ -83,12 +91,33 @@ CommandSocket.prototype = {
         userName = msg.username;
         passWord = msg.password;
         break;
-      case "take":
-        console.log("执行打卡", msg);
+      case "open":
+        console.log("打开App", msg);
         takeCard.startProgram();
         break;
+      case "signIn":
+        console.log("用户登录", msg);
+        takeCard.startProgram().checkLogin()
+          ? takeCard.login().exitApp()
+          : takeCard.exitApp();
+        break;
+      case "signOut":
+        console.log("退出登录", msg);
+        takeCard.startProgram().checkLogin()
+          ? takeCard.exitApp()
+          : takeCard.signOut().exitApp();
+        break;
+      case "take":
+        console.log("执行打卡", msg);
+        (takeCard.startProgram().checkLogin()
+          ? takeCard.login()
+          : takeCard.openCardView()
+        )
+          .takeCard()
+          .exitApp();
+        break;
       case "exitApp":
-        console.log("退出程序", msg);
+        console.log("退出App", msg);
         takeCard.exitApp();
         break;
       case "exitJs":
@@ -101,9 +130,6 @@ CommandSocket.prototype = {
   },
 };
 CommandSocket.prototype.constructor = CommandSocket;
-setInterval(() => {
-  // 防止主线程退出
-}, 1000);
 
 function TakeCard() {}
 TakeCard.prototype = {
@@ -114,22 +140,18 @@ TakeCard.prototype = {
     waitForPackage(packageName); //等待app打开
     console.log("launchAppSuccess", packageName);
     toast("launchAppSuccess", packageName);
-    sleep(1000); //等待首页加载
-    this.checkLogin();
+    sleep(3000); //等待首页加载
+    return this;
   },
   //是否登录
   checkLogin() {
-    if (currentActivity() == isLoginActivity) {
-      id("tv_password_login").waitFor();
-      console.log("userLoginBtn", userLoginBtn().click());
-      this.login();
-      return;
-    }
-    this.openCardView();
+    return currentActivity() == isLoginActivity;
   },
   // 用户登录
   login() {
     // 等待界面组件加载
+    id("tv_password_login").waitFor();
+    console.log("userLoginBtn", userLoginBtn().click());
     id("cb_agree").waitFor();
     id("et_phone").waitFor();
     id("et_password").waitFor();
@@ -140,14 +162,7 @@ TakeCard.prototype = {
     console.log("userName", userInput().setText(userName));
     console.log("passWord", pwdInput().setText(passWord));
     console.log("submit", submit().click());
-    toast("submit");
-    setTimeout(function () {
-      if (id("tv_password_login").find().size() > 0) {
-        this.login();
-        return;
-      }
-    }, 1000);
-    this.openCardView();
+    return this;
   },
   //首页--->打卡页
   openCardView() {
@@ -155,13 +170,21 @@ TakeCard.prototype = {
     toast("打卡界面按钮click");
     var cardButton = cardViewBtn();
     console.log("打卡界面按钮click", cardButton.click());
-    this.takeCard();
+    return this;
   },
   //打卡
   takeCard() {
     id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
     console.log("打卡按钮click", cardTakeBtn().click());
-    this.exitApp();
+    return this;
+  },
+  signOut() {
+    id("rl_mine").waitFor();
+    console.log("我的按钮click", menuMine().click());
+    console.log("设置按钮click", menuSetting().click());
+    console.log("退出按钮click", userLogout().click());
+    console.log("确定按钮click", okBtn().click());
+    return this;
   },
   //退出程序
   exitApp() {
@@ -170,17 +193,14 @@ TakeCard.prototype = {
       //判断是否在应用内,如果在则再次返回
       sleep(200);
       this.exitApp();
-      return;
+      return this;
     }
-    this.exitJs();
   },
   exitJs() {
-    try {
-      exit();
-    } catch (e) {}
+    console.log("关闭", exit());
   },
 };
 TakeCard.prototype.constructor = TakeCard;
 
-var takeCard = new TakeCard();
-var commandSocket = new CommandSocket().connect();
+takeCard = new TakeCard();
+commandSocket = new CommandSocket().connect();
