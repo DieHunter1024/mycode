@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 // 发布/订阅设计模式(Pub/Sub)
 class EventBus {
   constructor() {
@@ -78,4 +80,44 @@ exports.sendResMsg = function ({
   res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
   res.write(JSON.stringify({ state, msg, data, type }));
   res.end();
+};
+
+const EmailTransporter = {
+  // service: "qq", // 运营商  qq邮箱 网易  若使用QQ邮箱，则只需配置service：qq
+  host: "smtp.163.com", // 若使用网易邮箱，则只需配置host：smtp.163.com
+  port: 465, //端口
+  // secure: false,
+  auth: {
+    // user: "321321@163.com", //发送方的邮箱
+    // pass: "123123", // pop3 授权码
+  },
+};
+exports.SendEmail = class {
+  static transporter = nodemailer.createTransport(EmailTransporter); //邮箱配置项
+  static mailOptions = null; //邮箱配置
+  /* 发送邮件模块
+   * @method    sendEmail
+   * @for       SendMail
+   * @param   {String} mail  用户邮箱号
+   * @param   {String} title  邮件标题
+   * @param   {String} content  邮件内容
+   * @return {Boolean}   是否发送成功
+   */
+  static async sendEmail(mail, title, content) {
+    this.mailOptions = {
+      from: '"自动打卡通知" <' + EmailTransporter.auth.user + ">",
+      to: mail,
+      subject: title,
+      text: content,
+    };
+    try {
+      let result = await this.transporter.sendMail(this.mailOptions);
+      console.log("发送成功");
+      return true;
+    } catch (error) {
+      console.log(error);
+      console.log("发送失败");
+      return false;
+    }
+  }
 };

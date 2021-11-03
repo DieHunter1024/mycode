@@ -57,8 +57,7 @@ CommandSocket.prototype = {
   },
   onOpen: function (webSocket, response) {
     print("onOpen");
-    var json = { msg: "连接成功", ModeCode: "Open" };
-    this.sendWs(json);
+    this.sendWs({ msg: "连接成功", ModeCode: "Open" });
   },
   onMessage: function (webSocket, msg) {
     //msg可能是字符串，也可能是byte数组，取决于服务器送的内容
@@ -176,6 +175,7 @@ TakeCard.prototype = {
   takeCard() {
     id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
     console.log("打卡按钮click", cardTakeBtn().click());
+    commandSocket.sendWs({ msg: "打卡成功", ModeCode: "Email" })
     return this;
   },
   signOut() {

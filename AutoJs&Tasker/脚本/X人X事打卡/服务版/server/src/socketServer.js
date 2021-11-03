@@ -1,9 +1,9 @@
 const http = require("http");
 const WebSocket = require("ws");
+const { SendEmail } = require("./utils");
 const port = 1024; //端口
 const pathname = "/ws/"; //访问路径
 const server = http.createServer();
-
 class WebSocketServer extends WebSocket.Server {
   constructor() {
     super(...arguments);
@@ -29,11 +29,14 @@ class WebSocketServer extends WebSocket.Server {
     switch (data.ModeCode) {
       case "message":
         console.log("收到消息" + data.msg);
-        this.send(e);
         break;
       case "heart_beat":
         console.log(`收到${this.machineId}心跳${data.msg}`);
         this.send(e);
+        break;
+      case "Email":
+        console.log(data.msg);
+        SendEmail.sendEmail("313267717@qq.com", data.msg, data.msg);
         break;
       default:
         console.log(data.msg);
