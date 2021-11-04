@@ -1,0 +1,11 @@
+{
+"requestResource" : "http://testst.lenovo.com/lst/serviceDB/requestReource.jhtml",
+"reportUsage" : "http://testst.lenovo.com/lst/serviceDB/reportPartialUsage.jhtml",
+"validateAccount" : "http://testst.lenovo.com/lst/serviceDB/login.jhtml",
+"getPlatforms" : "http://testst.lenovo.com/lst/serviceDB/getPlatforms.jhtml",
+"getDevices" : "http://testst.lenovo.com/lst/serviceDB/getDevices.jhtml",
+"requestPartialResource" : "http://testst.lenovo.com/lst/serviceDB/requestPartialResource.jhtml",
+"recordManualOfflineResource" : "http://testst.lenovo.com/lst/serviceDB/recordManualOfflineResource.jhtml", 
+"uploadCountryCode" : "http://testst.lenovo.com/lst/serviceDB/reportCountryCode.jhtml",
+"uploadFrpInfo" : "http://testst.lenovo.com/lst/serviceDB/reportClientUploadFRP.jhtml"
+}

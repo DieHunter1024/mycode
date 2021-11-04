@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usb-setting>
+    <usb name="BOOTROM_VCOM">
+        <pid>0003</pid>
+        <vid>0E8D</vid>
+	<guid-type>port-guid-interface</guid-type> <!--port-guid-interface: 0xA5DCBF10L,0x6530,0x11D2,0x90,0x1F,0x00,0xC0,0x4F,0xB9,0x51,0xED -->
+    </usb>
+    <usb name="PRELOADER_VCOM">
+        <pid>2000</pid>
+        <vid>0E8D</vid>
+	<guid-type>port-guid-interface</guid-type>
+    </usb>
+    <usb name="DA_HIGHSPEED_VCOM">
+        <pid>2001</pid>
+        <vid>0E8D</vid>
+	<guid-type>port-guid-interface</guid-type>
+    </usb>
+    <usb name="GADGET_VCOM">
+	<pid>0005&amp;MI_02</pid><!--&amp; is a translation for &-->
+        <vid>0BB4</vid>
+	<guid-type>port-guid-class</guid-type><!--port-guid-class: 0x4D36E978L,0xE325,0x11CE,0xBF,0xC1,0x08,0x00,0x2B,0xE1,0x03,0x18 -->
+    </usb>
+</usb-setting>

@@ -1,0 +1,16 @@
+D:\Driver_Auto_Installer_v1.1236.00\SmartPhoneDriver\x64\Infs\usbvcom_brom.inf--->
+must be a member of the Administrators group to install a driver package
+InstallDriverWithWDK Failed. Try another method.
+
+No device pluged in.
+SetupDiEnumDeviceInfo Finish.
+No device pluged in.
+USB\Vid_0e8d&Pid_2000 found in hDeviceInfoSet.
+SetupDi[Set]DeviceRegistryProperty SPDRP_CONFIGFLAGS Unknown error
+USB\Vid_0e8d&Pid_2000 PreInstallDriver Failed.
+
+
+
+======Operation Failed=======
+
+File Closed.
