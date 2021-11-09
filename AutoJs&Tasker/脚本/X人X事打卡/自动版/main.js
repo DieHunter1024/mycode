@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-09 22:29:58
+ * @LastEditTime: 2021-11-09 22:32:58
  * @LastEditors: your name
  * @Description:
  * @FilePath: \自动版\main.js
@@ -33,7 +33,7 @@ const userName = "13212345678", //用户名||手机号
       content: "打卡成功",
       email: "example@qq.com",
     },
-  }; //邮箱配置
+  }; //邮箱配置，需要去emailjs官网申请api，每月免费200次
 init();
 
 function init() {
