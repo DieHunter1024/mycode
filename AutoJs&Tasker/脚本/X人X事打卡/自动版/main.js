@@ -1,13 +1,12 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-01 14:12:03
+ * @LastEditTime: 2021-11-09 21:04:06
  * @LastEditors: your name
  * @Description:
- * @FilePath: \服务版d:\Code\myCode\AutoJs&Tasker\脚本\薪人薪事打卡\自动版\main.js
+ * @FilePath: \自动版\main.js
  * 可以输入预定的版权声明、个性签名、空行等
  */
-
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
   roundTimer = 20 * 1000, //定时器间隔60秒
@@ -21,8 +20,20 @@ var appName = "薪人薪事", //app名
   submit = () => id("btn_login").findOne(); //登录按钮
 
 const userName = "123", //用户名
-  passWord = "123"; //密码
-
+  passWord = "123", //密码
+  mailApi = "https://api.emailjs.com/api/v1.0/email/send", //邮箱请求地址
+  mailConfig = {
+    user_id: "user_id",
+    service_id: "service_id",
+    template_id: "template_id",
+    // template_params: {
+    //   title: "自动打卡通知",
+    //   content: "打卡成功",
+    //   email: "123@qq.com",
+    // },
+  }; //邮箱配置
+console.show(true);
+console.log("发送邮件",sendEmail());
 init();
 
 function init() {
@@ -81,8 +92,12 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  // console.log("打卡按钮click", cardTakeBtn().click());
-  // exitApp();
+  console.log(
+    "发送邮件",
+    sendEmail()
+  );
+  console.log("打卡按钮click", cardTakeBtn().click());
+  exitApp();
 }
 //退出程序
 function exitApp() {
@@ -93,10 +108,12 @@ function exitApp() {
     exitApp();
     return;
   }
-  // 未设置自动计时时退出脚本
-  if (!isAuto) {
-    try {
-      exit();
-    } catch (e) {}
-  }
+  exit();
+}
+function sendEmail(params) {
+  var res = http.post(mailApi, params || mailConfig, {
+    contentType: "application/json",
+  });
+  return res
+  // console.log("res", res.body.json());
 }
