@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-09 21:04:06
+ * @LastEditTime: 2021-11-09 22:29:58
  * @LastEditors: your name
  * @Description:
  * @FilePath: \自动版\main.js
@@ -9,7 +9,8 @@
  */
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  roundTimer = 20 * 1000, //定时器间隔60秒
+  roundTimer = 30 * 1000, //超时定时器间隔30秒
+  maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
@@ -19,24 +20,28 @@ var appName = "薪人薪事", //app名
   pwdInput = () => id("et_password").findOne(), //密码输入框
   submit = () => id("btn_login").findOne(); //登录按钮
 
-const userName = "123", //用户名
-  passWord = "123", //密码
+const userName = "13212345678", //用户名||手机号
+  passWord = "123123123", //密码
   mailApi = "https://api.emailjs.com/api/v1.0/email/send", //邮箱请求地址
   mailConfig = {
     user_id: "user_id",
     service_id: "service_id",
     template_id: "template_id",
-    // template_params: {
-    //   title: "自动打卡通知",
-    //   content: "打卡成功",
-    //   email: "123@qq.com",
-    // },
+    accessToken: "8a73dxxxxxxxxxxxxxxxxxxbd99",
+    template_params: {
+      title: "自动打卡通知",
+      content: "打卡成功",
+      email: "example@qq.com",
+    },
   }; //邮箱配置
-console.show(true);
-console.log("发送邮件",sendEmail());
 init();
 
 function init() {
+  if (!!maxRetryCount) {
+    console.log("剩余重试次数" + maxRetryCount);
+    timeOutMsg();
+    maxRetryCount--;
+  }
   startProgram();
 }
 //开启应用
@@ -92,11 +97,9 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  console.log(
-    "发送邮件",
-    sendEmail()
-  );
   console.log("打卡按钮click", cardTakeBtn().click());
+  toast("发送邮件");
+  console.log("发送邮件", sendEmail());
   exitApp();
 }
 //退出程序
@@ -114,6 +117,17 @@ function sendEmail(params) {
   var res = http.post(mailApi, params || mailConfig, {
     contentType: "application/json",
   });
-  return res
-  // console.log("res", res.body.json());
+  return res;
+}
+function simpleCloneObj(target) {
+  return typeof target === "object" && JSON.parse(JSON.stringify(target));
+}
+function timeOutMsg() {
+  setTimeout(function () {
+    const _mailConfig = simpleCloneObj(mailConfig);
+    _mailConfig.template_params.content = "自动打卡超时，正在重试" + new Date();
+    toast("打卡超时，正在重试");
+    sendEmail(_mailConfig);
+    init();
+  }, roundTimer);
 }
