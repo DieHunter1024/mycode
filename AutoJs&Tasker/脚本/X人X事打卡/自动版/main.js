@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-09 22:32:58
+ * @LastEditTime: 2021-11-10 23:37:42
  * @LastEditors: your name
  * @Description:
  * @FilePath: \自动版\main.js
@@ -10,6 +10,7 @@
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
   roundTimer = 30 * 1000, //超时定时器间隔30秒
+  randomTimer = parseInt(Math.random() * 10) * 30 * 1000, //随机定时器0-5分钟
   maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
@@ -34,7 +35,9 @@ const userName = "13212345678", //用户名||手机号
       email: "example@qq.com",
     },
   }; //邮箱配置，需要去emailjs官网申请api，每月免费200次
-init();
+console.show(true);
+console.log("randomTimer", randomTimer);
+setTimeout(init, randomTimer);
 
 function init() {
   if (!!maxRetryCount) {
@@ -97,21 +100,24 @@ function openCardView() {
 //打卡
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
-  console.log("打卡按钮click", cardTakeBtn().click());
-  toast("发送邮件");
-  console.log("发送邮件", sendEmail());
-  exitApp();
+  if (cardTakeBtn().click()) {
+    toast("发送邮件");
+    console.log("发送邮件", sendEmail());
+    exitApp(true);
+  }
 }
 //退出程序
-function exitApp() {
+function exitApp(exitJs, fn) {
   console.log("back", back());
   if (currentPackage() === packageName) {
     //判断是否在应用内,如果在则再次返回
     sleep(200);
-    exitApp();
+    exitApp(exitJs, fn);
     return;
   }
-  exit();
+  sleep(200);
+  fn && fn();
+  exitJs && exit();
 }
 function sendEmail(params) {
   var res = http.post(mailApi, params || mailConfig, {
@@ -123,11 +129,15 @@ function simpleCloneObj(target) {
   return typeof target === "object" && JSON.parse(JSON.stringify(target));
 }
 function timeOutMsg() {
-  setTimeout(function () {
-    const _mailConfig = simpleCloneObj(mailConfig);
-    _mailConfig.template_params.content = "自动打卡超时，正在重试" + new Date();
-    toast("打卡超时，正在重试");
-    sendEmail(_mailConfig);
-    init();
-  }, roundTimer);
+  threads.start(function () {
+    //在新线程执行的代码
+    setTimeout(function () {
+      var _mailConfig = simpleCloneObj(mailConfig);
+      _mailConfig.template_params.content =
+        "自动打卡超时，正在重试" + new Date();
+      toast("打卡超时，正在重试");
+      sendEmail(_mailConfig);
+      exitApp(false, init);
+    }, roundTimer);
+  });
 }
