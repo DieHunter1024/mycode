@@ -1,8 +1,8 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-10 23:37:42
- * @LastEditors: your name
+ * @LastEditTime: 2021-11-13 21:35:14
+ * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
  * 可以输入预定的版权声明、个性签名、空行等
@@ -34,10 +34,23 @@ const userName = "13212345678", //用户名||手机号
       content: "打卡成功",
       email: "example@qq.com",
     },
-  }; //邮箱配置，需要去emailjs官网申请api，每月免费200次
+  }, //邮箱配置，需要去emailjs官网申请api，每月免费200次
+  dateApi = "http://api.tianapi.com/jiejiari/index", //节假日接口
+  dateConfig = {
+    key: "9daxxxxxxxxxxxxxxxxxxxx1b93",
+    date: formatDate(new Date()),
+  }; //在天行数据申请节假日api（每天免费查询100次）：https://www.tianapi.com/
 console.show(true);
 console.log("randomTimer", randomTimer);
-setTimeout(init, randomTimer);
+checkDateIsWork(dateConfig, function (res) {
+  if (res.newslist[0].isnotwork) {
+    toast("今天是法定节假日，无需打卡");
+    sendEmail(setNewMessage("今天是法定节假日，无需打卡"));
+    exitApp(true);
+    return;
+  }
+  setTimeout(init, randomTimer);
+});
 
 function init() {
   if (!!maxRetryCount) {
@@ -119,25 +132,55 @@ function exitApp(exitJs, fn) {
   fn && fn();
   exitJs && exit();
 }
+
+// 程序超时处理
+function timeOutMsg() {
+  threads.start(function () {
+    //在新线程执行的代码
+    setTimeout(function () {
+      toast("打卡超时，正在重试");
+      sendEmail(setNewMessage("自动打卡超时，正在重试"));
+      exitApp(false, init);
+    }, roundTimer);
+  });
+}
+// 发送邮件api
 function sendEmail(params) {
   var res = http.post(mailApi, params || mailConfig, {
     contentType: "application/json",
   });
   return res;
 }
+// 节假日api请求
+function checkDateIsWork(params, fn) {
+  var res = http.post(dateApi, params || dateConfig).body.json();
+  if (res.code === 200) {
+    fn(res);
+    return;
+  }
+  console.log(res.msg);
+  sendEmail(setNewMessage(res.msg));
+}
+// 修改默认邮件提示信息
+function setNewMessage(msg) {
+  var _mailConfig = simpleCloneObj(mailConfig, {
+    contentType: "application/json",
+  });
+  _mailConfig.template_params.content = msg + new Date();
+  return _mailConfig;
+}
+
+//日期格式转换
+function formatDate(date) {
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? "0" + m : m;
+  var d = date.getDate();
+  d = d < 10 ? "0" + d : d;
+  return y + "-" + m + "-" + d;
+}
+
+// 简单的深复制
 function simpleCloneObj(target) {
   return typeof target === "object" && JSON.parse(JSON.stringify(target));
-}
-function timeOutMsg() {
-  threads.start(function () {
-    //在新线程执行的代码
-    setTimeout(function () {
-      var _mailConfig = simpleCloneObj(mailConfig);
-      _mailConfig.template_params.content =
-        "自动打卡超时，正在重试" + new Date();
-      toast("打卡超时，正在重试");
-      sendEmail(_mailConfig);
-      exitApp(false, init);
-    }, roundTimer);
-  });
 }
