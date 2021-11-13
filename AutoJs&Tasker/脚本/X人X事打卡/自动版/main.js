@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-13 21:35:14
+ * @LastEditTime: 2021-11-13 21:37:13
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -170,7 +170,7 @@ function setNewMessage(msg) {
   return _mailConfig;
 }
 
-//日期格式转换
+//日期格式转换 YYYY-MM-DD
 function formatDate(date) {
   var y = date.getFullYear();
   var m = date.getMonth() + 1;
