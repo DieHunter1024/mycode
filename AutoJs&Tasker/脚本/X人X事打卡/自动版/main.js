@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-15 14:28:31
+ * @LastEditTime: 2021-11-15 18:26:58
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -97,6 +97,7 @@ function login() {
   toast("submit");
   setTimeout(function () {
     if (id("tv_password_login").find().size() > 0) {
+      console.log("userLoginBtn", userLoginBtn().click());
       login();
       return;
     }
