@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-13 21:37:13
+ * @LastEditTime: 2021-11-15 14:22:36
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -121,14 +121,8 @@ function takeCard() {
 }
 //退出程序
 function exitApp(exitJs, fn) {
-  console.log("back", back());
-  if (currentPackage() === packageName) {
-    //判断是否在应用内,如果在则再次返回
-    sleep(200);
-    exitApp(exitJs, fn);
-    return;
-  }
-  sleep(200);
+  shell("am force-stop " + packageName, true);
+  threads.shutDownAll();
   fn && fn();
   exitJs && exit();
 }
