@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-15 18:26:58
+ * @LastEditTime: 2021-11-15 23:01:27
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -9,17 +9,18 @@
  */
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  roundTimer = 20 * 1000, //超时定时器间隔20秒
-  randomTimer = parseInt(Math.random() * 10) * 30 * 1000, //随机定时器0-5分钟
+  roundTimer = 30 * 1000, //超时定时器间隔30秒
+  randomTimer = parseInt(Math.random() * 8) * 60 * 1000, //随机定时器0-8分钟
+  loginTimer = null, //登录界面轮询计时器
   maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
   userLoginBtn = () => id("tv_password_login").findOne(), //账号密码登录按钮
-  cbAgreeCheck = () => id("cb_agree").findOne(), //同意选项
-  userInput = () => id("et_phone").findOne(), //用户名输入框
-  pwdInput = () => id("et_password").findOne(), //密码输入框
-  submit = () => id("btn_login").findOne(); //登录按钮
+  cbAgreeCheck = () => id("cb_agree").findOnce(), //同意选项
+  userInput = () => id("et_phone").findOnce(), //用户名输入框
+  pwdInput = () => id("et_password").findOnce(), //密码输入框
+  submit = () => id("btn_login").findOnce(); //登录按钮
 
 const userName = "13212345678", //用户名||手机号
   passWord = "123123123", //密码
@@ -49,17 +50,19 @@ checkDateIsWork(dateConfig, function (res) {
     exitApp(true);
     return;
   }
+  exitApp(true);
   setTimeout(init, randomTimer);
 });
 
 function init() {
-  exitApp(false);
   if (!!maxRetryCount) {
     console.log("剩余重试次数" + maxRetryCount);
     timeOutMsg();
     maxRetryCount--;
+    startProgram();
+    return;
   }
-  startProgram();
+  exitApp(true);
 }
 //开启应用
 function startProgram() {
@@ -76,33 +79,26 @@ function checkLogin() {
   if (currentActivity() === isLoginActivity) {
     id("tv_password_login").waitFor();
     console.log("userLoginBtn", userLoginBtn().click());
-    login();
+    loginTimer = setInterval(login, 1000);
     return;
   }
   openCardView();
 }
 // 用户登录
 function login() {
-  // 等待界面组件加载
-  id("cb_agree").waitFor();
-  id("et_phone").waitFor();
-  id("et_password").waitFor();
-  if (!cbAgreeCheck().checked()) {
+  if (!cbAgreeCheck() || !cbAgreeCheck().checked()) {
     //用户协议同意判断
-    console.log("cbAgree", cbAgreeCheck().click());
+    console.log("cbAgree", cbAgreeCheck() && cbAgreeCheck().click());
+    return;
   }
-  console.log("userName", userInput().setText(userName));
-  console.log("passWord", pwdInput().setText(passWord));
-  console.log("submit", submit().click());
-  toast("submit");
-  setTimeout(function () {
-    if (id("tv_password_login").find().size() > 0) {
-      console.log("userLoginBtn", userLoginBtn().click());
-      login();
-      return;
-    }
-  }, 1000);
-  openCardView();
+  userInput() && console.log("userName", userInput().setText(userName));
+  pwdInput() && console.log("passWord", pwdInput().setText(passWord));
+  if (submit().enabled) {
+    clearInterval(loginTimer);
+    console.log("submit", submit().click());
+    toast("submit");
+    openCardView();
+  }
 }
 //首页--->打卡页
 function openCardView() {
@@ -124,9 +120,8 @@ function takeCard() {
 //退出程序
 function exitApp(exitJs, fn) {
   shell("am force-stop " + packageName, true);
-  threads.shutDownAll();
   fn && fn();
-  exitJs && exit();
+  exitJs && threads.shutDownAll() && exit();
 }
 
 // 程序超时处理
@@ -136,7 +131,7 @@ function timeOutMsg() {
     setTimeout(function () {
       toast("打卡超时，正在重试");
       sendEmail(setNewMessage("自动打卡超时，正在重试"));
-      init()
+      exitApp(false, init);
     }, roundTimer);
   });
 }
