@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-15 14:22:36
+ * @LastEditTime: 2021-11-15 14:28:31
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -9,7 +9,7 @@
  */
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
-  roundTimer = 30 * 1000, //超时定时器间隔30秒
+  roundTimer = 20 * 1000, //超时定时器间隔20秒
   randomTimer = parseInt(Math.random() * 10) * 30 * 1000, //随机定时器0-5分钟
   maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
@@ -53,6 +53,7 @@ checkDateIsWork(dateConfig, function (res) {
 });
 
 function init() {
+  exitApp(false);
   if (!!maxRetryCount) {
     console.log("剩余重试次数" + maxRetryCount);
     timeOutMsg();
@@ -134,7 +135,7 @@ function timeOutMsg() {
     setTimeout(function () {
       toast("打卡超时，正在重试");
       sendEmail(setNewMessage("自动打卡超时，正在重试"));
-      exitApp(false, init);
+      init()
     }, roundTimer);
   });
 }
