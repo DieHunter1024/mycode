@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-15 23:01:27
+ * @LastEditTime: 2021-11-16 12:06:55
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -12,6 +12,7 @@ var appName = "薪人薪事", //app名
   roundTimer = 30 * 1000, //超时定时器间隔30秒
   randomTimer = parseInt(Math.random() * 8) * 60 * 1000, //随机定时器0-8分钟
   loginTimer = null, //登录界面轮询计时器
+  loginTimerCount = 10, //登录界面轮询最大次数
   maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
@@ -50,7 +51,7 @@ checkDateIsWork(dateConfig, function (res) {
     exitApp(true);
     return;
   }
-  exitApp(true);
+  exitApp(false);
   setTimeout(init, randomTimer);
 });
 
@@ -79,13 +80,14 @@ function checkLogin() {
   if (currentActivity() === isLoginActivity) {
     id("tv_password_login").waitFor();
     console.log("userLoginBtn", userLoginBtn().click());
-    loginTimer = setInterval(login, 1000);
+    !loginTimer && (loginTimer = setInterval(login, 1000));
     return;
   }
   openCardView();
 }
 // 用户登录
 function login() {
+  clearLoginTimer();
   if (!cbAgreeCheck() || !cbAgreeCheck().checked()) {
     //用户协议同意判断
     console.log("cbAgree", cbAgreeCheck() && cbAgreeCheck().click());
@@ -93,9 +95,10 @@ function login() {
   }
   userInput() && console.log("userName", userInput().setText(userName));
   pwdInput() && console.log("passWord", pwdInput().setText(passWord));
-  if (submit().enabled) {
-    clearInterval(loginTimer);
-    console.log("submit", submit().click());
+  if (submit().enabled && submit().click()) {
+    loginTimerCount = 0;
+    clearLoginTimer();
+    console.log("submit");
     toast("submit");
     openCardView();
   }
@@ -121,7 +124,7 @@ function takeCard() {
 function exitApp(exitJs, fn) {
   shell("am force-stop " + packageName, true);
   fn && fn();
-  exitJs && threads.shutDownAll() && exit();
+  exitJs && exit();
 }
 
 // 程序超时处理
@@ -174,4 +177,12 @@ function formatDate(date) {
 // 简单的深复制
 function simpleCloneObj(target) {
   return typeof target === "object" && JSON.parse(JSON.stringify(target));
+}
+const _loginTimerCount = loginTimerCount;
+function clearLoginTimer() {
+  if (!loginTimerCount--) {
+    clearInterval(loginTimer);
+    loginTimer = null;
+    loginTimerCount = _loginTimerCount;
+  }
 }
