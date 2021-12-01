@@ -1,0 +1,1 @@
+for %%i in (.\*.lnk) do ( start %%i )
