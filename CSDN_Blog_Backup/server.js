@@ -1,9 +1,14 @@
 // const blogType = process.argv[2] || "-csdn";
 
 const axios = require("axios");
+const cheerio = require("cheerio");
+const html2md = require("html-to-md");
+const path = require("path");
+const fs = require("fs");
+
 const defaultVal = {
   type: "csdn",
-  id: "time_____",
+  id: "weixin_43654258",
 };
 let global = {};
 (function (argv) {
@@ -14,13 +19,11 @@ let blogConfig = {
   csdn: {
     pageConfig: {
       page: 1,
-      size: 3,
+      size: 1,
       businessType: "lately",
     },
     blogListUrl:
       "https://blog.csdn.net/community/home-api/v1/get-business-list",
-    blogItemUrl:
-      "https://bizapi.csdn.net/blog-console-api/v1/editor/getArticle",
     getBlogList() {
       return axios.get(this.blogListUrl, {
         params: {
@@ -29,12 +32,20 @@ let blogConfig = {
         },
       });
     },
-    getBlogItem(id) {
-      return axios.get(this.blogItemUrl, {
-        params: {
-          id,
-        },
-      });
+    getBlogItem(blog) {
+      return axios.get(blog);
+    },
+    getBlogInfo: {
+      getTitle: function ($) {
+        console.log($("#articleContentId").text());
+        return $("#articleContentId").text();
+      },
+      getContent: function ($) {
+        return $("#content_views").html();
+      },
+      getTime: function ($) {
+        return $(".time").text();
+      },
     },
   },
 };
@@ -48,7 +59,18 @@ function init() {
       return asyncGetBlogInfo(res.data.list);
     })
     .then((res) => {
-        console.log(res)
+      const title = blogConfig[global.type].getBlogInfo.getTitle;
+      const content = blogConfig[global.type].getBlogInfo.getContent;
+      const time = blogConfig[global.type].getBlogInfo.getTime;
+      return Promise.all(
+        res.map((_) => {
+          const $ = cheerio.load(_);
+          return createMdFile(title($), content($), time($));
+        })
+      );
+    })
+    .then((res) => {
+      console.log("导出成功");
     });
 }
 // script参数判断
@@ -59,19 +81,45 @@ function filterArgs(args, key) {
 function getValue(str, keyWord) {
   return typeof str === "string" && str.split(keyWord)[1];
 }
+// 替换特殊字符
+function replaceKey(str) {
+  const exp = /[`\/：*？\"<>|\s]/g;
+  // /[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
+  return str.replace(exp, " ");
+}
 //获取所有博客详情
 function asyncGetBlogInfo(list) {
   return Promise.all(
-    list.map((_) => {
-      return blogConfig[global.type].getBlogItem(getValue(_.url, "details/"));
-    })
+    list.map((_) => blogConfig[global.type].getBlogItem(_.url))
   );
+}
+// 生成博客md
+function createMdFile(title, content, date) {
+  return writeFile(
+    `${replaceKey(title)}.md`,
+    `${createMdTemplete(title, date)}${html2md(content)}`,
+    "./blog/"
+  );
+}
+// md文件模板配置
+function createMdTemplete(title, date) {
+  return `---\ntitle:  ${title} \ndate:  ${date} \n---\n`;
+}
+// 写入文件
+function writeFile(filename, data, dir) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(
+      path.join(__dirname, dir + filename),
+      data,
+      (err) => (err && reject(err)) || resolve(err)
+    );
+  });
 }
 //响应拦截器
 function initAxios() {
   axios.interceptors.response.use(
-    function ({ data }) {
-      if (data.code === 200) {
+    function ({ data, status }) {
+      if (data.code === 200 || status === 200) {
         return data;
       }
       return Promise.reject(data);
