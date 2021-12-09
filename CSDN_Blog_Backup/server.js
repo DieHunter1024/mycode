@@ -5,25 +5,31 @@ const cheerio = require("cheerio");
 const html2md = require("html-to-md");
 const path = require("path");
 const fs = require("fs");
-
+// 配置默认值
 const defaultVal = {
   type: "csdn",
-  id: "weixin_43654258",
+  id: "time_____",
 };
+// 全局变量
 let global = {};
+// 初始化script参数
 (function (argv) {
   global.type = getValue(filterArgs(argv, "type")[0], ":") || defaultVal.type;
   global.id = getValue(filterArgs(argv, "id")[0], ":") || defaultVal.id;
 })(process.argv);
+// 各类博客的配置项
 let blogConfig = {
   csdn: {
+    // 博客分页：page:第几页,size:分页大小,businessType:排序方式
     pageConfig: {
       page: 1,
       size: 1,
       businessType: "lately",
     },
+    // 博客列表
     blogListUrl:
       "https://blog.csdn.net/community/home-api/v1/get-business-list",
+    // 获取博客列表
     getBlogList() {
       return axios.get(this.blogListUrl, {
         params: {
@@ -35,6 +41,7 @@ let blogConfig = {
     getBlogItem(blog) {
       return axios.get(blog);
     },
+    // 爬取数据的标签，有兴趣自己可以加
     getBlogInfo: {
       getTitle: function ($) {
         console.log($("#articleContentId").text());
@@ -73,7 +80,7 @@ function init() {
       console.log("导出成功");
     });
 }
-// script参数判断
+// npm script参数判断
 function filterArgs(args, key) {
   return args.filter((_) => _.includes(key));
 }
