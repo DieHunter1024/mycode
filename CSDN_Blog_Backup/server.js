@@ -20,11 +20,11 @@ let global = {};
 // 各类博客的配置项
 let blogConfig = {
   csdn: {
-    // 博客分页：page:第几页,size:分页大小,businessType:排序方式
+    // 博客分页：page:第几页,size:分页大小,businessType:排序方式，blog表示博客
     pageConfig: {
       page: 1,
-      size: 1,
-      businessType: "lately",
+      size: 10,
+      businessType: "blog",
     },
     // 博客列表
     blogListUrl:
@@ -44,7 +44,6 @@ let blogConfig = {
     // 爬取数据的标签，有兴趣自己可以加
     getBlogInfo: {
       getTitle: function ($) {
-        console.log($("#articleContentId").text());
         return $("#articleContentId").text();
       },
       getContent: function ($) {
