@@ -23,9 +23,10 @@ let blogConfig = {
     // 博客分页：page:第几页,size:分页大小,businessType:排序方式，blog表示博客
     pageConfig: {
       page: 1,
-      size: 10,
+      size: 20,
       businessType: "blog",
     },
+    totalPage: 1, //总页数
     // 博客列表
     blogListUrl:
       "https://blog.csdn.net/community/home-api/v1/get-business-list",
@@ -55,13 +56,15 @@ let blogConfig = {
     },
   },
 };
-
+initAxios();
 init();
 function init() {
-  initAxios();
   blogConfig[global.type]
     .getBlogList()
     .then((res) => {
+      blogConfig[global.type].totalPage = Math.round(
+        res.data.total / blogConfig[global.type].pageConfig.size
+      );
       return asyncGetBlogInfo(res.data.list);
     })
     .then((res) => {
@@ -76,7 +79,15 @@ function init() {
       );
     })
     .then((res) => {
-      console.log("导出成功");
+      console.log(blogConfig[global.type].totalPage);
+      if (
+        blogConfig[global.type].pageConfig.page++ >=
+        blogConfig[global.type].totalPage
+      ) {
+        console.log("导出成功");
+        return;
+      }
+      init();
     });
 }
 // npm script参数判断
