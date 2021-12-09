@@ -10,14 +10,14 @@
 
 ### 基于 node 编写的导出博客的爬虫脚本
 
-### 运行方式：npm start
+#### 运行方式：npm start
 
-### node server -type:csdn -id:time**\_**
+#### node server -type:csdn -id:time_____
 
-### -type 表示博客类型
+#### -type 表示博客类型
 
-### -id 表示用户名，如：在'https://blog.csdn.net/time_____'中，'time_____'是用户名
+#### -id 表示用户名，如：在'https://blog.csdn.net/time_____'中，'time_____'是用户名
 
-### 默认导出目录：blog
+#### 默认导出目录：blog
 
-### 导出效果是 markdown
+#### 导出效果是 markdown
