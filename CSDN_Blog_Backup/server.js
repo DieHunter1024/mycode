@@ -45,7 +45,10 @@ let blogConfig = {
     // 爬取数据的标签，有兴趣自己可以加
     getBlogInfo: {
       getTitle: function ($) {
-        return $("#articleContentId").text();
+        console.log(
+          $(".article-header .article-title-box #articleContentId").text()
+        );
+        return $(".article-header .article-title-box #articleContentId").text();
       },
       getContent: function ($) {
         return $("#content_views").html();
@@ -79,7 +82,6 @@ function init() {
       );
     })
     .then((res) => {
-      console.log(blogConfig[global.type].totalPage);
       if (
         blogConfig[global.type].pageConfig.page++ >=
         blogConfig[global.type].totalPage
@@ -87,7 +89,7 @@ function init() {
         console.log("导出成功");
         return;
       }
-      init();
+      setTimeout(init, 5000); //防止服务器检测并发请求,延时处理
     });
 }
 // npm script参数判断
