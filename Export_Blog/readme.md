@@ -1,16 +1,19 @@
 <!--
  * @Author: Hunter
  * @Date: 2021-12-08 15:08:03
- * @LastEditTime: 2021-12-09 22:46:48
+ * @LastEditTime: 2021-12-17 11:02:35
  * @LastEditors: Hunter
  * @Description:
- * @FilePath: \undefinedd:\Code\myCode\CSDN_Blog_Backup\readme.md
+ * @FilePath: \Export_Blog\readme.md
  * 可以输入预定的版权声明、个性签名、空行等
 -->
 
 ### 基于 node 编写的导出博客的爬虫脚本
 
-#### 运行方式：npm start
+#### 运行方式：
+
+#### npm i
+#### npm start
 
 #### node server -type:csdn -id:time_____
 
