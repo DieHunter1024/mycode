@@ -5,18 +5,12 @@ const cheerio = require("cheerio");
 const html2md = require("html-to-md");
 const path = require("path");
 const fs = require("fs");
+const { MessageCenter } = require("./lib/MessageCenter");
 // 配置默认值
 const defaultVal = {
   type: "csdn",
   id: "time_____",
 };
-// 全局变量
-let global = {};
-// 初始化script参数
-(function (argv) {
-  global.type = getValue(filterArgs(argv, "type")[0], ":") || defaultVal.type;
-  global.id = getValue(filterArgs(argv, "id")[0], ":") || defaultVal.id;
-})(process.argv);
 // 各类博客的配置项
 let blogConfig = {
   csdn: {
@@ -27,6 +21,7 @@ let blogConfig = {
       businessType: "blog",
     },
     totalPage: 1, //总页数
+    blogList: [],
     // 博客列表
     blogListUrl:
       "https://blog.csdn.net/community/home-api/v1/get-business-list",
@@ -59,38 +54,65 @@ let blogConfig = {
     },
   },
 };
-initAxios();
-init();
+// 全局变量
+let global = {};
+
+const asyncFunction = {
+  getBlogList: async () => {
+    const { data } = await blogConfig[global.type].getBlogList();
+    blogConfig[global.type].totalPage = Math.round(
+      data.total / blogConfig[global.type].pageConfig.size
+    );
+    blogConfig[global.type].blogList = concatList(
+      data.list,
+      blogConfig[global.type].blogList
+    );
+    if (isInTotalPage()) {
+      console.log("获取列表成功");
+      return MessageCenter.emit(
+        "getBlogInfo",
+        blogConfig[global.type].blogList
+      );
+    }
+    setTimeout(async () => {
+      await asyncFunction["getBlogList"]();
+    }, 3000);
+  },
+  getBlogInfo: async (blogList) => {
+    const htmlList = await asyncGetBlogInfo(blogList);
+    return MessageCenter.emit("loadBlog", htmlList);
+  },
+  loadBlog: async (htmlList) => {
+    const title = blogConfig[global.type].getBlogInfo.getTitle;
+    const content = blogConfig[global.type].getBlogInfo.getContent;
+    const time = blogConfig[global.type].getBlogInfo.getTime;
+    return Promise.all(
+      htmlList.map((_) => {
+        const $ = cheerio.load(_);
+        return createMdFile(title($), content($), time($));
+      })
+    );
+  },
+};
+// 初始化script参数
+(function (argv) {
+  global.type = getValue(filterArgs(argv, "type")[0], ":") || defaultVal.type;
+  global.id = getValue(filterArgs(argv, "id")[0], ":") || defaultVal.id;
+  initAxios();
+  init();
+  MessageCenter.emit("getBlogList");
+})(process.argv);
 function init() {
-  blogConfig[global.type]
-    .getBlogList()
-    .then((res) => {
-      blogConfig[global.type].totalPage = Math.round(
-        res.data.total / blogConfig[global.type].pageConfig.size
-      );
-      return asyncGetBlogInfo(res.data.list);
-    })
-    .then((res) => {
-      const title = blogConfig[global.type].getBlogInfo.getTitle;
-      const content = blogConfig[global.type].getBlogInfo.getContent;
-      const time = blogConfig[global.type].getBlogInfo.getTime;
-      return Promise.all(
-        res.map((_) => {
-          const $ = cheerio.load(_);
-          return createMdFile(title($), content($), time($));
-        })
-      );
-    })
-    .then((res) => {
-      if (
-        blogConfig[global.type].pageConfig.page++ >=
-        blogConfig[global.type].totalPage
-      ) {
-        console.log("导出成功");
-        return;
-      }
-      setTimeout(init, 5000); //防止服务器检测并发请求,延时处理
-    });
+  MessageCenter.on("getBlogList", asyncFunction["getBlogList"]);
+  MessageCenter.on("getBlogInfo", asyncFunction["getBlogInfo"]);
+  MessageCenter.on("loadBlog", asyncFunction["loadBlog"]);
+}
+
+function isInTotalPage() {
+  return (
+    blogConfig[global.type].pageConfig.page++ >=
+    blogConfig[global.type].totalPage
+  );
 }
 // npm script参数判断
 function filterArgs(args, key) {
@@ -106,12 +128,17 @@ function replaceKey(str) {
   // /[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
   return str.replace(exp, " ");
 }
-//获取所有博客详情
+//批量获取博客详情
 function asyncGetBlogInfo(list) {
   return Promise.all(
     list.map((_) => blogConfig[global.type].getBlogItem(_.url))
   );
 }
+// 连接列表数组
+function concatList(list, targetList) {
+  return [...targetList, ...list];
+}
+
 // 生成博客md
 function createMdFile(title, content, date) {
   return writeFile(
