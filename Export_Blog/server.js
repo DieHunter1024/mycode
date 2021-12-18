@@ -1,8 +1,7 @@
-// const blogType = process.argv[2] || "-csdn";
-
 const axios = require("axios");
 const cheerio = require("cheerio");
 const html2md = require("html-to-md");
+const singleLineLog = require("single-line-log").stdout;
 const path = require("path");
 const fs = require("fs");
 const { MessageCenter } = require("./lib/MessageCenter");
@@ -39,59 +38,64 @@ let blogConfig = {
     },
     // 爬取数据的标签，有兴趣自己可以加
     getBlogInfo: {
-      getTitle: function ($) {
-        console.log(
-          $(".article-header .article-title-box #articleContentId").text()
-        );
-        return $(".article-header .article-title-box #articleContentId").text();
-      },
       getContent: function ($) {
         return $("#content_views").html();
-      },
-      getTime: function ($) {
-        return $(".time").text();
       },
     },
   },
 };
 // 全局变量
 let global = {};
-
+// 异步函数
 const asyncFunction = {
   getBlogList: async () => {
     const { data } = await blogConfig[global.type].getBlogList();
-    blogConfig[global.type].totalPage = Math.round(
-      data.total / blogConfig[global.type].pageConfig.size
+    blogConfig[global.type].totalPage = getTotalPage(
+      data.total,
+      blogConfig[global.type].pageConfig.size
     );
     blogConfig[global.type].blogList = concatList(
       data.list,
       blogConfig[global.type].blogList
     );
     if (isInTotalPage()) {
-      console.log("获取列表成功");
+      console.log(
+        `获取列表成功,共${blogConfig[global.type].blogList.length}篇文章`
+      );
       return MessageCenter.emit(
         "getBlogInfo",
         blogConfig[global.type].blogList
       );
     }
-    setTimeout(async () => {
-      await asyncFunction["getBlogList"]();
-    }, 3000);
+    data.list.forEach((_) => console.log(_.title));
+    await asyncFunction["getBlogList"]();
   },
-  getBlogInfo: async (blogList) => {
-    const htmlList = await asyncGetBlogInfo(blogList);
-    return MessageCenter.emit("loadBlog", htmlList);
+  //批量获取博客详情
+  getBlogInfo: async (blogList, count = 0, total) => {
+    !total && (total = blogList.length);
+    const blogItem = blogList[count];
+    if (count++ >= total) {
+      console.log("获取文章内容成功");
+      return MessageCenter.emit("loadBlog", blogList);
+    }
+    progressBar("获取文章内容中", count / total);
+    blogItem.htmlContent = await blogConfig[global.type].getBlogItem(
+      blogItem.url
+    );
+    asyncFunction["getBlogInfo"](blogList, count, total);
   },
-  loadBlog: async (htmlList) => {
-    const title = blogConfig[global.type].getBlogInfo.getTitle;
+  loadBlog: async (blogList) => {
     const content = blogConfig[global.type].getBlogInfo.getContent;
-    const time = blogConfig[global.type].getBlogInfo.getTime;
-    return Promise.all(
-      htmlList.map((_) => {
-        const $ = cheerio.load(_);
-        return createMdFile(title($), content($), time($));
+    await Promise.all(
+      blogList.map((_) => {
+        const $ = cheerio.load(_.htmlContent);
+        return createMdFile(_.title, content($), _.postTime);
       })
     );
+    MessageCenter.emit("loadFinish");
+  },
+  loadFinish() {
+    console.log("导出成功");
   },
 };
 // 初始化script参数
@@ -106,8 +110,26 @@ function init() {
   MessageCenter.on("getBlogList", asyncFunction["getBlogList"]);
   MessageCenter.on("getBlogInfo", asyncFunction["getBlogInfo"]);
   MessageCenter.on("loadBlog", asyncFunction["loadBlog"]);
+  MessageCenter.on("loadFinish", asyncFunction["loadFinish"]);
 }
-
+// 进度条
+function progressBar(label, percentage, totalBar = 50) {
+  const empty = "░";
+  const step = "█";
+  const target = (percentage * totalBar).toFixed();
+  let bar = [];
+  for (let i = 0; i < totalBar; i++) {
+    (target >= i && (bar[i] = step)) || (bar[i] = empty);
+  }
+  singleLineLog(
+    `${label || ""}  ${bar.join("")}${(100 * percentage).toFixed(2)}%`
+  );
+}
+// 获取页数
+function getTotalPage(total, size) {
+  return Math.round(total / size);
+}
+// 是否是最后一页
 function isInTotalPage() {
   return (
     blogConfig[global.type].pageConfig.page++ >=
@@ -127,12 +149,6 @@ function replaceKey(str) {
   const exp = /[`\/：*？\"<>|\s]/g;
   // /[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
   return str.replace(exp, " ");
-}
-//批量获取博客详情
-function asyncGetBlogInfo(list) {
-  return Promise.all(
-    list.map((_) => blogConfig[global.type].getBlogItem(_.url))
-  );
 }
 // 连接列表数组
 function concatList(list, targetList) {
