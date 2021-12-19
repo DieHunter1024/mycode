@@ -48,6 +48,7 @@ let blogConfig = {
 let global = {};
 // 异步函数
 const asyncFunction = {
+  // 分页获取博客列表
   getBlogList: async () => {
     const { data } = await blogConfig[global.type].getBlogList();
     blogConfig[global.type].totalPage = getTotalPage(
@@ -78,12 +79,14 @@ const asyncFunction = {
       console.log("获取文章内容成功");
       return MessageCenter.emit("loadBlog", blogList);
     }
+    // 进度条
     progressBar("获取文章内容中", count / total);
     blogItem.htmlContent = await blogConfig[global.type].getBlogItem(
       blogItem.url
     );
     asyncFunction["getBlogInfo"](blogList, count, total);
   },
+  // 生成博客文件
   loadBlog: async (blogList) => {
     const content = blogConfig[global.type].getBlogInfo.getContent;
     await Promise.all(
@@ -112,7 +115,7 @@ function init() {
   MessageCenter.on("loadBlog", asyncFunction["loadBlog"]);
   MessageCenter.on("loadFinish", asyncFunction["loadFinish"]);
 }
-// 进度条
+// 生成进度条
 function progressBar(label, percentage, totalBar = 50) {
   const empty = "░";
   const step = "█";
