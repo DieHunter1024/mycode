@@ -47,6 +47,7 @@ let blogConfig = {
         };
         for (let i = 0; i < target.length; i++) {
           const tag = target[i].children[0]["data"];
+          // 通过属性data-report-click判断分类和标签
           (Object.keys(target[i].attribs).includes("data-report-click") &&
             tagsCategory["tags"].push(tag)) ||
             tagsCategory["category"].push(tag);
