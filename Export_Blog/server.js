@@ -38,8 +38,20 @@ let blogConfig = {
     },
     // 爬取数据的标签，有兴趣自己可以加
     getBlogInfo: {
-      getContent: function ($) {
-        return $("#content_views").html();
+      getContent: ($) => $("#content_views").html(),
+      getTagsCategory: ($) => {
+        const target = $(".tag-link");
+        let tagsCategory = {
+          tags: [],
+          category: [],
+        };
+        for (let i = 0; i < target.length; i++) {
+          const tag = target[i].children[0]["data"];
+          (Object.keys(target[i].attribs).includes("data-report-click") &&
+            tagsCategory["tags"].push(tag)) ||
+            tagsCategory["category"].push(tag);
+        }
+        return tagsCategory;
       },
     },
   },
@@ -88,11 +100,13 @@ const asyncFunction = {
   },
   // 生成博客文件
   loadBlog: async (blogList) => {
+    const getTagsCategory = blogConfig[global.type].getBlogInfo.getTagsCategory;
     const content = blogConfig[global.type].getBlogInfo.getContent;
     await Promise.all(
       blogList.map((_) => {
         const $ = cheerio.load(_.htmlContent);
-        return createMdFile(_.title, content($), _.postTime);
+        const { tags, category } = getTagsCategory($);
+        return createMdFile(_.title, content($), _.postTime, tags, category);
       })
     );
     MessageCenter.emit("loadFinish");
@@ -158,17 +172,17 @@ function concatList(list, targetList) {
   return [...targetList, ...list];
 }
 
-// 生成博客md
-function createMdFile(title, content, date) {
+// 生成博客md,title文章标题, content文章内容, date文章时间, tags文章标签, category文章分类
+function createMdFile(title, content, date, tags, category) {
   return writeFile(
     `${replaceKey(title)}.md`,
-    `${createMdTemplete(title, date)}${html2md(content)}`,
+    `${createMdTemplete(title, date, tags, category)}${html2md(content)}`,
     "./blog/"
   );
 }
 // md文件模板配置
-function createMdTemplete(title, date) {
-  return `---\ntitle:  ${title} \ndate:  ${date} \n---\n`;
+function createMdTemplete(title, date, tags, category) {
+  return `---\ntitle:  ${title} \ndate:  ${date} \ntags:  [${tags}] \ncategory:  [${category}] \n---\n`;
 }
 // 写入文件
 function writeFile(filename, data, dir) {
