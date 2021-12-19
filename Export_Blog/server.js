@@ -59,6 +59,7 @@ const asyncFunction = {
       data.list,
       blogConfig[global.type].blogList
     );
+    data.list.forEach((_) => console.log(_.title));
     if (isInTotalPage()) {
       console.log(
         `获取列表成功,共${blogConfig[global.type].blogList.length}篇文章`
@@ -68,7 +69,6 @@ const asyncFunction = {
         blogConfig[global.type].blogList
       );
     }
-    data.list.forEach((_) => console.log(_.title));
     await asyncFunction["getBlogList"]();
   },
   //批量获取博客详情
