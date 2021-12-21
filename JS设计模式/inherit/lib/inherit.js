@@ -10,7 +10,9 @@ Inherit.prototype = {
     subClass.prototype = new superClass()
   },
   // 构造函数继承
-  constructorInheritance: function (superClass, subClass) {},
+  constructorInheritance: function (superClass, subClass) {
+    
+  },
   // 组合继承
   combinatorialInheritance: function (superClass, subClass) {},
   // 原型式继承

@@ -18,24 +18,17 @@ const { newClass } = require("./lib/new");
 
 // 继承的使用
 function SuperClass() {
-  this.hobby = "钓鱼";
+  this.info = { color: "red" };
 }
 SuperClass.prototype = {
-  name: "father",
-  getName() {
-    return this.name;
-  },
-  constructor: SuperClass,
+  name: "Car",
 };
+function SubClass() {}
 // 类式继承
 Inherit("classInheritance")(SuperClass, SubClass);
-function SubClass() {}
-
-SubClass.prototype = {
-  name: "son",
-  constructor: SubClass,
-};
-
-const subClass = new SubClass();
-const subClass2 = new SubClass();
-console.log(subClass.__proto__, subClass.hobby, subClass.getName());
+let BMW = new SubClass();
+let BenZ = new SubClass();
+console.log(BenZ.name, BenZ.info);
+BMW.info.color = "blue";
+console.log(BMW.name, BMW.info);
+console.log(BenZ.name, BenZ.info);
