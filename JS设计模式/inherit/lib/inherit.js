@@ -7,11 +7,11 @@ function Inherit(type) {
 Inherit.prototype = {
   // 类式继承
   classInheritance: function (superClass, subClass) {
-    subClass.prototype = new superClass()
+    subClass.prototype = new superClass();
   },
   // 构造函数继承
   constructorInheritance: function (superClass, subClass) {
-    
+    subClass.prototype.super = superClass;
   },
   // 组合继承
   combinatorialInheritance: function (superClass, subClass) {},
