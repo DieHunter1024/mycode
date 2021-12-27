@@ -21,10 +21,10 @@ const { newClass } = require("./lib/new");
 // 结合 new 的原理可以知道: 类式继承实际上是通过 new 将 SuperClass.prototype 绑定到 SuperClass.__proto__ 上，然后赋值给 SubClass.prototype,当实例化 SubClass 时，SubClass.__proto__ 上也会带有 SuperClass 及其原型链上的属性，即 SubClass 实例化对象上有以下属性：SuperClass.prototype 上的属性（实例化对象.__proto__.__proto__），SuperClass 构造函数上的属性（实例化对象.__proto__），SubClass 构造函数上的属性（实例化对象）
 // 优点：简洁方便，子类拥有父类及父类 prototype 上属性
 // 缺点1：子类通过prototype继承父类,只能父类单向传递属性给子类，无法向父类传递参数。为什么要向父类传递参数？如果父类中的某属性对参数有依赖关系，此时子类继承父类就需要在 new SuperClass() 时传参
-// 缺点2：当父类原型上的属性改变时，所有子类实例相对应的属性都会对应改变，即继承的属性都有引用关系
+// 缺点2：当父类原型上的属性改变时，所有子类实例相对应的引用属性都会对应改变，即继承的引用类型的属性都有引用关系
 // 缺点3：子类只能继承一个父类（因为继承方式是直接修改子类的prototype，如果再次修改，会将其覆盖）
-// function classInheritance(superClass, subClass) {
-//   subClass.prototype = new superClass();
+// function classInheritance(SuperClass, SubClass) {
+//   SubClass.prototype = new SuperClass();
 // }
 // function SuperClass(props) {
 //   this.state = props;
@@ -37,8 +37,8 @@ const { newClass } = require("./lib/new");
 // function SubClass() {
 //   this.price = 1000;
 // }
-// let BMW = new SubClass();
-// let BenZ = new SubClass();
+// const BMW = new SubClass();
+// const BenZ = new SubClass();
 // console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__); // { price: 1000 } { state: undefined, info: { color: 'red' } } { name: 'Car' }
 // console.log(BenZ.name, BenZ.info); // Car { color: 'red' }
 // BMW.info.color = "blue";
@@ -75,8 +75,8 @@ const { newClass } = require("./lib/new");
 //   this.price = 1000;
 // }
 // SubClass.prototype.name = "Small Car";
-// let BMW = new SubClass(true);
-// let BenZ = new SubClass(false);
+// const BMW = new SubClass(true);
+// const BenZ = new SubClass(false);
 // console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__);
 // // SubClass {
 // //   state: true,
@@ -92,7 +92,7 @@ const { newClass } = require("./lib/new");
 
 // 组合继承
 // 构造函数继承不能继承父类原型上的属性，而类式继承无法传参给父类，组合继承正好将两者规避了
-// 然而组合继承在实例化父类和执行父类构造函数时执行了两次 SuperClass ，实际上类式继承是为了解决构造函数继承上的父类的 prototype 无法被子类继承的问题，但是看代码可以得知，new SuperClass() 确实会将父类的 prototype 继承到子类中，但是也会将 SuperClass 构造函数中的操作又执行一遍，而且类式继承是将子类的原型直接替换掉，所以无法继承多个父类的问题也被延续下来了（但是可以在父类上多加一次继承，使多个类形成原型链关系，达到多继承的目的，即A,B,C三个类，A要继承B和C，那么让A继承B再继承C）
+// 然而组合继承在实例化父类和执行父类构造函数时执行了两次 SuperClass ，实际上类式继承是为了解决构造函数继承上的父类的 prototype 无法被子类继承的问题，看代码可以得知，new SuperClass() 确实会将父类的 prototype 继承到子类中，但是也会将 SuperClass 构造函数中的操作又执行一遍，而且类式继承是将子类的原型直接替换掉，所以无法继承多个父类的问题也被延续下来了（但是可以在父类上多加一次继承，使多个类形成原型链关系，达到多继承的目的，即A,B,C三个类，A要继承B和C，那么让A继承B再继承C）
 // function classInheritance(superClass, subClass) {
 //   subClass.prototype = new superClass();
 // }
@@ -109,8 +109,8 @@ const { newClass } = require("./lib/new");
 //   this.price = 1000;
 // }
 // SubClass.prototype.name = "Small Car";
-// let BMW = new SubClass(true);
-// let BenZ = new SubClass(false);
+// const BMW = new SubClass(true);
+// const BenZ = new SubClass(false);
 
 // console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__);
 // // { state: true, info: { color: 'red' }, price: 1000 } { state: undefined, info: { color: 'red' }, name: 'Small Car' } { name: 'Car' }
@@ -120,8 +120,40 @@ const { newClass } = require("./lib/new");
 // console.log(BMW instanceof SubClass) // true
 // console.log(BMW instanceof SuperClass) // true
 
-// 原型继承
-// 类式继承的封装，特点和类式继承一样
+// 原型式继承
+// 原型式继承是基于类式继承的封装，特点和类式继承一样，继承的引用类型属性都有引用关系
+// 原型式继承的过渡对象F实际上就是类式继承中的子类构造函数，这么做的特点：减少性能开销，对应的，子类无法在构造函数中初始化属性
+// 类式继承是如何转换成原型式继承？
+// function prototypeInheritance(SuperClass) {
+//   function SubClass() {}
+//   SubClass.prototype = new SuperClass();
+//   return new SubClass();
+// }
+// function prototypeInheritance(superClass) {
+//   function F() {}
+//   F.prototype = superClass;
+//   return new F();
+// }
+// function SuperClass(props) {
+//   this.state = props;
+//   this.info = { color: "red" };
+// }
+// SuperClass.prototype = {
+//   name: "Car",
+// };
+// const superClass = new SuperClass(true);
+// const BenZ = prototypeInheritance(superClass);
+// const BMW = prototypeInheritance(superClass);
+// BMW.price = 2000;
+
+// console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__); // { price: 2000 } { state: true, info: { color: 'red' } } { name: 'Car' }
+// console.log(BenZ, BenZ.name, BenZ.info, BenZ.state); // {} Car { color: 'red' } true
+// BMW.info.color = "blue";
+// console.log(BenZ.name, BenZ.info); // Car { color: 'blue' }
+// console.log(BMW instanceof SuperClass); // true
+
+// 寄生式继承
+
 function prototypeInheritance(superClass) {
   function F() {}
   F.prototype = superClass;
@@ -133,12 +165,24 @@ function SuperClass(props) {
 }
 SuperClass.prototype = {
   name: "Car",
+  getPrice:function () {
+    console.log(this.name)
+  }
 };
 
-let BMW = prototypeInheritance(new SuperClass(false));
-let BenZ = prototypeInheritance(new SuperClass(true));
-console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__); // { price: 1000 } { state: undefined, info: { color: 'red' } } { name: 'Car' }
-console.log(BenZ.name, BenZ.info); // Car { color: 'red' }
+function parasiticInheritance(superClass) {
+  const subClass = prototypeInheritance(superClass);
+  subClass.price = 2000;
+  return subClass;
+}
+
+const superClass = new SuperClass(true);
+const BenZ = parasiticInheritance(superClass);
+const BMW = parasiticInheritance(superClass);
+console.log(BenZ.getPrice(), BenZ.__proto__, BenZ.__proto__.__proto__);
+console.log(BenZ, BenZ.name, BenZ.info, BenZ.state); // {} Car { color: 'red' } true
 BMW.info.color = "blue";
 console.log(BenZ.name, BenZ.info); // Car { color: 'blue' }
-console.log(BMW instanceof SuperClass) // true
+console.log(BMW.name, BMW.info); // Car { color: 'blue' }
+console.log(BMW instanceof SuperClass); // true
+console.log(BenZ instanceof SuperClass); // true
