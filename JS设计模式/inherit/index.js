@@ -17,12 +17,13 @@ const { newClass } = require("./lib/new");
 // console.log(myNew.name, myNew.__proto__, myNew.prototype); // 小明 { name: '小明' } undefined
 
 // 继承的使用
-// 类式继承
+// 类式继承（原型链继承）
 // 结合 new 的原理可以知道: 类式继承实际上是通过 new 将 SuperClass.prototype 绑定到 SuperClass.__proto__ 上，然后赋值给 SubClass.prototype,当实例化 SubClass 时，SubClass.__proto__ 上也会带有 SuperClass 及其原型链上的属性，即 SubClass 实例化对象上有以下属性：SuperClass.prototype 上的属性（实例化对象.__proto__.__proto__），SuperClass 构造函数上的属性（实例化对象.__proto__），SubClass 构造函数上的属性（实例化对象）
 // 优点：简洁方便，子类拥有父类及父类 prototype 上属性
 // 缺点1：子类通过prototype继承父类,只能父类单向传递属性给子类，无法向父类传递参数。为什么要向父类传递参数？如果父类中的某属性对参数有依赖关系，此时子类继承父类就需要在 new SuperClass() 时传参
 // 缺点2：当父类原型上的属性改变时，所有子类实例相对应的引用属性都会对应改变，即继承的引用类型的属性都有引用关系
 // 缺点3：子类只能继承一个父类（因为继承方式是直接修改子类的prototype，如果再次修改，会将其覆盖）
+// 缺点4：继承语句前不能修改子类的 prototype 因为此类继承会覆盖子类原型
 // function classInheritance(SuperClass, SubClass) {
 //   SubClass.prototype = new SuperClass();
 // }
@@ -92,13 +93,17 @@ const { newClass } = require("./lib/new");
 
 // 组合继承
 // 构造函数继承不能继承父类原型上的属性，而类式继承无法传参给父类，组合继承正好将两者规避了
-// 然而组合继承在实例化父类和执行父类构造函数时执行了两次 SuperClass ，实际上类式继承是为了解决构造函数继承上的父类的 prototype 无法被子类继承的问题，看代码可以得知，new SuperClass() 确实会将父类的 prototype 继承到子类中，但是也会将 SuperClass 构造函数中的操作又执行一遍，而且类式继承是将子类的原型直接替换掉，所以无法继承多个父类的问题也被延续下来了（但是可以在父类上多加一次继承，使多个类形成原型链关系，达到多继承的目的，即A,B,C三个类，A要继承B和C，那么让A继承B再继承C）
+// 然而组合继承在实例化父类和执行父类构造函数时执行了两次 SuperClass ，实际上类式继承是为了解决构造函数继承上的父类的 prototype 无法被子类继承的问题，看代码可以得知，new SuperClass() 确实会将父类的 prototype 继承到子类中，但是也会将 SuperClass 构造函数中的操作又执行一遍(具体可看 console.log(++count) 执行了3次)，而且类式继承是将子类的原型直接替换掉，所以无法继承多个父类的问题也被延续下来了（但是可以在父类上多加一次继承，使多个类形成原型链关系，达到多继承的目的，即A,B,C三个类，A要继承B和C，那么让A继承B再继承C）
+// 优点：解决类式继承和构造函数继承的主要问题
+// 缺点：父类构造函数执行两遍，性能损耗
 // function classInheritance(superClass, subClass) {
 //   subClass.prototype = new superClass();
 // }
+// let count = 0;
 // function SuperClass(props) {
 //   this.state = props;
 //   this.info = { color: "red" };
+//   console.log(++count);// 打印 1 2 3
 // }
 // SuperClass.prototype = {
 //   name: "Car",
@@ -114,21 +119,27 @@ const { newClass } = require("./lib/new");
 
 // console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__);
 // // { state: true, info: { color: 'red' }, price: 1000 } { state: undefined, info: { color: 'red' }, name: 'Small Car' } { name: 'Car' }
-// console.log(BenZ.name, BenZ.info, BenZ.state);// Small Car { color: 'red' } false
+// console.log(BenZ.name, BenZ.info, BenZ.state); // Small Car { color: 'red' } false
 // BMW.info.color = "blue";
-// console.log(BenZ.name, BenZ.info);// Small Car { color: 'red' }
-// console.log(BMW instanceof SubClass) // true
-// console.log(BMW instanceof SuperClass) // true
+// console.log(BenZ.name, BenZ.info); // Small Car { color: 'red' }
+// console.log(BMW instanceof SubClass); // true
+// console.log(BMW instanceof SuperClass); // true
 
 // 原型式继承
 // 原型式继承是基于类式继承的封装，特点和类式继承一样，继承的引用类型属性都有引用关系
-// 原型式继承的过渡对象F实际上就是类式继承中的子类构造函数，这么做的特点：减少性能开销，对应的，子类无法在构造函数中初始化属性
-// 类式继承是如何转换成原型式继承？
+// 原型式继承的过渡对象F实际上就是类式继承中的子类构造函数，这么做的特点：减少性能开销（子类是空白的构造函数，没有任何内容），对应的，子类无法在构造函数中初始化属性
+// 是不是觉得原型式继承和 Object.create( ) 很像？ create 函数的原理就是生成一个新对象，这个新对象的 __proto__ 等于传入的对象。让我们回忆一下前面讲到的 new 的原理，new 实际上就是将 prototype 放在实例化对象的 __proto__ 上，不难理解，下面代码中 F.prototype = superClass 和 new F() 做的就是这一步
 // function prototypeInheritance(SuperClass) {
 //   function SubClass() {}
 //   SubClass.prototype = new SuperClass();
 //   return new SubClass();
 // }
+
+// 优点：无子类构造函数开销，相当于实现了对象的浅复制
+// 缺点：
+// 继承时无法向父类传参
+// 和类式继承一样，​​​​​​​继承父类​​​​​​​的引用类型属性都有引用关系
+
 // function prototypeInheritance(superClass) {
 //   function F() {}
 //   F.prototype = superClass;
@@ -153,36 +164,77 @@ const { newClass } = require("./lib/new");
 // console.log(BMW instanceof SuperClass); // true
 
 // 寄生式继承
+// 寄生式继承实际上是在上面的原型式继承的基础上做了二次封装，可以看成工厂模式+原型式继承，将继承步骤放在新的函数中，此时便可以在子类构造函数上添加子类独有的函数和属性，由此叫做寄生式继承，就好像子类独有的属性方法寄生在下面的 parasiticInheritance 函数中一样。使用这种继承在新建子类时，每个子类中的属性都不一样，违背了代码复用的效果
+// 优点：
+// 无子类构造函数开销
+// 继承父类所有属性
+// 子类拥有自己的属性
+// 缺点：
+// 继承时无法向父类传参
+// 和类式继承一样，​​​​​​​继承父类​​​​​​​的引用类型属性都有引用关系
+// 子类公共属性无法在原型上定义，导致无法复用
+// 针对代码无法复用缺点的理解：让我们回忆一下上面的构造函数继承对代码复用的理解，子类构造函数中直接执行父类构造函数并改变 this 指向从而达到将父类属性初始化到子类中。而寄生式继承则是每次生成的子类都是新的构造函数 F ，所以在继承时单独给 subClass 增加属性实际上是操作不同的子类构造函数，而如果这个做法能在子类 prototype 中进行，那么子类的函数及属性可以复用。
+// function prototypeInheritance(superClass) {
+//   function F() {}
+//   F.prototype = superClass;
+//   return new F();
+// }
+// function SuperClass(props) {
+//   this.state = props;
+//   this.info = { color: "red" };
+// }
+// SuperClass.prototype = {
+//   name: "Car",
+// };
 
-function prototypeInheritance(superClass) {
+// function parasiticInheritance(superClass) {
+//   const subClass = prototypeInheritance(superClass);
+//   subClass.type = { electricity: true, gasoline: false };
+//   return subClass;
+// }
+
+// const superClass = new SuperClass(true);
+// const BenZ = parasiticInheritance(superClass);
+// const BMW = parasiticInheritance(superClass);
+// console.log(BenZ.type === BMW.type); // false  说明每个子类的属性都不一样
+// console.log(BenZ, BenZ.__proto__, BenZ.__proto__.__proto__);
+// // { type: { electricity: true, gasoline: false } } { state: true, info: { color: 'red' } } { name: 'Car' }
+// console.log(BMW, BMW.name, BMW.info, BMW.state); // { type: { electricity: true, gasoline: false } } Car { color: 'red' } true
+// BMW.info.color = "blue";
+// console.log(BMW.name, BMW.info); // Car { color: 'blue' }
+// console.log(BMW instanceof SuperClass); // true
+// console.log(BenZ instanceof SuperClass); // true
+
+// 寄生组合式继承
+// 顾名思义寄生组合继承就是寄生式继承和组合式继承的结合
+
+function parasiticCombinatorialInheritance(SuperClass, SubClass) {
   function F() {}
-  F.prototype = superClass;
-  return new F();
+  F.prototype = SuperClass.prototype;
+  SubClass.prototype = new F();
+  SubClass.prototype.superClass = SuperClass;
 }
+
 function SuperClass(props) {
   this.state = props;
   this.info = { color: "red" };
 }
 SuperClass.prototype = {
   name: "Car",
-  getPrice:function () {
-    console.log(this.name)
-  }
 };
 
-function parasiticInheritance(superClass) {
-  const subClass = prototypeInheritance(superClass);
-  subClass.price = 2000;
-  return subClass;
+function SubClass() {
+  this.superClass.call(this, ...arguments);
+  this.price = 1000;
 }
+parasiticCombinatorialInheritance(SuperClass, SubClass);
+const BMW = new SubClass(true);
+const BenZ = new SubClass(false);
+console.log(BenZ, BenZ.__proto__, BenZ.__proto__.__proto__);
+console.log(BMW, BMW.__proto__, BMW.__proto__.__proto__);
 
-const superClass = new SuperClass(true);
-const BenZ = parasiticInheritance(superClass);
-const BMW = parasiticInheritance(superClass);
-console.log(BenZ.getPrice(), BenZ.__proto__, BenZ.__proto__.__proto__);
-console.log(BenZ, BenZ.name, BenZ.info, BenZ.state); // {} Car { color: 'red' } true
+console.log(BMW, BMW.name, BMW.info, BMW.state); // { type: { electricity: true, gasoline: false } } Car { color: 'red' } true
 BMW.info.color = "blue";
-console.log(BenZ.name, BenZ.info); // Car { color: 'blue' }
 console.log(BMW.name, BMW.info); // Car { color: 'blue' }
 console.log(BMW instanceof SuperClass); // true
 console.log(BenZ instanceof SuperClass); // true
