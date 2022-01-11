@@ -1,94 +1,78 @@
 <TaskerData sr="" dvi="1" tv="5.0u7m">
-	<Profile sr="prof10" ve="2">
-		<cdate>1634718611458</cdate>
-		<edate>1634719123307</edate>
-		<id>10</id>
-		<mid0>2</mid0>
-		<Day sr="con0">
-			<mnth0>9</mnth0>
-			<mnth1>11</mnth1>
-			<mnth2>10</mnth2>
-		</Day>
-		<Time sr="con1">
-			<fh>16</fh>
-			<fm>39</fm>
-			<th>-1</th>
-			<tm>-1</tm>
-		</Time>
-	</Profile>
 	<Profile sr="prof4" ve="2">
 		<cdate>1634522594371</cdate>
-		<edate>1634718482662</edate>
-		<flags>2</flags>
+		<edate>1641523863423</edate>
 		<id>4</id>
 		<mid0>2</mid0>
 		<nme>上班自动打卡</nme>
-		<Day sr="con0">
-			<wday0>4</wday0>
-			<wday1>6</wday1>
-			<wday2>5</wday2>
-			<wday3>2</wday3>
-			<wday4>3</wday4>
-		</Day>
-		<Time sr="con1">
+		<Time sr="con0">
 			<fh>8</fh>
 			<fm>50</fm>
 			<th>8</th>
 			<tm>55</tm>
 		</Time>
-		<Loc sr="con2">
-			<cname>位置</cname>
-			<lat>28.67704963684082</lat>
-			<long>115.9842758178711</long>
-			<rad>200.0</rad>
-		</Loc>
+	</Profile>
+	<Profile sr="prof5" ve="2">
+		<cdate>1641433077044</cdate>
+		<edate>1641433113741</edate>
+		<flags>2</flags>
+		<id>5</id>
+		<mid0>3</mid0>
+		<nme>上午自启autojs</nme>
+		<Time sr="con0">
+			<fh>8</fh>
+			<fm>0</fm>
+			<th>8</th>
+			<tm>30</tm>
+		</Time>
+	</Profile>
+	<Profile sr="prof6" ve="2">
+		<cdate>1641433145710</cdate>
+		<edate>1641433284480</edate>
+		<flags>2</flags>
+		<id>6</id>
+		<mid0>3</mid0>
+		<nme>下午自启autojs</nme>
+		<Time sr="con0">
+			<fh>18</fh>
+			<fm>0</fm>
+			<th>18</th>
+			<tm>30</tm>
+		</Time>
 	</Profile>
 	<Profile sr="prof9" ve="2">
 		<cdate>1634718503458</cdate>
-		<edate>1634718589772</edate>
+		<edate>1641523845724</edate>
 		<flags>2</flags>
 		<id>9</id>
 		<mid0>2</mid0>
 		<nme>下班自动打卡</nme>
-		<Day sr="con0">
-			<wday0>4</wday0>
-			<wday1>6</wday1>
-			<wday2>5</wday2>
-			<wday3>2</wday3>
-			<wday4>3</wday4>
-		</Day>
-		<Time sr="con1">
-			<fh>18</fh>
-			<fm>5</fm>
-			<th>18</th>
-			<tm>10</tm>
+		<Time sr="con0">
+			<fh>19</fh>
+			<fm>1</fm>
+			<th>19</th>
+			<tm>6</tm>
 		</Time>
-		<Loc sr="con2">
-			<cname>位置</cname>
-			<lat>28.67704963684082</lat>
-			<long>115.9842758178711</long>
-			<rad>200.0</rad>
-		</Loc>
 	</Profile>
 	<Project sr="proj0" ve="2">
 		<cdate>1634522306700</cdate>
-		<mdate>1634718611458</mdate>
+		<mdate>1641433296907</mdate>
 		<name>基础</name>
-		<pids>4,9,10</pids>
-		<tids>2,7</tids>
+		<pids>4,9,5,6</pids>
+		<tids>2,3</tids>
 		<Img sr="icon" ve="2">
 			<nme>mw_action_home</nme>
 		</Img>
 	</Project>
 	<Task sr="task2">
 		<cdate>1634522329824</cdate>
-		<edate>1634717197509</edate>
+		<edate>1641523826704</edate>
 		<id>2</id>
 		<nme>打卡</nme>
 		<pri>100</pri>
 		<Action sr="act0" ve="7">
 			<code>877</code>
-			<Str sr="arg0" ve="3">android.intent.action.tasker</Str>
+			<Str sr="arg0" ve="3">android.intent.action.tasker.takeCard</Str>
 			<Int sr="arg1" val="0"/>
 			<Str sr="arg2" ve="3"/>
 			<Str sr="arg3" ve="3"/>
@@ -100,14 +84,22 @@
 			<Int sr="arg9" val="0"/>
 		</Action>
 	</Task>
-	<Task sr="task7">
-		<cdate>1634717144796</cdate>
-		<edate>1634717193539</edate>
-		<id>7</id>
-		<nme>test</nme>
+	<Task sr="task3">
+		<cdate>1641432836945</cdate>
+		<edate>1641433307430</edate>
+		<id>3</id>
+		<nme>开启autojs</nme>
+		<pri>100</pri>
 		<Action sr="act0" ve="7">
-			<code>433</code>
-			<Int sr="arg0" val="0"/>
+			<code>20</code>
+			<App sr="arg0">
+				<appClass>org.autojs.autojs.ui.splash.SplashActivity</appClass>
+				<appPkg>org.autojs.autojs</appPkg>
+				<label>Autox.js</label>
+			</App>
+			<Str sr="arg1" ve="3"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
 		</Action>
 	</Task>
 </TaskerData>
