@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2022-01-25 12:35:23
- * @LastEditTime: 2022-01-25 13:30:02
+ * @LastEditTime: 2022-01-25 22:47:58
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \EmailServer\config\config.js
@@ -9,7 +9,7 @@
  */
 exports.config = {
   RequestPath: "",
-  RequestTimeOut: 60,
+  RequestTimeOut: 60*1000,
   EmailTransporter: {
     // service: "qq", // 运营商  qq邮箱 网易  若使用QQ邮箱，则只需配置service：qq
     host: "smtp.163.com", // 若使用网易邮箱，则只需配置host：smtp.163.com

@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2022-01-25 12:35:02
- * @LastEditTime: 2022-01-25 13:27:18
+ * @LastEditTime: 2022-01-25 22:13:07
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \EmailServer\utils\mails.js
@@ -24,7 +24,7 @@ exports.SendMail = class {
    */
   sendEmail = async (mail, title, content) => {
     this.mailOptions = {
-      from: "消息：；来自 <" + config.EmailTransporter.auth.user + ">",
+      from: "消息来自 <" + config.EmailTransporter.auth.user + ">",
       to: mail,
       subject: title,
       text: content,
