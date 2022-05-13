@@ -1,0 +1,39 @@
+{
+  "name": "task-queue",
+  "version": "1.0.0",
+  "description": "nodejs消息队列",
+  "main": "./dist/common/index.js",
+  "types": "./dist/common/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "scripts": {
+    "debug": "start cmd /k pnpm run build:hot & pnpm run node:hot",
+    "node:hot": "nodemon ./dist/common/index.js",
+    "build:hot": "tsc -p tsconfig.json -w",
+    "build": "pnpm run tsc:build && pnpm run babel:mjs &&  pnpm run babel:cjs",
+    "tsc:build": "rm -fr dist && tsc -p tsconfig.json && tsc -p tsconfig.es.json",
+    "publish": "pnpm run build && pnpm publish",
+    "babel:mjs": "babel dist/esm --out-dir dist/esm",
+    "babel:cjs": "babel dist/common --out-dir dist/common",
+    "example": "pnpm build && node example",
+    "example:hot": "pnpm build && nodemon example",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/DieHunter/task-queue.git"
+  },
+  "keywords": [
+    "queue",
+    "task",
+    "task-queue"
+  ],
+  "author": "DieHunter",
+  "license": "ISC",
+  "dependencies": {
+    "event-message-center": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "babel-cli": "^6.26.0"
+  }
+}
