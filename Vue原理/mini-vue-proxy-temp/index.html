@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <template id="vm-app">
+      <span v-text="title.name"></span>
+      <div v-if="isRender">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+      </div>
+      <ul>
+        <li v-if="isRender">
+          {{info.name}}---{{info.age}}---{{modelData}}---{{inputVal.item.value}}
+        </li>
+        <li v-show="isShow">{{info.age}}</li>
+        <li v-if="isRender">{{modelData}}</li>
+        <li v-show="isShow">{{inputVal.item.value}}</li>
+      </ul>
+      <span v-text="inputVal.item.value"></span>
+      <div v-html="htmlTemp"></div>
+      <div v-show="isShow">world</div>
+      <button v-on:click="handlerShow">点击显示</button>
+      <button @click="handlerRender">点击渲染</button>
+      <input v-model="modelData" type="text" />
+      <input v-model="inputVal.item.value" type="text" />
+    </template>
+    <script src="./lib/utils.js"></script>
+    <script src="./lib/dependence.js"></script>
+    <script src="./lib/watcher.js"></script>
+    <script src="./lib/observer.js"></script>
+    <script src="./lib/compile.js"></script>
+    <script src="./lib/updater.js"></script>
+    <script src="./lib/proxy.js"></script>
+    <script src="./js/vue-demo.js"></script>
+    <script>
+      const vm = new VueDemo(document.querySelector("#vm-app"), {
+        el: "#app",
+        data: {
+          title: {
+            name: "hello",
+          },
+          info: {
+            name: "张三",
+            age: 23,
+          },
+          isShow: true,
+          isRender: true,
+          modelData: 123,
+          htmlTemp: '<span style="color:red;">html</span>',
+          inputVal: {
+            item: {
+              value: "abc",
+            },
+          },
+        },
+        methods: {
+          handlerShow() {
+            this.isShow = !this.isShow;
+          },
+          handlerRender() {
+            this.isRender = !this.isRender;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
