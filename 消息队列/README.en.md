@@ -1,36 +1,87 @@
 # TaskQueue
 
-#### Description
-nodejs消息队列
-
-#### Software Architecture
-Software architecture description
-
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
 
 
-#### Gitee Feature
+Task queue
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+
+
+####Introduction
+
+
+
+Nodejs task queue is a solution for high concurrency peak shaving of requests, IO operations or other asynchronous operations
+
+
+
+####Installation tutorial
+
+
+
+1. pnpm i
+
+2. pnpm build
+
+
+
+####Instructions for use
+
+
+
+1. Pnpm build
+
+2. Pnpm example
+
+3. Pnpm debug (debugging source code)
+
+
+
+####Usage introduction
+
+
+
+#####Slice length maxlen
+
+
+
+const taskQueue = new TaskQueue({ maxLen: 10 });
+
+
+
+#####A queue
+
+const task = {
+
+name,
+
+children: [],
+
+};
+
+
+
+#####Push several functions in a single queue
+
+task.children.push(syncFn.bind(null, "args"));
+
+
+
+#####Subsequent operations will be triggered after all functions in a queue are executed
+
+taskQueue.push(task).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.log(err);
+});
+
+
+
+#####Delete the first three asynchronous functions
+
+taskQueue. unshift(3)
+
+
+
+#####Initialize the current queue
+
+taskQueue. clear()

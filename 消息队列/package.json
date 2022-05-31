@@ -1,10 +1,14 @@
 {
-  "name": "task-queue",
-  "version": "1.0.0",
+  "name": "task-queue-lib",
+  "version": "1.0.11",
   "description": "nodejs消息队列",
   "main": "./dist/common/index.js",
   "types": "./dist/common/index.d.ts",
   "module": "./dist/esm/index.js",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/common/index.js"
+  },
   "scripts": {
     "debug": "start cmd /k pnpm run build:hot & pnpm run node:hot",
     "node:hot": "nodemon ./dist/common/index.js",
@@ -30,7 +34,7 @@
   "author": "DieHunter",
   "license": "ISC",
   "dependencies": {
-    "event-message-center": "^1.0.12"
+    "event-message-center": "^1.0.16"
   },
   "devDependencies": {
     "@types/node": "^17.0.31",
