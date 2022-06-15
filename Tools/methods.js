@@ -461,25 +461,25 @@ let Methods = (function () {
     },
     // 函数防抖
     unShake(fn, time) {
-      var count = null;
-      return (function () {
-        var _self = this;
-        clearTimeout(count);
-        var args = arguments;
-        count = setTimeout(function () {
-          fn.call(_self, ...args);
-        }, time);
-      })();
-    },
-    // 函数节流
-    throttle(fn, time) {
       let _timer = null;
-      return function () {
+      return () => {
         if (_timer) {
           clearTimeout(_timer);
           _timer = null;
         }
         _timer = setTimeout(fn, time);
+      };
+    },
+    // 函数节流
+    throttle(fn, time) {
+      let count = null;
+      return (...args) => {
+        const _self = this;
+        if (count) return;
+        count = setTimeout(() => {
+          fn.call(_self, ...args);
+          count = null;
+        }, time);
       };
     },
     /*新增标签，设置属性及样式
