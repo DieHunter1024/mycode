@@ -460,7 +460,7 @@ let Methods = (function () {
       return (getArea = new GetArea(url));
     },
     // 函数防抖
-    unShake(fn, time) {
+    debounce(fn, time) {
       let _timer = null;
       return () => {
         if (_timer) {
