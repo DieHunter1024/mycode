@@ -1,6 +1,6 @@
 {
   "name": "utils-lib-js",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "JavaScript工具函数，封装的一些常用的js函数",
   "main": "./dist/common/index.js",
   "types": "./dist/common/index.d.ts",

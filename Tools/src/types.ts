@@ -251,7 +251,7 @@ export type IRequestHeaders = IRequestParams<HeadersInit>
 // 请求基础函数
 export type IRequestBaseFn = (url: IUrl, opts: IRequestOptions) => Promise<any>
 // 请求函数体
-export type IRequestFn = (url: IUrl, params: IObject<any>, body: IRequestBody, opts: IRequestOptions) => Promise<any>
+export type IRequestFn = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => Promise<any>
 // 请求参数
 export type IRequestOptions = {
     method?: IRequestMethods

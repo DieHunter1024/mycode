@@ -1,4 +1,4 @@
-import { urlJoin, defer, jsonToString, IRequest, IRequestBase, IRequestInit, IInterceptors } from "./index.js"
+import { urlJoin, defer, jsonToString, IRequest, IRequestBase, IRequestInit, IInterceptors, IUrl, IObject, IRequestBody, IRequestOptions } from "./index.js"
 import { request } from "node:http"
 import { parse } from "node:url"
 // import https from "node:https"
@@ -150,31 +150,31 @@ export class Request extends RequestInit implements IRequest {
         return promise
     }
 
-    GET = (url, query = {}, _, opts) => {
+    GET = (url?: IUrl, query?: IObject<any>, _?: IRequestBody | void, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "GET", ...opts })
     }
 
-    POST = (url, query = {}, body, opts) => {
+    POST = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "POST", body, ...opts })
     }
 
-    PUT = (url, query = {}, body, opts) => {
+    PUT = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "PUT", body, ...opts })
     }
 
-    DELETE = (url, query = {}, body, opts) => {
+    DELETE = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "DELETE", body, ...opts })
     }
 
-    OPTIONS = (url, query = {}, body, opts) => {
+    OPTIONS = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "OPTIONS", body, ...opts })
     }
 
-    HEAD = (url, query = {}, body, opts) => {
+    HEAD = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "HEAD", body, ...opts })
     }
 
-    PATCH = (url, query = {}, body, opts) => {
+    PATCH = (url?: IUrl, query?: IObject<any>, body?: IRequestBody, opts?: IRequestOptions) => {
         return this.request(url, { query, method: "PATCH", body, ...opts })
     }
 }
