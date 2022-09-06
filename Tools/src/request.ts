@@ -1,8 +1,6 @@
 import { urlJoin, defer, jsonToString, IRequest, IRequestBase, IRequestInit, IInterceptors, IUrl, IObject, IRequestBody, IRequestOptions } from "./index.js"
 import { request } from "node:http"
 import { parse } from "node:url"
-// import https from "node:https"
-// const { request } = http
 class Interceptors implements IInterceptors {
     private requestSuccess: Function
     private responseSuccess: Function

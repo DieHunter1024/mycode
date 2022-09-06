@@ -258,13 +258,17 @@ export type IRequestOptions = {
     query?: IRequestParams<IObject<any>>
     body?: IRequestBody
     headers?: IRequestHeaders
+    // AbortController 中断控制器，用于中断请求
     controller?: AbortController
+    // 超时时间
     timeout?: number
+    // 定时器
     timer?: number | unknown | null
     [key: string]: any
 }
 // 拦截器
 export type IInterceptors = {
+    // 添加请求，响应，错误拦截
     use(type: "request" | "response" | "error", fn: Function): void
     get reqFn(): Function
     get resFn(): Function
@@ -272,19 +276,29 @@ export type IInterceptors = {
 }
 // 公共函数
 export type IRequestBase = {
+    // 请求根路由
     readonly origin: string
+    // 简单判断传入的路由是否是完整url
     chackUrl: (url: IUrl) => boolean
+    // 环境判断，node或浏览器
     envDesc: () => IEnv
+    // 全局的错误捕获
     errorFn: <Err = any, R = Function>(reject: R) => (err: Err) => R
+    // 清除当前请求的超时定时器
     clearTimer: (opts: IRequestOptions) => void
+    // 初始化超时取消
     initAbort: <T = IRequestOptions>(opts: T) => T
+    // 策略模式，根据环境切换请求方式
     requestType: () => IRequestBaseFn
+    // 拼接请求url
     fixOrigin: (fixStr: string) => string
+    // 请求函数
     fetch: IRequestBaseFn
     http: IRequestBaseFn
+    // fetch响应转换方式
     getDataByType: (type: IDataType, response: Response) => Promise<any>
 }
-// 初始化参数
+// 初始化并兼容传入的参数
 export type IRequestInit = {
     initDefaultParams: (url: IUrl, opts: IRequestOptions) => any
     initFetchParams: (url: IUrl, opts: IRequestOptions) => any
