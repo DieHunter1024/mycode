@@ -243,7 +243,7 @@ export type IEnv = 'Window' | 'Node'
 // fetch返回取值方式
 export type IDataType = "text" | "json" | "blob" | "formData" | "arrayBuffer"
 // 请求方式
-export type IRequestMethods = "GET" | "POST" | "DELETE" | "PUT" | "OPTION"
+export type IRequestMethods = "GET" | "POST" | "DELETE" | "PUT" | "OPTION" | "HEAD" | "PATCH"
 // body结构
 export type IRequestBody = IRequestParams<BodyInit>
 // heads结构
