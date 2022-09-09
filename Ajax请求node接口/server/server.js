@@ -15,12 +15,10 @@ let server = http.createServer((req, res) => {
     switch (url.pathname) {
       case "/getList":
         console.log("获取列表");
-        setTimeout(() => {
-          res.write(
-            JSON.stringify(["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"])
-          );
-          res.end();
-        }, 3000);
+        res.write(
+          JSON.stringify(["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"])
+        );
+        res.end();
         break;
       default:
         res.writeHead(404, { "Content-Type": "text/plain" });
