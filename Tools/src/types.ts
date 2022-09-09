@@ -297,6 +297,8 @@ export type IRequestBase = {
     http: IRequestBaseFn
     // fetch响应转换方式
     getDataByType: (type: IDataType, response: Response) => Promise<any>
+    // 解析http响应
+    formatBodyString: (bodyString: string) => IObject<Function>
 }
 // 初始化并兼容传入的参数
 export type IRequestInit = {

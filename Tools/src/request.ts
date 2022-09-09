@@ -1,6 +1,6 @@
-import { urlJoin, defer, jsonToString, IRequest, IRequestBase, IRequestInit, IInterceptors, IUrl, IObject, IRequestBody, IRequestOptions } from "./index.js"
-import { request } from "node:http"
-import { parse } from "node:url"
+import { urlJoin, defer, jsonToString, stringToJson, IRequest, IRequestBase, IRequestInit, IInterceptors, IUrl, IObject, IRequestBody, IRequestOptions } from "./index.js"
+import { request } from "http"
+import { parse } from "url"
 class Interceptors implements IInterceptors {
     private requestSuccess: Function
     private responseSuccess: Function
@@ -85,6 +85,15 @@ abstract class RequestBase extends Interceptors implements IRequestBase {
                 return response['json']()
         }
     }
+    formatBodyString = (bodyString) => {
+        return {
+            text: () => bodyString,
+            json: () => stringToJson(bodyString) ?? bodyString,
+            blob: () => stringToJson(bodyString),
+            formData: () => stringToJson(bodyString),
+            arrayBuffer: () => stringToJson(bodyString),
+        }
+    }
 
 }
 abstract class RequestInit extends RequestBase implements IRequestInit {
@@ -105,7 +114,7 @@ abstract class RequestInit extends RequestBase implements IRequestInit {
     initHttpParams = (url, opts) => {
         const params = this.initAbort(this.initDefaultParams(url, opts))
         const options = parse(params.url, true)
-        return this.reqFn?.({ ...params, ...options }) ?? params
+        return this.reqFn?.({ ...params, ...options }) ?? { ...params, ...options }
     }
 }
 export class Request extends RequestInit implements IRequest {
@@ -119,13 +128,14 @@ export class Request extends RequestInit implements IRequest {
         const { promise, resolve, reject } = defer()
         const { url, ...opts } = this.initFetchParams(_url, _opts)
         const { signal } = opts
+        promise.finally(() => this.clearTimer(opts))
         signal.addEventListener('abort', () => this.errorFn(reject));
         fetch(url, opts).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
+            if (response?.status >= 200 && response?.status < 300) {
                 return this.getDataByType(opts.type, response)
             }
             return this.errorFn(reject)
-        }).then(res => resolve(this.resFn?.(res) ?? res)).catch(this.errorFn(reject)).finally(() => this.clearTimer(opts))
+        }).then(res => resolve(this.resFn?.(res) ?? res)).catch(this.errorFn(reject))
         return promise
     }
 
@@ -133,12 +143,16 @@ export class Request extends RequestInit implements IRequest {
         const { promise, resolve, reject } = defer()
         const params = this.initHttpParams(_url, _opts)
         const { signal } = params
+        promise.finally(() => this.clearTimer(params))
         const req = request(params, (response) => {
-            if (response.statusCode >= 200 && response.statusCode < 300) {
+            if (response?.statusCode >= 200 && response?.statusCode < 300) {
                 let data = "";
                 response.setEncoding('utf8');
                 response.on('data', (chunk) => data += chunk);
-                return response.on("end", () => resolve(this.resFn?.(data) ?? data));
+                return response.on("end", () => {
+                    const result = this.getDataByType(params.type, this.formatBodyString(data))
+                    resolve(this.resFn?.(result) ?? result)
+                });
             }
             return this.errorFn(reject)(response?.statusMessage)
         })
