@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="connect">连接</button>
+    <button disabled id="sendMessage">发送</button>
+    <button disabled id="destroy">关闭</button>
+    <script type="module">
+      import { messageCenter } from "./lib/messageCenter.js";
+      import MyWebSocket from "./lib/webSocket.js";
+      const name = "zhangsan"; //连接用户名
+      const connect = document.querySelector("#connect");
+      const sendMessage = document.querySelector("#sendMessage");
+      const destroy = document.querySelector("#destroy");
+      const wsUrl = "ws://127.0.0.1:2048/ws/?name=" + name;
+      let myWebSocket;
+      messageCenter.on("changeBtnState", setButtonState); //设置按钮样式
+      messageCenter.on("reconnect", reconnectWebSocket); //接收重连消息
+      connect.addEventListener("click", reconnectWebSocket);
+      sendMessage.addEventListener("click", function (e) {
+        // 发消息
+        myWebSocket.sendMsg({
+          ModeCode: "message",
+          msg: "hello",
+        });
+      });
+      destroy.addEventListener("click", function (e) {
+        clear(myWebSocket);
+      });
+
+      function reconnectWebSocket() {
+        // 入口函数
+        if (myWebSocket) {
+          //防止多个websocket同时执行
+          clear(myWebSocket);
+        }
+        connectWebSocket();
+      }
+      // 终止连接
+      function clear(myWebSocket) {
+        myWebSocket.clear();
+        myWebSocket = null;
+      }
+      function connectWebSocket() {
+        myWebSocket = new MyWebSocket(wsUrl);
+        myWebSocket.init(
+          {
+            //time：心跳时间间隔 timeout：心跳超时间隔 reconnect：断线重连时间，一般的，断线重连时间等于心跳时间间隔加断线重连时间（忽略超时等待）
+            time: 10 * 1000,
+            timeout: 1 * 1000,
+            reconnect: 5 * 1000,
+          },
+          true
+        );
+      }
+
+      /*
+       * 设置按钮是否可点击
+       * @param state：open表示开启状态，close表示关闭状态
+       */
+      function setButtonState(state) {
+        switch (state) {
+          case "open":
+            connect.disabled = true;
+            sendMessage.disabled = false;
+            destroy.disabled = false;
+            break;
+          case "close":
+            connect.disabled = false;
+            sendMessage.disabled = true;
+            destroy.disabled = true;
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>
