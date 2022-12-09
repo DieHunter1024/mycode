@@ -1,7 +1,7 @@
 /*
  * @Author: Hunter
  * @Date: 2021-11-01 10:41:31
- * @LastEditTime: 2021-11-16 12:06:55
+ * @LastEditTime: 2022-12-09 14:59:03
  * @LastEditors: Hunter
  * @Description:
  * @FilePath: \自动版\main.js
@@ -10,36 +10,38 @@
 var appName = "薪人薪事", //app名
   packageName = getPackageName(appName), //包名
   roundTimer = 30 * 1000, //超时定时器间隔30秒
-  randomTimer = parseInt(Math.random() * 8) * 60 * 1000, //随机定时器0-8分钟
+  randomTimer = parseInt(Math.random() * 10) * 60 * 1000, //随机定时器0-10分钟
   loginTimer = null, //登录界面轮询计时器
   loginTimerCount = 10, //登录界面轮询最大次数
   maxRetryCount = 3, //重试打卡次数
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
+  earlyCardTakeBtn = () => id("tv_confirm").findOne(), //早退打卡按钮
   userLoginBtn = () => id("tv_password_login").findOne(), //账号密码登录按钮
   cbAgreeCheck = () => id("cb_agree").findOnce(), //同意选项
   userInput = () => id("et_phone").findOnce(), //用户名输入框
   pwdInput = () => id("et_password").findOnce(), //密码输入框
   submit = () => id("btn_login").findOnce(); //登录按钮
 
-const userName = "13212345678", //用户名||手机号
-  passWord = "123123123", //密码
+const userName = "13*********", //用户名||手机号
+  passWord = "*********", //密码
+  allowEarlyCard = true,//是否允许早退打卡
   mailApi = "https://api.emailjs.com/api/v1.0/email/send", //邮箱请求地址
   mailConfig = {
-    user_id: "user_id",
-    service_id: "service_id",
-    template_id: "template_id",
-    accessToken: "8a73dxxxxxxxxxxxxxxxxxxbd99",
+    user_id: "user*********",
+    service_id: "service*********",
+    template_id: "template_*********",
+    accessToken: "8a*********9",
     template_params: {
       title: "自动打卡通知",
       content: "打卡成功",
-      email: "example@qq.com",
+      email: "3*********@qq.com",
     },
   }, //邮箱配置，需要去emailjs官网申请api，每月免费200次
   dateApi = "http://api.tianapi.com/jiejiari/index", //节假日接口
   dateConfig = {
-    key: "9daxxxxxxxxxxxxxxxxxxxx1b93",
+    key: "9d*********",
     date: formatDate(new Date()),
   }; //在天行数据申请节假日api（每天免费查询100次）：https://www.tianapi.com/
 console.show(true);
@@ -115,10 +117,15 @@ function openCardView() {
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
   if (cardTakeBtn().click()) {
+    if (allowEarlyCard) takeCardEarly()
     toast("发送邮件");
     console.log("发送邮件", sendEmail());
     exitApp(true);
   }
+}
+//打早退卡
+function takeCardEarly() {
+  return earlyCardTakeBtn().click()
 }
 //退出程序
 function exitApp(exitJs, fn) {
@@ -152,7 +159,6 @@ function checkDateIsWork(params, fn) {
     fn(res);
     return;
   }
-  console.log(res.msg);
   sendEmail(setNewMessage(res.msg));
 }
 // 修改默认邮件提示信息
