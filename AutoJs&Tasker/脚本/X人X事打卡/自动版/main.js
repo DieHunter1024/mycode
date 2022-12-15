@@ -17,12 +17,12 @@ var appName = "薪人薪事", //app名
   isLoginActivity = "com.client.xrxs.com.xrxsapp.activity.LoginActivity", //判断是否在登录界面
   cardViewBtn = () => id("ll_clock").findOne(), //打卡界面按钮
   cardTakeBtn = () => id("rl_my_clock_to_clock_in").findOne(), //打卡按钮
-  earlyCardTakeBtn = () => id("tv_confirm").findOne(), //早退打卡按钮
   userLoginBtn = () => id("tv_password_login").findOne(), //账号密码登录按钮
   cbAgreeCheck = () => id("cb_agree").findOnce(), //同意选项
   userInput = () => id("et_phone").findOnce(), //用户名输入框
   pwdInput = () => id("et_password").findOnce(), //密码输入框
-  submit = () => id("btn_login").findOnce(); //登录按钮
+  submit = () => id("btn_login").findOnce(), //登录按钮
+  earlyCardTakeBtn = () => id("tv_confirm").findOnce(); //早退打卡按钮
 
 const userName = "13*********", //用户名||手机号
   passWord = "*********", //密码
@@ -117,15 +117,16 @@ function openCardView() {
 function takeCard() {
   id("rl_my_clock_to_clock_in").clickable().waitFor(); //等待定位成功
   if (cardTakeBtn().click()) {
-    if (allowEarlyCard) takeCardEarly()
-    toast("发送邮件");
-    console.log("发送邮件", sendEmail());
-    exitApp(true);
+    // 查询早退卡弹窗按钮
+    allowEarlyCard && earlyCardTakeBtn().click();
+    sendSuccEmail();
   }
 }
-//打早退卡
-function takeCardEarly() {
-  return earlyCardTakeBtn().click()
+// 打卡成功发邮件
+function sendSuccEmail() {
+  toast("发送邮件");
+  console.log("发送邮件", sendEmail());
+  exitApp(true);
 }
 //退出程序
 function exitApp(exitJs, fn) {
